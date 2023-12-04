@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    android:id="@+id/rule_item"
+    android:layout_gravity=""
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:id="@+id/rule"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_corners"
+            android:layout_margin="10dp"
+            android:text="Quy Tắc"/>
+
+
+        <ImageView
+            android:id="@+id/deleteRule"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignEnd="@id/rule"
+            android:layout_alignBottom="@id/rule"
+            android:layout_marginEnd="-18dp"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/baseline_disabled_by_default_24"
+            android:tint="@color/teal_200" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

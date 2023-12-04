@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#F0F3EF"
+        android:padding="10dp"
+        tools:context=".Activity.Landlord.FormContractActivity">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/baseline_warehouse_24"
+                    android:text="  Chọn Phòng muốn làm hợp đồng"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:id="@+id/spinner"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/danh_sach_phong"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textAlignment="textStart"
+                        android:spinnerMode="dropdown" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="  Tiền phòng theo tháng"
+                    android:drawableLeft="@drawable/baseline_monetization_on_24"
+
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phí cọc phòng"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="8dp"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="  Phí cọc phòng khi thuê"
+                    android:drawableLeft="@drawable/baseline_monetization_on_24"
+
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phí cọc phòng"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="8dp"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thời hạn hợp đồng"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- TextInputLayout 1 -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputday_ngaybatdau"
+                        android:layout_width="0dp"
+                        android:layout_margin="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextday_ngaybatdau"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:hint="Ngày Thanh toán"
+                            android:focusable="false"
+                            android:onClick="showDatePickerDialog" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- TextInputLayout 2 -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputday_ngayketthuc"
+                        android:layout_width="0dp"
+                        android:layout_margin="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextday_ngayketthuc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:hint="Ngày Thanh toán"
+                            android:focusable="false"
+                            android:onClick="showDatePickerDialog" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày Thanh toán"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <!-- TextInputLayout with TextInputEditText -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textinputday_ngaythanhtoan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextday_ngaythanhtoan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:hint="Ngày Thanh toán"
+                        android:focusable="false"
+                        android:onClick="showDatePickerDialog" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="  Kỳ hạn hợp đồng"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:id="@+id/spinner_kyhan"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/spinner_kyhan_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textAlignment="textStart"
+                        android:spinnerMode="dropdown" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hình ảnh hợp đồng trên giấy"
+                    android:textStyle="bold"
+                    android:id="@+id/chooseIMG"
+                    android:drawablePadding="8dp"
+                    android:drawableLeft="@drawable/baseline_add_photo_alternate_24"
+                    android:textSize="18sp"/>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hinhanhopdong_recycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tình trạng hợp đồng"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <RadioGroup
+                    android:id="@+id/radioGroupStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/status_true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Còn hiệu lực"/>
+
+                    <RadioButton
+                        android:id="@+id/status_false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="hết hiệu lục"/>
+
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Đã thanh toán hay chưa"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <RadioGroup
+                    android:id="@+id/radioGroupPay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/pay_true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đã thanh toán"/>
+
+                    <RadioButton
+                        android:id="@+id/pay_false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chưa thanh toán"/>
+
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="  Xác nhận của người thuê"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+
+                <EditText
+                    android:id="@+id/sdtKD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/baseline_person_3_24"
+                    android:hint="  Số điện thoại"
+                    android:inputType="numberPassword"
+                    android:layout_marginTop="8dp"
+                    />
+                <EditText
+                    android:id="@+id/mkKH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/baseline_password_24"
+                    android:hint="  Mật khẩu"
+                    android:inputType="textPassword"
+                    android:layout_marginTop="8dp"
+                    />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhập chứng minh nhân dân"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <!-- ImageView 1 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="mặt trước"/>
+                        <ImageView
+                            android:id="@+id/cccd_mattruoc"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:src="@drawable/photo"
+                            android:scaleType="centerCrop"
+                            android:layout_margin="8dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="mặt sau"/>
+                        <ImageView
+                            android:id="@+id/cccd_matsau"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:src="@drawable/photo"
+                            android:scaleType="centerCrop"
+                            android:layout_margin="8dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <Button
+            android:id="@+id/buttonAddRoom"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:text="Thêm Hợp đồng"/>
+
+    </LinearLayout>
+</ScrollView>

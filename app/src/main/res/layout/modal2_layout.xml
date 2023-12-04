@@ -1,0 +1,37 @@
+<!-- Add your UI components like EditText, buttons, etc. -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/text_namearea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Rule"/>
+
+    <EditText
+        android:id="@+id/text_khoangcacharea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Khoảng cách (mét) nhập bằng số"/>
+    <EditText
+        android:id="@+id/text_motaarea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mô tả"/>
+
+    <Button
+        android:id="@+id/btnConfirm__"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"/>
+
+    <Button
+        android:id="@+id/btnCancel__"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"/>
+</LinearLayout>
