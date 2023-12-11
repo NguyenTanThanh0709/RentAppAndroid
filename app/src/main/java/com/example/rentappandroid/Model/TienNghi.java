@@ -5,6 +5,23 @@ public class TienNghi {
     private String amenity_name;
     private String amenity_img;
     private Boolean status;
+    private int __v;
+
+    public int get__v() {
+        return __v;
+    }
+
+    public void set__v(int __v) {
+        this.__v = __v;
+    }
+
+    public TienNghi(String _id, String amenity_name, String amenity_img, Boolean status, int __v) {
+        this._id = _id;
+        this.amenity_name = amenity_name;
+        this.amenity_img = amenity_img;
+        this.status = status;
+        this.__v = __v;
+    }
 
     public String get_id() {
         return _id;

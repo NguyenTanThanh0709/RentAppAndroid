@@ -24,25 +24,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RentAppAndroid"
+        android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Activity.Landlord.FormBillActivity"
+            android:name=".Activity.Landlord.FORMLIST.QuanLtBaiDangActivity"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
             android:exported="false" />
         <activity
-            android:name=".Activity.Landlord.FormContractActivity"
+            android:name=".Activity.Landlord.FORMLIST.QuanLyPhongTroActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Landlord.FORMADD.FormBillActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Landlord.FormTenantActivity"
+            android:name=".Activity.Landlord.FORMADD.FormContractActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Landlord.FormToaNhaActivity"
+            android:name=".Activity.Landlord.FORMADD.FormTenantActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Landlord.FormPostActivity"
+            android:name=".Activity.Landlord.FORMADD.FormToaNhaActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Landlord.FORMADD.FormPostActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.Landlord.FormAddRoomHouseActivity"
-            android:exported="false" />
+            android:name=".Activity.Landlord.FORMADD.FormAddRoomHouseActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.RegisterActivity"
             android:exported="false" />

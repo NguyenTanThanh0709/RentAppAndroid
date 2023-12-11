@@ -6,8 +6,27 @@ public class ServireChareReponse {
     private String servicecharge_name;
     private String servicecharge_img;
     private boolean status;
-
     private String phi ="";
+
+    public int get__v() {
+        return __v;
+    }
+
+    public void set__v(int __v) {
+        this.__v = __v;
+    }
+
+    private int __v;
+
+    public ServireChareReponse(String _id, String servicecharge_name, String servicecharge_img, boolean status, int __v) {
+        this._id = _id;
+        this.servicecharge_name = servicecharge_name;
+        this.servicecharge_img = servicecharge_img;
+        this.status = status;
+        this.__v = __v;
+    }
+
+
 
     public String getPhi() {
         return phi;

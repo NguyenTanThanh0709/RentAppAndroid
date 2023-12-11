@@ -13,7 +13,7 @@
     android:orientation="vertical"
     android:background="#F0F3EF"
     android:padding="10dp"
-    tools:context=".Activity.Landlord.FormAddRoomHouseActivity">
+    tools:context=".Activity.Landlord.FORMADD.FormAddRoomHouseActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:textSize="18sp"/>
 
             <EditText
-                android:id="@+id/editTextEmail"
+                android:id="@+id/editText_TenPhongtro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tên phòng trọ"
@@ -66,6 +66,7 @@
                 android:textSize="18sp"/>
 
             <MultiAutoCompleteTextView
+                android:id="@+id/editText_MoTaPhongTro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mô tả phòng trọ"
@@ -97,8 +98,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/editText_giatro"
                 android:hint="Giá phòng trọ"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:layout_marginTop="8dp"
                 />
         </LinearLayout>
@@ -127,7 +129,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Diện tích phòng"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
+                android:id="@+id/editText_dienTich"
                 android:layout_marginTop="8dp"
                 />
         </LinearLayout>
@@ -156,7 +159,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Số người trên phòng"
-                android:inputType="textEmailAddress"
+                android:id="@+id/editText_SucChua"
+                android:inputType="number"
                 android:layout_marginTop="8dp"
                 />
         </LinearLayout>
@@ -185,6 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Chọn tòa nhà"
+                android:id="@+id/editText_TenToaNha"
                 android:inputType="textEmailAddress"
                 android:layout_marginTop="8dp"
                 />
@@ -215,7 +220,7 @@
             android:id="@+id/spinner"
             android:orientation="vertical">
             <Spinner
-                android:id="@+id/provinces"
+                android:id="@+id/provinces_phongtro"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginBottom="8dp"
@@ -227,7 +232,7 @@
 
             <!-- Spinner 2 -->
             <Spinner
-                android:id="@+id/district"
+                android:id="@+id/district_phongtro"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginBottom="8dp"
@@ -239,7 +244,7 @@
 
             <!-- Spinner 3 -->
             <Spinner
-                android:id="@+id/wards"
+                android:id="@+id/wards_phongtro"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:background="@drawable/edittext_background"
@@ -251,10 +256,20 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Địa chỉ cụ thể"
-            android:inputType="textEmailAddress"
+            android:hint="So Nhà/ Tên Đường"
+            android:id="@+id/tenDuong_phongtro"
+            android:inputType="text"
             android:layout_marginTop="8dp"
             />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Địa chỉ cụ thể"
+            android:id="@+id/diachicuathe_phongtro"
+            android:inputType="none"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView

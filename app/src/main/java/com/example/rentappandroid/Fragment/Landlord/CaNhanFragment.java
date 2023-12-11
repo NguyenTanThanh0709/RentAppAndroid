@@ -8,16 +8,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.rentappandroid.Activity.Landlord.FormAddRoomHouseActivity;
-import com.example.rentappandroid.Activity.Landlord.FormBillActivity;
-import com.example.rentappandroid.Activity.Landlord.FormContractActivity;
-import com.example.rentappandroid.Activity.Landlord.FormPostActivity;
-import com.example.rentappandroid.Activity.Landlord.FormTenantActivity;
-import com.example.rentappandroid.Activity.Landlord.FormToaNhaActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormAddRoomHouseActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormBillActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormContractActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormPostActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormTenantActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormToaNhaActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLtBaiDangActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyPhongTroActivity;
 import com.example.rentappandroid.R;
 
 /**
@@ -107,6 +108,70 @@ public class CaNhanFragment extends Fragment {
                 // Handle the click event for taophong
                 Intent intent = new Intent(getActivity(), FormBillActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        quanlyphongtro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), QuanLyPhongTroActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        quanlybaidang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), QuanLtBaiDangActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        quanlynguoithue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event for quanlynguoithue
+                // Add your code here
+            }
+        });
+
+        quanlyhopdong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event for quanlyhopdong
+                // Add your code here
+            }
+        });
+
+        quanlyhoadon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event for quanlyhoadon
+                // Add your code here
+            }
+        });
+
+        baocaosuco.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event for baocaosuco
+                // Add your code here
+            }
+        });
+
+        quanlydichvuchung.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event for quanlydichvuchung
+                // Add your code here
+            }
+        });
+
+        dangxuat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event for dangxuat
+                // Add your code here
             }
         });
     }

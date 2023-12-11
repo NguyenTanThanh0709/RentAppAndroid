@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.RentAppAndroid" parent="Base.Theme.RentAppAndroid" />
+    <style name="Theme.RentAppAndroid.DarkActionBar" parent="Theme.AppCompat.Light">
+        <!-- Other theme attributes specific to YourCustomTheme -->
+    </style>
 </resources>

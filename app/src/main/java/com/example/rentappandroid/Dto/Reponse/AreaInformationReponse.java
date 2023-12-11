@@ -1,6 +1,8 @@
 package com.example.rentappandroid.Dto.Reponse;
 
-public class AreaInformationReponse {
+import java.io.Serializable;
+
+public class AreaInformationReponse implements Serializable {
     private String _id;
     private String areainformation_name;
     private String areainformation_img;
@@ -15,6 +17,9 @@ public class AreaInformationReponse {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public AreaInformationReponse() {
     }
 
     public String getDescription() {

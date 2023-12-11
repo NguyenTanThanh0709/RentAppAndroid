@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:background="#F0F3EF"
         android:padding="10dp"
-        tools:context=".Activity.Landlord.FormContractActivity">
+        tools:context=".Activity.Landlord.FORMADD.FormContractActivity">
 
 
         <androidx.cardview.widget.CardView
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:hint="Ngày Thanh toán"
+                    android:hint="Hóa đơn tháng"
                     android:focusable="false"
                     android:onClick="showDatePickerDialog" />
             </com.google.android.material.textfield.TextInputLayout>

@@ -1,4 +1,6 @@
-package com.example.rentappandroid.Activity.Landlord;
+package com.example.rentappandroid.Activity.Landlord.FORMADD;
+
+import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,12 +13,13 @@ import com.example.rentappandroid.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
-public class FormTenantActivity extends AppCompatActivity {
+public class FormPostActivity extends AppCompatActivity {
 
     private TextInputEditText editTextDate;
-
     private void event(){
         editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,13 +48,20 @@ public class FormTenantActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    private void setCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat.format(calendar.getTime());
+        editTextDate.setText(currentDate);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form_tenant);
-
-        TextInputLayout textInputLayout = findViewById(R.id.textInputLayoutDate_);
-        editTextDate = textInputLayout.findViewById(R.id.editTextDate_);
+        setContentView(R.layout.activity_form_post);
+        TextInputLayout textInputLayout = findViewById(R.id.textInputLayoutDate);
+        editTextDate = textInputLayout.findViewById(R.id.editTextDate);
+        setCurrentDate();
         event();
     }
 }

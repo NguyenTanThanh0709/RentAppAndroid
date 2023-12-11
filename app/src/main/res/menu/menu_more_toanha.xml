@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_edit_see_toanha"
+        android:title="Chỉnh sửa và xem chi tiết tòa nhà" />
+    <item
+        android:id="@+id/menu_delete_toanha"
+        android:title="Xóa tòa nhà" />
+    <item
+        android:id="@+id/menu_seeRoom_toanha"
+        android:title="Xem danh sách trọ " />
+</menu>

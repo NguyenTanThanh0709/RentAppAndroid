@@ -16,6 +16,7 @@
         android:id="@+id/text_khoangcacharea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="number"
         android:hint="Khoảng cách (mét) nhập bằng số"/>
     <EditText
         android:id="@+id/text_motaarea"

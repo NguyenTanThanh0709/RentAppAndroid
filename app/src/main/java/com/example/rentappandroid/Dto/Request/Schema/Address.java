@@ -1,10 +1,29 @@
 package com.example.rentappandroid.Dto.Request.Schema;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
     private String city;
     private String district;
     private String ward;
     private String street;
+    private String _id;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public Address(String city, String district, String ward, String street, String _id) {
+        this.city = city;
+        this.district = district;
+        this.ward = ward;
+        this.street = street;
+        this._id = _id;
+    }
 
     public Address() {
     }
@@ -46,6 +65,10 @@ public class Address {
         this.district = district;
         this.ward = ward;
         this.street = street;
+    }
+
+    public String getFullAddress() {
+        return this.street + " - " + this.ward + " - " + this.district + " - " + this.city;
     }
 // Constructors, getters, setters
 }

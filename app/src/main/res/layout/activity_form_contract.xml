@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:background="#F0F3EF"
         android:padding="10dp"
-        tools:context=".Activity.Landlord.FormContractActivity">
+        tools:context=".Activity.Landlord.FORMADD.FormContractActivity">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -153,7 +153,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:hint="Ngày Thanh toán"
+                            android:hint="Ngày bắt đầu"
                             android:focusable="false"
                             android:onClick="showDatePickerDialog" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -171,7 +171,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:hint="Ngày Thanh toán"
+                            android:hint="ngày kết thúc"
                             android:focusable="false"
                             android:onClick="showDatePickerDialog" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -203,12 +203,12 @@
 
                 <!-- TextInputLayout with TextInputEditText -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textinputday_ngaythanhtoan"
+                    android:id="@+id/textinputday_ngaythanhtoan_contract"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextday_ngaythanhtoan"
+                        android:id="@+id/editTextday_ngaythanhtoan_contract"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
@@ -234,7 +234,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="  Kỳ hạn hợp đồng"
+                    android:text="  Kỳ hạn hợp đồng(theo tháng)"
                     android:textStyle="bold"
                     android:textSize="18sp"/>
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -274,7 +274,7 @@
                     android:layout_height="wrap_content"
                     android:text="Hình ảnh hợp đồng trên giấy"
                     android:textStyle="bold"
-                    android:id="@+id/chooseIMG"
+                    android:id="@+id/chooseIMG_contract"
                     android:drawablePadding="8dp"
                     android:drawableLeft="@drawable/baseline_add_photo_alternate_24"
                     android:textSize="18sp"/>
@@ -402,7 +402,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/baseline_person_3_24"
                     android:hint="  Số điện thoại"
-                    android:inputType="numberPassword"
+                    android:inputType="phone"
                     android:layout_marginTop="8dp"
                     />
                 <EditText

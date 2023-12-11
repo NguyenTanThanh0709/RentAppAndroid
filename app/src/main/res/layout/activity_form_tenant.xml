@@ -14,7 +14,7 @@
     android:orientation="vertical"
     android:background="#F0F3EF"
     android:padding="10dp"
-    tools:context=".Activity.Landlord.FormTenantActivity">
+    tools:context=".Activity.Landlord.FORMADD.FormTenantActivity">
 
   <ImageView
       android:id="@+id/imageView4"
