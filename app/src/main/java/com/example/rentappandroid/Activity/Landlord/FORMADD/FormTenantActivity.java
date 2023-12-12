@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.example.rentappandroid.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -16,6 +18,7 @@ import java.util.Calendar;
 public class FormTenantActivity extends AppCompatActivity {
 
     private TextInputEditText editTextDate;
+
 
     private void event(){
         editTextDate.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +52,14 @@ public class FormTenantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_tenant);
+
+        Button buttonthemkhach = findViewById(R.id.buttonthemkhach);
+        buttonthemkhach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FormTenantActivity.this, "Tính Năng Đang Trong thời gian phát triển", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         TextInputLayout textInputLayout = findViewById(R.id.textInputLayoutDate_);
         editTextDate = textInputLayout.findViewById(R.id.editTextDate_);

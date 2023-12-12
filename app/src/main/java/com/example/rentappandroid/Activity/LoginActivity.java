@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token", "Bearer " + response.body().getToken());
                         editor.putString("sdt", response.body().get_id());
                         editor.putString("name", response.body().getName());
+                        editor.putString("role", response.body().getRole());
                         editor.apply();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
@@ -75,7 +76,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
+        if (preferences.contains("token") && preferences.contains("sdt")) {
+            // Proceed to start MainActivity
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }
         init();
         event();
+
+
     }
 }

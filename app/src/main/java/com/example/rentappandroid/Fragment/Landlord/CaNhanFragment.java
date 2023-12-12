@@ -1,6 +1,8 @@
 package com.example.rentappandroid.Fragment.Landlord;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormAddRoomHouseActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormBillActivity;
@@ -18,7 +21,10 @@ import com.example.rentappandroid.Activity.Landlord.FORMADD.FormPostActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormTenantActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormToaNhaActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLtBaiDangActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyHopDongActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyPhongTroActivity;
+import com.example.rentappandroid.Activity.LoginActivity;
+import com.example.rentappandroid.Activity.MainActivity;
 import com.example.rentappandroid.R;
 
 /**
@@ -130,16 +136,15 @@ public class CaNhanFragment extends Fragment {
         quanlynguoithue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the click event for quanlynguoithue
-                // Add your code here
+                Toast.makeText(getActivity(),"Tính Năng Đang Trong thời gian phát triển", Toast.LENGTH_SHORT).show();
             }
         });
 
         quanlyhopdong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the click event for quanlyhopdong
-                // Add your code here
+                Intent intent = new Intent(getActivity(), QuanLyHopDongActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -170,8 +175,17 @@ public class CaNhanFragment extends Fragment {
         dangxuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the click event for dangxuat
-                // Add your code here
+                getActivity().finish();
+                SharedPreferences preferences = getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                if (preferences.contains("token") && preferences.contains("sdt")) {
+                    editor.remove("token");
+                    editor.remove("sdt");
+                    editor.remove("name");
+                    editor.remove("role");
+                    editor.apply();
+                    getActivity().finish();
+                }
             }
         });
     }

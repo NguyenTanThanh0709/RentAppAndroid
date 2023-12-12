@@ -2,6 +2,7 @@ package com.example.rentappandroid.api;
 
 import com.example.rentappandroid.Dto.Reponse.RoomReponseComplex;
 import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
+import com.example.rentappandroid.Global.ValueGlobal;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,7 +24,7 @@ public interface ApiRoomingHouseComplex {
 
     ApiRoomingHouseComplex apiRoomingHouseComplex = new Retrofit.Builder()
 
-            .baseUrl("http://192.168.1.8:5000/")
+            .baseUrl(ValueGlobal.address)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiRoomingHouseComplex.class);

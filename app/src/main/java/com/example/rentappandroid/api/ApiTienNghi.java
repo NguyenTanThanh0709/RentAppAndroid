@@ -1,5 +1,6 @@
 package com.example.rentappandroid.api;
 
+import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.LoaiNha;
 import com.example.rentappandroid.Model.TienNghi;
 import com.google.gson.Gson;
@@ -22,7 +23,7 @@ public interface ApiTienNghi {
 
     ApiTienNghi apiTienNghi = new Retrofit.Builder()
 
-            .baseUrl("http://192.168.1.8:5000/")
+            .baseUrl(ValueGlobal.address)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiTienNghi.class);

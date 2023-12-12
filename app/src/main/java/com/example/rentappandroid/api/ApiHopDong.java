@@ -1,9 +1,8 @@
 package com.example.rentappandroid.api;
 
-import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
-import com.example.rentappandroid.Dto.Reponse.Room;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.BaiViet;
+import com.example.rentappandroid.Model.Leasecontracts;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -16,30 +15,27 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
 
-public interface ApiRoomHouse {
+public interface ApiHopDong {
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .setLenient()
             .create();
 
-
-    ApiRoomHouse apiRoom = new Retrofit.Builder()
-
+    ApiHopDong apiHopDong = new Retrofit.Builder()
             .baseUrl(ValueGlobal.address)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-            .create(ApiRoomHouse.class);
-
-    @GET("roominghouse/getListByOwnerId/{id}")
-    Call<List<Room>> getListRoomByOwner(@Path("id") String id, @Header("Authorization") String token);
+            .create(ApiHopDong.class);
 
 
-    @GET("baiviet/user/{id}")
-    Call<List<BaiViet>> getListBaivietyOwner(@Path("id") String id, @Header("Authorization") String token);
+    @GET("leasecontract/roominghouse/{id}")
+    Call<List<Leasecontracts>> getallleasecontractByIdRoom(@Path("id") String id, @Header("Authorization") String token);
 
-    @GET("roominghouse/getPhongTro/{id}")
-    Call<Room> getListRoomByID(@Path("id") String id, @Header("Authorization") String token);
+    @GET("leasecontract/landlord/{id}")
+    Call<List<Leasecontracts>> getallleasecontractByOwner(@Path("id") String id, @Header("Authorization") String token);
 
+    @GET("leasecontract/{id}")
+    Call<Leasecontracts> getallleasecontractByid(@Path("id") String id, @Header("Authorization") String token);
 
 
 }

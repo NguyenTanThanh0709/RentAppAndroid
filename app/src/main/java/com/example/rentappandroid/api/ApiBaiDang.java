@@ -1,5 +1,6 @@
 package com.example.rentappandroid.api;
 
+import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.BaiViet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +22,7 @@ public interface ApiBaiDang {
             .create();
 
     ApiBaiDang apiBaiDang = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.8:5000/")
+            .baseUrl(ValueGlobal.address)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiBaiDang.class);

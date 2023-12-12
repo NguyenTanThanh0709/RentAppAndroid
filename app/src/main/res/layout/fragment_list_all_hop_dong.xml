@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-    tools:context=".Fragment.Landlord.QuanLyPhongTro.ListPhongTroFragment">
+    tools:context=".Fragment.Landlord.QuanLyHopDong.ListAllHopDongFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,37 +12,24 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/ALL"
+            android:id="@+id/ALLHOPCONHAN"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="All"/>
+            android:text="Còn Hạn"/>
 
         <Button
-            android:id="@+id/RENTED"
+            android:id="@+id/ALLHOPDONGHETHAN"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Rented"/>
+            android:text="Hết Hạn"/>
 
-        <Button
-            android:id="@+id/EMPTYROOM"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Empty"/>
 
-        <Button
-            android:id="@+id/MAINTENANCE"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Maintain"/>
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listphongtro_recycleview"
+        android:id="@+id/listhopdong_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

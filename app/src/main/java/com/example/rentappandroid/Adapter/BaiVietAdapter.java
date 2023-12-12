@@ -1,16 +1,26 @@
 package com.example.rentappandroid.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormPostActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormToaNhaActivity;
+import com.example.rentappandroid.Activity.Tenant.DetailInfoRoomActivity;
+import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
 import com.example.rentappandroid.Model.BaiViet;
 import com.example.rentappandroid.R;
 import com.squareup.picasso.Picasso;
@@ -20,11 +30,15 @@ import java.util.List;
 public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHolder>{
     private List<BaiViet> baiVietList;
     private Context context;
+    private String role;
+    private String token;
 
     // Constructor to initialize the data
-    public BaiVietAdapter(List<BaiViet> baiVietList, Context context) {
+    public BaiVietAdapter(List<BaiViet> baiVietList, Context context,String role, String token) {
         this.baiVietList = baiVietList;
         this.context = context;
+        this.role = role;
+        this.token = token;
     }
 
     @NonNull
@@ -54,6 +68,16 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
             @Override
             public void onClick(View view) {
 
+                if(role.equals("ADMIN")){
+                    showPopupMenu(view, baiViet.get_id());
+                }else {
+                    Intent intent = new Intent(context, DetailInfoRoomActivity.class);
+                    intent.putExtra("ID_POST", baiViet.get_id());
+                    intent.putExtra("token", token);
+                    context.startActivity(intent);
+
+                }
+
             }
         });
 
@@ -66,6 +90,50 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
             }
         });
 
+    }
+
+    private void showPopupMenu(View view, String roomingHouseComplex) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.inflate(R.menu.menu_more_baiviet); // Replace with your menu resource
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int itemId = menuItem.getItemId();
+
+                if (itemId == R.id.menu_edit_see_baiviet) {
+
+
+                    Intent intent = new Intent(context, FormPostActivity.class);
+                    intent.putExtra("idPost", roomingHouseComplex);
+                    context.startActivity(intent);
+                    return true;
+
+                }else if (itemId == R.id.menu_delete_baiviet) {
+                    showDeleteConfirmationDialog(roomingHouseComplex);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    private void showDeleteConfirmationDialog(String email) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirm Delete");
+        builder.setMessage("Are you sure you want to delete this Post?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
     @Override

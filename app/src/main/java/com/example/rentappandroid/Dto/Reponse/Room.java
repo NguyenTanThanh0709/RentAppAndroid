@@ -1,5 +1,7 @@
 package com.example.rentappandroid.Dto.Reponse;
 
+import androidx.annotation.NonNull;
+
 import com.example.rentappandroid.Dto.Request.Schema.Address;
 import com.example.rentappandroid.Model.LoaiNha;
 import com.example.rentappandroid.Model.TienNghi;
@@ -7,6 +9,13 @@ import com.example.rentappandroid.Model.TienNghi;
 import java.util.List;
 
 public class Room {
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getTitle(); // Assuming getTitle() returns the text you want to display
+    }
+
     private String _id;
     private String title;
     private String description;

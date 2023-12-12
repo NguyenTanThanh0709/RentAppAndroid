@@ -41,7 +41,7 @@
                     android:id="@+id/spinner"
                     android:orientation="vertical">
                     <Spinner
-                        android:id="@+id/danh_sach_phong"
+                        android:id="@+id/danh_sach_phong_contract"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginBottom="8dp"
@@ -51,6 +51,12 @@
                         android:textAlignment="textStart"
                         android:spinnerMode="dropdown" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+                <TextView
+                    android:id="@+id/phonghientai_contract"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
@@ -79,6 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phí cọc phòng"
+                    android:id="@+id/tienphong_contract"
                     android:inputType="numberDecimal"
                     android:layout_marginTop="8dp"
                     />
@@ -100,6 +107,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:text="  Phí cọc phòng khi thuê"
                     android:drawableLeft="@drawable/baseline_monetization_on_24"
 
@@ -110,6 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phí cọc phòng"
+                    android:id="@+id/phicocphong_contract"
                     android:inputType="numberDecimal"
                     android:layout_marginTop="8dp"
                     />
@@ -254,6 +263,12 @@
                         android:textAlignment="textStart"
                         android:spinnerMode="dropdown" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+                <TextView
+                    android:id="@+id/kihanhientai_contract"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
@@ -313,20 +328,20 @@
                     android:textSize="18sp"/>
 
                 <RadioGroup
-                    android:id="@+id/radioGroupStatus"
+                    android:id="@+id/radioGroupStatus_contract"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     >
 
                     <RadioButton
-                        android:id="@+id/status_true"
+                        android:id="@+id/status_true_contract"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Còn hiệu lực"/>
 
                     <RadioButton
-                        android:id="@+id/status_false"
+                        android:id="@+id/status_false_contract"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="hết hiệu lục"/>
@@ -397,7 +412,7 @@
 
 
                 <EditText
-                    android:id="@+id/sdtKD"
+                    android:id="@+id/sdtKH"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/baseline_person_3_24"
@@ -485,7 +500,7 @@
 
 
         <Button
-            android:id="@+id/buttonAddRoom"
+            android:id="@+id/buttonAddRoom_contract"
             android:layout_width="match_parent"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"

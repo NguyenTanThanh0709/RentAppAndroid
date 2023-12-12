@@ -34,16 +34,18 @@
                 android:id="@+id/spinner"
                 android:orientation="vertical">
                 <Spinner
-                    android:id="@+id/danh_sach_phong"
+                    android:id="@+id/danh_sach_phong_"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/edittext_background"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:textAlignment="textStart"
-                    android:spinnerMode="dropdown" />
+                    android:layout_height="wrap_content"
+                   />
             </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:id="@+id/phonghientai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="14sp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
@@ -69,6 +71,7 @@
                 android:textSize="18sp"/>
 
             <EditText
+                android:id="@+id/phicocphong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Phí cọc phòng"
@@ -98,9 +101,10 @@
                 android:textSize="18sp"/>
 
             <MultiAutoCompleteTextView
+                android:id="@+id/motaBaiDang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mô tả phòng trọ"
+                android:hint="Mô tả Bài đăng"
                 android:inputType="textMultiLine"
                 android:layout_marginTop="8dp" />
 
@@ -134,18 +138,18 @@
                 >
 
                 <RadioButton
-                    android:id="@+id/rented"
+                    android:id="@+id/trochuaduocthue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trọ Chưa Được Thuê"/>
 
                 <RadioButton
-                    android:id="@+id/emptyroom"
+                    android:id="@+id/trodaduocthue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trọ Đã Được Thuê"/>
                 <RadioButton
-                    android:id="@+id/maintenance"
+                    android:id="@+id/hethieuluc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bài Viết Hết Hiệu Lực"/>

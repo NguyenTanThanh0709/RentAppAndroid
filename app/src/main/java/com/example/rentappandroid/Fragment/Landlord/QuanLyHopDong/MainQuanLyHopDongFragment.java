@@ -1,4 +1,4 @@
-package com.example.rentappandroid.Fragment.Landlord.QuanLyBaiDang;
+package com.example.rentappandroid.Fragment.Landlord.QuanLyHopDong;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,9 +18,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.example.rentappandroid.Dto.Reponse.Room;
-import com.example.rentappandroid.Fragment.Landlord.QuanLyPhongTro.ListPhongTroFragment;
+import com.example.rentappandroid.Fragment.Landlord.QuanLyBaiDang.ListBaiDangFragment;
 import com.example.rentappandroid.R;
-import com.example.rentappandroid.Utils.MultiSelectionSpinner;
 import com.example.rentappandroid.api.ApiRoomHouse;
 
 import java.util.ArrayList;
@@ -32,10 +31,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Main_BaiDang_Fragment#newInstance} factory method to
+ * Use the {@link MainQuanLyHopDongFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Main_BaiDang_Fragment extends Fragment {
+public class MainQuanLyHopDongFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,7 +45,7 @@ public class Main_BaiDang_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Main_BaiDang_Fragment() {
+    public MainQuanLyHopDongFragment() {
         // Required empty public constructor
     }
 
@@ -56,16 +55,17 @@ public class Main_BaiDang_Fragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Main_BaiDang_Fragment.
+     * @return A new instance of fragment MainQuanLyHopDongFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Main_BaiDang_Fragment newInstance(String param1, String param2) {
-        Main_BaiDang_Fragment fragment = new Main_BaiDang_Fragment();
+    public static MainQuanLyHopDongFragment newInstance(String param1, String param2) {
+        MainQuanLyHopDongFragment fragment = new MainQuanLyHopDongFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Override
@@ -76,7 +76,6 @@ public class Main_BaiDang_Fragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
 
     private List<Room> list_room;
     private String token;
@@ -95,10 +94,12 @@ public class Main_BaiDang_Fragment extends Fragment {
             }
         });
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main__bai_dang_, container, false);
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_main_quan_ly_hop_dong, container, false);
         SharedPreferences preferences = getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
 
 // Retrieve values
@@ -107,15 +108,15 @@ public class Main_BaiDang_Fragment extends Fragment {
         nameOwner = preferences.getString("name", "");  // Replace "" with the default value if not found
 
         // Find the RelativeLayouts by their IDs
-        RelativeLayout layTatCaBaiDang = view.findViewById(R.id.laytatcabaidang);
-        RelativeLayout layBaiDangTheoPhongTro = view.findViewById(R.id.laybaidangtheophongtro);
+        RelativeLayout layTatCaBaiDang = view.findViewById(R.id.laytatcahopdong);
+        RelativeLayout layBaiDangTheoPhongTro = view.findViewById(R.id.layhopdongtheophongtro);
         list_room = new ArrayList<>();
 
         get();
         layTatCaBaiDang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ListBaiDangFragment(), "null", phoneOwner, token);
+                replaceFragment(new ListAllHopDongFragment(), "null", phoneOwner, token);
             }
         });
 
@@ -127,7 +128,6 @@ public class Main_BaiDang_Fragment extends Fragment {
         });
         return view;
     }
-
     private void showRoomListDialog() {
         // Prepare the list of room names
         List<String> roomNames = new ArrayList<>();
@@ -165,7 +165,7 @@ public class Main_BaiDang_Fragment extends Fragment {
                 int selectedPosition = listView.getCheckedItemPosition();
                 if (selectedPosition != ListView.INVALID_POSITION) {
                     Room selectedRoom = list_room.get(selectedPosition);
-                    replaceFragment(new ListBaiDangFragment(), selectedRoom.get_id(), phoneOwner, token);
+                    replaceFragment(new ListAllHopDongFragment(), selectedRoom.get_id(), phoneOwner, token);
                 }
             }
         });
@@ -186,10 +186,9 @@ public class Main_BaiDang_Fragment extends Fragment {
             fragment.setArguments(args);
 
             getFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout_quanlybaidang, fragment)
+                    .replace(R.id.frame_layout_quanlyhopdong, fragment)
                     .addToBackStack(null)
                     .commit();
         }
     }
-
 }

@@ -5,7 +5,7 @@ import com.example.rentappandroid.Dto.Reponse.Room;
 
 public class BaiViet {
     private String _id;
-    private Owner user;
+    private String user;
     private int deposit;
     private String day_up;
     private Room room;
@@ -21,11 +21,11 @@ public class BaiViet {
         this._id = _id;
     }
 
-    public Owner getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(Owner user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -80,7 +80,7 @@ public class BaiViet {
     public BaiViet() {
     }
 
-    public BaiViet(String _id, Owner user, int deposit, String day_up, Room room, String description, String status, int __v) {
+    public BaiViet(String _id, String user, int deposit, String day_up, Room room, String description, String status, int __v) {
         this._id = _id;
         this.user = user;
         this.deposit = deposit;

@@ -12,13 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.rentappandroid.Adapter.Landlord.RoomAdapter;
 import com.example.rentappandroid.Adapter.Landlord.ToaNhaAdapter;
 import com.example.rentappandroid.Dto.Reponse.Room;
 import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
+import com.example.rentappandroid.Model.BaiViet;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.Utils.MultiSelectionSpinner;
+import com.example.rentappandroid.api.ApiBaiDang;
 import com.example.rentappandroid.api.ApiRoomHouse;
 
 import java.util.ArrayList;
@@ -96,17 +99,79 @@ public class ListPhongTroFragment extends Fragment {
         nameOwner = preferences.getString("name", "");  // Replace "" with the default value if not found
 
         roomList = new ArrayList<>();
-        // Set up the RecyclerView with a GridLayoutManager
+        // Set up the RecyclerView with a GridLayoutManage r
         int spanCount = 1; // Number of items per row
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
         roomAdapter = new RoomAdapter( getContext(), roomList);
         recyclerView.setAdapter(roomAdapter);
         getData();
+        handleButton(view);
         return view;
     }
 
+    private void handleButton(View view) {
+        // Inside your Activity's onCreate or any other method
+        Button allButton = view.findViewById(R.id.ALL);
+        Button rentedButton = view.findViewById(R.id.RENTED);
+        Button emptyRoomButton = view.findViewById(R.id.EMPTYROOM);
+        Button maintenanceButton = view.findViewById(R.id.MAINTENANCE);
+
+// Now you can use these button objects as needed, for example, set click listeners
+        allButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                roomAdapter.setRoomList(roomList);
+                roomAdapter.notifyDataSetChanged();
+            }
+        });
+
+        rentedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Room> list = new ArrayList<>();
+                for (Room room: roomList){
+                    if(room.getStatus().equals("RENTED")){
+                        list.add(room);
+                    }
+                }
+                roomAdapter.setRoomList(list);
+                roomAdapter.notifyDataSetChanged();
+            }
+        });
+
+        emptyRoomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Room> list = new ArrayList<>();
+                for (Room room: roomList){
+                    if(room.getStatus().equals("EMPTYROOM")){
+                        list.add(room);
+                    }
+                }
+                roomAdapter.setRoomList(list);
+                roomAdapter.notifyDataSetChanged();
+            }
+        });
+
+        maintenanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Room> list = new ArrayList<>();
+                for (Room room: roomList){
+                    if(room.getStatus().equals("MAINTENANCE")){
+                        list.add(room);
+                    }
+                }
+                roomAdapter.setRoomList(list);
+                roomAdapter.notifyDataSetChanged();
+            }
+        });
+
+    }
+
     private void getData() {
+
 
         ApiRoomHouse.apiRoom.getListRoomByOwner(phoneOwner,token).enqueue(new Callback<List<Room>>() {
             @Override

@@ -112,6 +112,10 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         return roomList.size();
     }
 
+    public void setRoomList(List<Room> roomList) {
+        this.roomList = roomList;
+    }
+
     public static class RoomViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         ImageView imageView;

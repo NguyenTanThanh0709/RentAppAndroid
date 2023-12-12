@@ -1,6 +1,7 @@
 package com.example.rentappandroid.api;
 
 import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
+import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.LoaiNha;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,7 +23,7 @@ public interface ApiTypeHouse {
 
     ApiTypeHouse apiTypeHouse = new Retrofit.Builder()
 
-            .baseUrl("http://192.168.1.8:5000/")
+            .baseUrl(ValueGlobal.address)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiTypeHouse.class);
