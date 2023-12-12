@@ -3,6 +3,7 @@ package com.example.rentappandroid.Adapter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,10 @@ import java.util.List;
 public class ServiceChargeAdapterBill extends RecyclerView.Adapter<ServiceChargeAdapterBill.ServiceChargeViewHolder>{
     private List<ServiceCharge> serviceChargeList;
     private Context context;
+    private int tong = 0;
+    public int getTotalValueAtPosition() {
+        return  tong;
+    }
 
     public ServiceChargeAdapterBill(List<ServiceCharge> serviceChargeList, Context context) {
         this.serviceChargeList = serviceChargeList;
@@ -35,7 +40,33 @@ public class ServiceChargeAdapterBill extends RecyclerView.Adapter<ServiceCharge
 
         holder.tendichvu.setText(serviceCharge.getServiceChargeId().getServicecharge_name());
         holder.giagoc.setText(String.valueOf(serviceCharge.getPrice()));
+        holder.soluong.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String soluongValue = charSequence.toString();
+                try {
+                    // Chuyển đổi chuỗi thành số nguyên
+                    int soluongInt = Integer.parseInt(soluongValue);
+                    int ok = soluongInt * Integer.parseInt(String.valueOf(holder.giagoc.getText()));
+                    holder.tong.setText("Tổng: " + ok);
+                    tong += ok;
+                    Log.d("Soluong", "Giá trị soluongInt: " + soluongInt);
+                } catch (NumberFormatException e) {
+                    // Xử lý trường hợp nếu không thể chuyển đổi thành số nguyên
+                    Log.e("Soluong", "Không thể chuyển đổi thành số nguyên: " + e.getMessage());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         holder.tong.setText("Tổng: ");
     }
 

@@ -151,8 +151,10 @@ public class CaNhanFragment extends Fragment {
         quanlyhoadon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the click event for quanlyhoadon
-                // Add your code here
+                Intent intent = new Intent(getActivity(), QuanLyHopDongActivity.class);
+
+                intent.putExtra("type", "hoadonlist");
+                startActivity(intent);
             }
         });
 

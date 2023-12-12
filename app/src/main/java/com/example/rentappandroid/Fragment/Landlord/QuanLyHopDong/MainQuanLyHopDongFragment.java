@@ -81,6 +81,9 @@ public class MainQuanLyHopDongFragment extends Fragment {
     private String token;
     private String phoneOwner;
     private String nameOwner;
+    private String type;
+
+
     private void get(){
         ApiRoomHouse.apiRoom.getListRoomByOwner(phoneOwner,token).enqueue(new Callback<List<Room>>() {
             @Override
@@ -102,6 +105,16 @@ public class MainQuanLyHopDongFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_main_quan_ly_hop_dong, container, false);
         SharedPreferences preferences = getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
 
+        Bundle bundle = getArguments();
+
+        // Kiểm tra xem Bundle có dữ liệu không
+        if (bundle != null) {
+            // Lấy dữ liệu từ Bundle
+            type = bundle.getString("type", "");
+            // Hiển thị dữ liệu hoặc thực hiện các hành động khác tùy thuộc vào type
+            // Ví dụ: textView.setText(type);
+        }
+
 // Retrieve values
         token = preferences.getString("token", "");  // Replace "" with the default value if not found
         phoneOwner = preferences.getString("sdt", "");  // Replace "" with the default value if not found
@@ -116,7 +129,7 @@ public class MainQuanLyHopDongFragment extends Fragment {
         layTatCaBaiDang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ListAllHopDongFragment(), "null", phoneOwner, token);
+                replaceFragment(new ListAllHopDongFragment(), "null", phoneOwner, token, type);
             }
         });
 
@@ -165,7 +178,7 @@ public class MainQuanLyHopDongFragment extends Fragment {
                 int selectedPosition = listView.getCheckedItemPosition();
                 if (selectedPosition != ListView.INVALID_POSITION) {
                     Room selectedRoom = list_room.get(selectedPosition);
-                    replaceFragment(new ListAllHopDongFragment(), selectedRoom.get_id(), phoneOwner, token);
+                    replaceFragment(new ListAllHopDongFragment(), selectedRoom.get_id(), phoneOwner, token, type);
                 }
             }
         });
@@ -177,12 +190,13 @@ public class MainQuanLyHopDongFragment extends Fragment {
         dialog.show();
     }
 
-    private void replaceFragment(Fragment fragment, String id, String phone, String token) {
+    private void replaceFragment(Fragment fragment, String id, String phone, String token, String type) {
         if (getFragmentManager() != null) {
             Bundle args = new Bundle();
             args.putString("id", id);
             args.putString("phone", phone);
             args.putString("token", token);
+            args.putString("type", type);
             fragment.setArguments(args);
 
             getFragmentManager().beginTransaction()

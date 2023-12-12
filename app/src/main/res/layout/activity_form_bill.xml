@@ -29,6 +29,7 @@
                 android:padding="8dp">
                 <TextView
                     android:layout_width="match_parent"
+                    android:id="@+id/chonhopdonglambill"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/baseline_warehouse_24"
                     android:text="  Chọn hợp đồng làm hóa đơn"
@@ -40,17 +41,13 @@
                     android:layout_weight="2"
                     android:id="@+id/spinner"
                     android:orientation="vertical">
-                    <Spinner
-                        android:id="@+id/danh_sach_phong"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/edittext_background"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:textAlignment="textStart"
-                        android:spinnerMode="dropdown" />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/id_hopdong"
+                    />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -132,17 +129,20 @@
 
                     <TextView
                         android:layout_width="0dp"
+                        android:id="@+id/kihan_hd"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="kì hạn: 2" />
 
                     <TextView
+                        android:id="@+id/gia_hd"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Giá: 21" />
 
                     <TextView
+                        android:id="@+id/tong_price_hd"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -155,19 +155,31 @@
                     android:layout_height="wrap_content">
 
                 </androidx.recyclerview.widget.RecyclerView>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="xác nhận"
+                    android:id="@+id/xacnhangia"
+                    />
 
                 <TextView
+                    android:id="@+id/tongtien_bill"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Tổng: 1.000.000"/>
 
+                <EditText
+                    android:id="@+id/editText_mota_bill"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:hint="Nhập văn bản ở đây" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/buttonAddRoom"
+            android:id="@+id/buttonAddBill"
             android:layout_width="match_parent"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"

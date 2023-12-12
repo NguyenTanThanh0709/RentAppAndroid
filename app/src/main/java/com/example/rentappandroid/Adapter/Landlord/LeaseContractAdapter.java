@@ -12,9 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormBillActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormContractActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormPostActivity;
 import com.example.rentappandroid.Activity.Tenant.DetailInfoRoomActivity;
+import com.example.rentappandroid.Fragment.Landlord.QuanLyHoaDon.ListHoaDonActivity;
 import com.example.rentappandroid.Model.Leasecontracts;
 import com.example.rentappandroid.R;
 
@@ -26,12 +28,14 @@ public class LeaseContractAdapter extends RecyclerView.Adapter<LeaseContractAdap
     private  List<Leasecontracts> leaseContractsList;
     private String role;
     private String token;
+    private String type;
 
-    public LeaseContractAdapter(Context context, List<Leasecontracts> leaseContractsList,String role, String token) {
+    public LeaseContractAdapter(Context context, List<Leasecontracts> leaseContractsList,String role, String token, String type) {
         this.context = context;
         this.leaseContractsList = leaseContractsList;
         this.role = role;
         this.token = token;
+        this.type = type;
     }
     @NonNull
     @Override
@@ -52,17 +56,25 @@ public class LeaseContractAdapter extends RecyclerView.Adapter<LeaseContractAdap
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(role.equals("ADMIN")){
-                    Intent intent = new Intent(context, FormContractActivity.class);
+                if(type.equals("")){
+                    if(role.equals("ADMIN")){
+                        Intent intent = new Intent(context, FormContractActivity.class);
+                        intent.putExtra("idContract", leaseContract.get_id());
+                        context.startActivity(intent);
+                    }else {
+
+
+                    }
+                }else if(type.equals("bill")){
+                    Intent intent = new Intent(context, FormBillActivity.class);
                     intent.putExtra("idContract", leaseContract.get_id());
                     context.startActivity(intent);
                 }else {
-//                    Intent intent = new Intent(context, DetailInfoRoomActivity.class);
-//                    intent.putExtra("ID_POST", baiViet.get_id());
-//                    intent.putExtra("token", token);
-//                    context.startActivity(intent);
-
+                    Intent intent = new Intent(context, ListHoaDonActivity.class);
+                    intent.putExtra("idContract", leaseContract.get_id());
+                    context.startActivity(intent);
                 }
+
             }
         });
     }

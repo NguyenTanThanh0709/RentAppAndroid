@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:text="Giá gốc" />
+                android:text="1000" />
         </LinearLayout>
 
         <EditText
@@ -41,13 +41,14 @@
             android:layout_weight="1"
             android:id="@+id/soluong"
             android:inputType="number"
-            android:text="Nhập số lượng" />
+            android:hint="Nhập số lượng" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/tong"
-            android:text="Tổng: 21" />
+            android:inputType="number"
+            android:text="0" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

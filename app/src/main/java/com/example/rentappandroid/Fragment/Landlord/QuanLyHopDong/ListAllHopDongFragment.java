@@ -74,12 +74,14 @@ public class ListAllHopDongFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             id = getArguments().getString("id");
+            type = getArguments().getString("type");
         }
     }
     String id ;
     String phone ;
     String token ;
     String phoneOwner;
+    String type;
     private RecyclerView recyclerView;
     private LeaseContractAdapter leaseContractAdapter;
     private List<Leasecontracts> leasecontracts;
@@ -100,7 +102,7 @@ public class ListAllHopDongFragment extends Fragment {
         int spanCount = 1; // Number of items per row
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-        leaseContractAdapter = new LeaseContractAdapter( getContext() ,leasecontracts,role, token);
+        leaseContractAdapter = new LeaseContractAdapter( getContext() ,leasecontracts,role, token, type);
         recyclerView.setAdapter(leaseContractAdapter);
 
 
