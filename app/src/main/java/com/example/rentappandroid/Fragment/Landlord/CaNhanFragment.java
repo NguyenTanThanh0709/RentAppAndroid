@@ -161,8 +161,8 @@ public class CaNhanFragment extends Fragment {
         baocaosuco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the click event for baocaosuco
-                // Add your code here
+                Intent intent = new Intent(getActivity(), ListIssueActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    android:id="@+id/carview_issue"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="111dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/issue" />
+        <TextView
+            android:id="@+id/tennguoithue_issue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Tên người thuê: Nguyễn Tấn Thành"/>
+        <TextView
+            android:id="@+id/sdtnguoithue_issue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textColor="@color/teal_200"
+            android:text="SĐT người thuê: 0333657671"/>
+
+        <TextView
+            android:id="@+id/phongtroduocthue_issue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Phòng trọ: "/>
+
+        <TextView
+            android:id="@+id/trangthaiissue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textColor="@color/teal_200"
+            android:text="Trạng thái issue: "/>
+        <TextView
+            android:id="@+id/ngaytao_issue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textColor="@color/teal_200"
+            android:text="ngày: "/>
+        <TextView
+            android:id="@+id/mota_issue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textColor="@color/teal_200"
+            android:text="Mô tả: "/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

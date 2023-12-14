@@ -27,9 +27,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Fragment.Landlord.QuanLyHoaDon.ListHoaDonActivity"
+            android:name=".Fragment.Landlord.ListIssueActivity"
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
             android:exported="false" />
+        <activity
+            android:name=".Fragment.Landlord.QuanLyHoaDon.ListHoaDonActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Landlord.FORMLIST.QuanLyHoaDonActivity"
             android:exported="false"
