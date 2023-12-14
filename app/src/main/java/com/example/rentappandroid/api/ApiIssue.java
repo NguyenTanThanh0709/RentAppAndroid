@@ -13,6 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 
 public interface ApiIssue {
@@ -34,4 +35,7 @@ public interface ApiIssue {
 
     @GET("issue/tenant/{id}")
     Call<List<Issue>> getListIssuetenant(@Path("id") String id, @Header("Authorization") String token);
+
+    @PATCH("issue/update-status/{id}/{status}")
+    Call<String> update(@Path("id") String id,@Path("status") String status, @Header("Authorization") String token);
 }

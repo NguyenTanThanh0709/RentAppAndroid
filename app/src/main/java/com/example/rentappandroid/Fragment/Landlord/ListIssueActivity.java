@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.rentappandroid.Adapter.IssueAdapter;
 import com.example.rentappandroid.Adapter.Landlord.RoomAdapter;
@@ -34,10 +36,17 @@ public class ListIssueActivity extends AppCompatActivity {
     private IssueAdapter issueAdapter;
     private List<Issue> issueList;
 
+    private Button chuaxulyButton;
+    private Button dangxulyButton;
+    private Button daxulyButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_issue);
+        chuaxulyButton = findViewById(R.id.chuaxuly);
+        dangxulyButton = findViewById(R.id.dangxuly);
+        daxulyButton = findViewById(R.id.daxuly);
         SharedPreferences preferences =  getSharedPreferences("Owner", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");  // Replace "" with the default value if not found
         phoneOwner = preferences.getString("sdt", "");  // Replace "" with the default value if not found
@@ -52,9 +61,60 @@ public class ListIssueActivity extends AppCompatActivity {
 
 
         getData();
+        HandelClick();
+    }
+
+    private  void HandelClick(){
+        chuaxulyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("ListIssueActivity", "Chua Xuly button clicked");
+                List<Issue> temp = new ArrayList<>();
+                for(Issue issue: issueList){
+                    if(issue.getStatus().equals("UNRESOLVED")){
+                        temp.add(issue);
+                    }
+                }
+                issueAdapter.setData(temp);
+                issueAdapter.notifyDataSetChanged();
+            }
+        });
+
+        dangxulyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("ListIssueActivity", "Chua Xuly button clicked");
+                List<Issue> temp = new ArrayList<>();
+                for(Issue issue: issueList){
+                    if(issue.getStatus().equals("IN_PROGRESS")){
+                        temp.add(issue);
+                    }
+                }
+                issueAdapter.setData(temp);
+                issueAdapter.notifyDataSetChanged();
+            }
+        });
+
+        daxulyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("ListIssueActivity", "Chua Xuly button clicked");
+                List<Issue> temp = new ArrayList<>();
+                for(Issue issue: issueList){
+                    if(issue.getStatus().equals("RESOLVED")){
+                        temp.add(issue);
+                    }
+                }
+                issueAdapter.setData(temp);
+                issueAdapter.notifyDataSetChanged();
+            }
+        });
+
+
     }
 
     private void getData(){
+        issueList.clear();
         if (role.equals("ADMIN")) {
             ApiIssue.apiApiIssue.getListIssueOwner(phoneOwner, token).enqueue(new Callback<List<Issue>>() {
                 @Override

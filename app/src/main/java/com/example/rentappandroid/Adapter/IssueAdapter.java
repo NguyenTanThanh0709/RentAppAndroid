@@ -2,17 +2,26 @@ package com.example.rentappandroid.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentappandroid.Model.Issue;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.api.ApiIssue;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class IssueAdapter extends RecyclerView.Adapter<IssueAdapter.IssueViewHolder> {
 
@@ -20,6 +29,12 @@ public class IssueAdapter extends RecyclerView.Adapter<IssueAdapter.IssueViewHol
     private List<Issue> issueList;
     private String role;
     private String token;
+
+    public void setData(List<Issue> newIssueList){
+        issueList = newIssueList;
+    }
+
+
 
     public IssueAdapter(Context context, List<Issue> issueList, String role, String token) {
         this.context = context;
@@ -51,13 +66,98 @@ public class IssueAdapter extends RecyclerView.Adapter<IssueAdapter.IssueViewHol
             @Override
             public void onClick(View view) {
                 if(role.equals("ADMIN")){
-
+                    showPopupMenu(holder.cardView, currentIssue);
                 }else {
 
                 }
             }
         });
     }
+
+    public void updateStatus(String issueId, String newStatus) {
+        for (int i = 0; i < issueList.size(); i++) {
+
+            if (issueList.get(i).get_id().equals(issueId)) {
+                issueList.get(i).setStatus(newStatus);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    private void showPopupMenu(View view, Issue currentIssue) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menudagiaiquyet, popupMenu.getMenu());
+
+        // Set the initial checked state based on the current issue status
+        MenuItem menuItem = null;
+
+        if (currentIssue.getStatus().equals("UNRESOLVED")) {
+            menuItem = popupMenu.getMenu().findItem(R.id.menuChuaGiaiQuyet);
+        } else if (currentIssue.getStatus().equals("IN_PROGRESS")) {
+            menuItem = popupMenu.getMenu().findItem(R.id.menuDangGiaiQuyet);
+        } else if (currentIssue.getStatus().equals("RESOLVED")) {
+            menuItem = popupMenu.getMenu().findItem(R.id.menuDaGiaiQuyet);
+        }
+
+        if (menuItem != null) {
+            menuItem.setChecked(true);
+        }
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                // Handle menu item click here
+                if (menuItem.getItemId() == R.id.menuChuaGiaiQuyet) {
+                    ApiIssue.apiApiIssue.update(currentIssue.get_id(),"UNRESOLVED",token).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Toast.makeText(context,"Thành Công", Toast.LENGTH_SHORT).show();
+                            updateStatus(currentIssue.get_id(), "UNRESOLVED");
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(context,"Thành Công", Toast.LENGTH_SHORT).show();
+                            updateStatus(currentIssue.get_id(), "RESOLVED");
+                        }
+                    });
+                } else if (menuItem.getItemId() == R.id.menuDangGiaiQuyet) {
+                    ApiIssue.apiApiIssue.update(currentIssue.get_id(),"IN_PROGRESS",token).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Toast.makeText(context,"Thành Công", Toast.LENGTH_SHORT).show();
+                            updateStatus(currentIssue.get_id(), "IN_PROGRESS");
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(context,"Thành Công", Toast.LENGTH_SHORT).show();
+                            updateStatus(currentIssue.get_id(), "RESOLVED");
+                        }
+                    });
+                } else if (menuItem.getItemId() == R.id.menuDaGiaiQuyet) {
+                    ApiIssue.apiApiIssue.update(currentIssue.get_id(),"RESOLVED",token).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Toast.makeText(context,"Thành Công", Toast.LENGTH_SHORT).show();
+                            updateStatus(currentIssue.get_id(), "RESOLVED");
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(context,"Thành Công", Toast.LENGTH_SHORT).show();
+                            updateStatus(currentIssue.get_id(), "RESOLVED");
+                        }
+                    });
+                }
+                return true;
+            }
+        });
+
+        popupMenu.show();
+    }
+
 
     @Override
     public int getItemCount() {

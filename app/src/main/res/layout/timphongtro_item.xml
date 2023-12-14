@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    android:id="@+id/carview_timphongtro"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#FF0000"
+            android:id="@+id/title_timphong"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:text="Tìm Phòng Quận 1"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="#FF0000"
+            android:id="@+id/giatimphong_timphong"
+            android:layout_marginBottom="10dp"
+            android:text="0 - 1000000đ"
+            android:drawableLeft="@drawable/baseline_money_off_24"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@drawable/baseline_not_listed_location_24"
+            android:id="@+id/address_timphong"
+            android:text="Đường số 4, Phường Hiệp Bình phước, Quận Thủ Đức"
+            android:alpha="0.5"/>
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>

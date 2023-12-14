@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuChuaGiaiQuyet"
+        android:title="Chưa giải quyết"
+        />
+    <item
+        android:id="@+id/menuDangGiaiQuyet"
+        android:title="Đang giải quyết"
+         />
+    <item
+        android:id="@+id/menuDaGiaiQuyet"
+        android:title="Đã giải quyết"
+         />
+</menu>
