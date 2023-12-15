@@ -27,11 +27,41 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Activity.Tenant.FormTimNguoiOGhepActivity"
+            android:name=".Activity.Tenant.HoaDon.ListHoaDonActivity"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
             android:exported="false" />
         <activity
-            android:name=".Activity.Tenant.FormTimPhongActivity"
-            android:exported="false" />
+            android:name=".Activity.Tenant.TieuChiTim.FormTieuChiTimActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.BaiYeuThich.ListBaiYeuThichActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.HopDong.ListHopDongActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.BaiDang.ListBaiDangTimOGhepActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.BaiDang.ListBaiDangTimPhongActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.BaiDang.MainBaiDangActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.BaiDang.FormTimNguoiOGhepActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.BaiDang.FormTimPhongActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Fragment.Landlord.ListIssueActivity"
             android:exported="false"

@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:background="#F0F3EF"
         android:padding="10dp"
-        tools:context=".Activity.Tenant.FormTimNguoiOGhepActivity">
+        tools:context=".Activity.Tenant.BaiDang.FormTimNguoiOGhepActivity">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

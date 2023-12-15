@@ -177,7 +177,10 @@ public class CaNhanFragment extends Fragment {
         dangxuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Finish the current activity
                 getActivity().finish();
+
+                // Clear the user information from SharedPreferences
                 SharedPreferences preferences = getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 if (preferences.contains("token") && preferences.contains("sdt")) {
@@ -186,8 +189,13 @@ public class CaNhanFragment extends Fragment {
                     editor.remove("name");
                     editor.remove("role");
                     editor.apply();
-                    getActivity().finish();
                 }
+
+                // Restart LoginActivity and show the role selection dialog
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
     }

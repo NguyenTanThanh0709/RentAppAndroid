@@ -26,7 +26,6 @@
                     android:id="@+id/tenant_imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="230dp"
-                    android:layout_marginTop="16dp"
                     android:background="@drawable/white_background"
                     android:scaleType="centerCrop"
                     android:src="@drawable/top_background1"
@@ -122,14 +121,9 @@
                 android:orientation="vertical"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="-15dp"
                 android:background="@drawable/white_background">
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="#707070"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -250,6 +244,39 @@
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="Quản lý tiêu chí tìm"
+                        android:textSize="18sp" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/right" />
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="#707070"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:id="@+id/tenant_hoadon"
+                    android:layout_weight="4"
+                    android:background="@drawable/bottom_border"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="-5dp"
+                        android:src="@drawable/checked" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="Quản lý hóa đơn"
                         android:textSize="18sp" />
                     <ImageView
                         android:layout_width="20dp"
