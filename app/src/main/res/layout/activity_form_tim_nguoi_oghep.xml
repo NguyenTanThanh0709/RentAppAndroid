@@ -249,29 +249,6 @@
             app:cardBackgroundColor="@android:color/transparent"
             android:background="@drawable/rounded_corners">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Loại phòng"
-                    android:textStyle="bold"
-                    android:drawablePadding="8dp"
-                    android:drawableLeft="@drawable/baseline_warehouse_24"
-                    android:textSize="18sp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/_timnguoiogheploainha_recycleview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-            </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

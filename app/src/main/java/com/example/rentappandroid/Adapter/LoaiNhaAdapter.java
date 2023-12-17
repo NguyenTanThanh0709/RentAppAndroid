@@ -35,6 +35,9 @@ public class LoaiNhaAdapter extends RecyclerView.Adapter<LoaiNhaAdapter.LoaiNhaV
     public void onBindViewHolder(@NonNull LoaiNhaViewHolder holder, int position) {
         LoaiNha loaiNha = loaiNhaList.get(position);
         holder.nameTextView.setText(loaiNha.getTypehouse_name());
+        if (loaiNha.get__v() == 1) {
+            holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+        }
     }
 
     @Override

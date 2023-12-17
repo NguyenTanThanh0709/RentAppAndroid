@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,16 +23,26 @@ import com.example.rentappandroid.Activity.Landlord.FORMADD.FormToaNhaActivity;
 import com.example.rentappandroid.Activity.Tenant.DetailInfoRoomActivity;
 import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
 import com.example.rentappandroid.Model.BaiViet;
+import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.api.ApiFavouriteRoom;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHolder>{
     private List<BaiViet> baiVietList;
     private Context context;
     private String role;
     private String token;
+    private boolean isBookmarked = false;
+    private String like = "";
+    private String idusser = "";
 
     // Constructor to initialize the data
     public BaiVietAdapter(List<BaiViet> baiVietList, Context context,String role, String token) {
@@ -41,11 +52,26 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
         this.token = token;
     }
 
+    public BaiVietAdapter(List<BaiViet> baiVietList, Context context,String role, String token, String like, String idusser) {
+        this.baiVietList = baiVietList;
+        this.context = context;
+        this.role = role;
+        this.token = token;
+        this.like = like;
+        this.idusser = idusser;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.baiviet_item, parent, false);
         return new ViewHolder(view);
+    }
+
+    public void updateDataset(List<BaiViet> newData) {
+        this.baiVietList.clear();
+        this.baiVietList.addAll(newData);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -74,6 +100,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
                     Intent intent = new Intent(context, DetailInfoRoomActivity.class);
                     intent.putExtra("ID_POST", baiViet.get_id());
                     intent.putExtra("token", token);
+                    intent.putExtra("role", role);
                     context.startActivity(intent);
 
                 }
@@ -81,11 +108,53 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
             }
         });
 
+        if(like.equals("like")){
+            holder.yeuthich.setImageResource(R.drawable.bookmark);
+        }
+
 
 
         holder.yeuthich.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(like.equals("like")){
+
+                    ApiFavouriteRoom.apiApiFavouriteRoom.removeRoomFromUserFavorites(idusser,baiViet.get_id(),token).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            List<BaiViet> updatedList = new ArrayList<>(baiVietList);
+                            updatedList.remove(baiViet); // Remove the deleted item
+                            updateDataset(updatedList);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+
+                        }
+                    });
+
+                }else {
+                    isBookmarked = !isBookmarked;
+
+                    // Set the appropriate drawable based on the state
+                    if (isBookmarked) {
+                        holder.yeuthich.setImageResource(R.drawable.bookmark);
+                        ApiFavouriteRoom.apiApiFavouriteRoom.addRoomToUserFavorites(idusser,baiViet.get_id(),token).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                Toast.makeText(context,"Thêm vào yêu thích thành công", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        });
+                    }else {
+                        Toast.makeText(context,"Đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
 
             }
         });

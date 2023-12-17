@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E6E5E5"
+    android:orientation="vertical"
+    tools:context=".Activity.Tenant.Detail_info_tim_o_ghep_Activity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:background="#ffffff"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/tenant_timnguoi_oGhep_imagephongtro"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:src="@drawable/phongtro"
+                    android:scaleType="fitXY"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tenant_timnguoi_oGhep_listimagephongtro_recycle"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+                <TextView
+                    android:id="@+id/tenant_timnguoi_oGhep_loaiphongtro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textColor="#bbbbbb"
+                    android:text="chung cư Mini, (Nam and Nữ)"/>
+                <TextView
+                    android:id="@+id/tenant_timnguoi_oGhep_tieudebaidang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:text="Cho thuê phòng trọ giá rẻ phù hợp với sinh viên"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="31dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tenant_timnguoi_oGhep_giatro"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:padding="5dp"
+                        android:text="1000000 triệu/tháng"
+                        android:textColor="#ffa500"
+                        android:textStyle="italic" />
+
+                    <ImageView
+                        android:id="@+id/tenant_timnguoi_oGhep_heart"
+                        android:layout_width="0dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="18dp"
+                        android:layout_marginBottom="128dp"
+                        android:layout_weight="2"
+                        android:src="@drawable/bookmark" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"
+                android:padding="5dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tenant_timnguoi_oGhep_diachi_baidang_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@drawable/baseline_not_listed_location_24"
+                    android:text="  Địa chỉ phòng trọ Phòng Trọ"
+                    android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/tenant_timnguoi_oGhep_sdtOwner_infobaidang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@drawable/baseline_phone_forwarded_24"
+                    android:text="  0333657671"
+                    android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/tenant_timnguoi_oGhep_statusPost_infobaidang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@drawable/baseline_settings_input_antenna_24"
+                    android:text="  Trạng thái bài đăng"
+                    android:textSize="10sp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="#CCCCCC" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#CCCCCC" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- First Item -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="4dp"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Diện tích (m^2)" />
+
+                            <TextView
+                                android:id="@+id/tenant_timnguoi_oGhep_dientichphong_baidanginfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="#ffa500"
+                                android:text="30" />
+                        </LinearLayout>
+
+
+                        <!-- Third Item -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="4dp"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Số người" />
+
+                            <TextView
+                                android:id="@+id/tenant_timnguoi_oGhep_songuoi_baidanginfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="#ffa500"
+                                android:text="2" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#CCCCCC" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="4"
+                            android:background="@drawable/bottom_border"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginTop="-5dp"
+                                android:src="@drawable/voice_call" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="18sp"
+                                android:text="Phí dịch vụ"/>
+                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tenant_timnguoi_oGhep_phidich_baidanginfo_recycleview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:background="@drawable/bottom_border"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginTop="-5dp"
+                                android:src="@drawable/house" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="18sp"
+                                android:text="Mô tả phòng trọ"/>
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tenant_timnguoi_oGhep_motaphongtro_baidanginfo"
+                            android:text="mô tả phòng trọ ở đây nè liệt kê taatsc ả những gì có ở phòng trọ"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"
+                android:padding="5dp"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="3"
+                        android:layout_marginTop="-5dp"
+                        android:src="@drawable/profile" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tenant_timnguoi_oGhep_tenchutro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Nguyễn Tấn Thành"
+                            android:textColor="#ffa500"
+                            android:textStyle="italic" />
+                        <TextView
+                            android:id="@+id/tenant_timnguoi_oGhep_sobaidang_baidanginfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="21 Bài đăng"
+                            android:textColor="#ffa500"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="#CCCCCC" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#CCCCCC" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_weight="4"
+                        android:background="@drawable/bottom_border"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:src="@drawable/logo" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="18sp"
+                            android:text="Tiện nghi phòng trọ"/>
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tenant_timnguoi_oGhep_tiennghi_baidanginfo_recycleview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="#CCCCCC" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#CCCCCC" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <!-- Second set of buttons at the bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/tenant_timnguoi_oGhep_chat_btn_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/teal_200"
+            android:text="Chat"
+            android:drawableLeft="@drawable/baseline_chat_24"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="center_vertical"/>
+
+
+
+        <Button
+            android:id="@+id/tenant_timnguoi_oGhep_goi_btn_bottom"
+            android:text="Gọi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/teal_200"
+            android:drawableLeft="@drawable/baseline_call_end_24"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="center_vertical" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -71,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Mô tả phòng muốn tìm"
                     android:inputType="textMultiLine"
+                    android:height="100dp"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>
@@ -248,7 +249,7 @@
                     android:textSize="18sp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tiệnmongmuontim_recycleview"
+                    android:id="@+id/tienmongmuontim_recycleview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -256,11 +257,7 @@
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:id="@+id/ghichutromuontim"
-            android:hint="Nhập ghi chú"/>
+
 
         <Button
             android:layout_width="match_parent"

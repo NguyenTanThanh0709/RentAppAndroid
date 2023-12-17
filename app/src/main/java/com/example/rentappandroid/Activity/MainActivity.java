@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 // Retrieve values
         token = preferences.getString("token", "");  // Replace "" with the default value if not found
         phoneOwner = preferences.getString("sdt", "");  // Replace "" with the default value if not found
-        role = preferences.getString("name", "");
+        role = preferences.getString("role", "");
 
         rePlaceFragment(new TrangChuFragment());
         init();

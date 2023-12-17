@@ -45,6 +45,10 @@ public class TienNghiAdapter extends RecyclerView.Adapter<TienNghiAdapter.TienNg
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.apartment)
                 .into(holder.img);
+
+        if (tienNghi.get__v() == 1) {
+            holder.tiennghi_item.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+        }
     }
 
     @Override
@@ -53,7 +57,7 @@ public class TienNghiAdapter extends RecyclerView.Adapter<TienNghiAdapter.TienNg
     }
     class TienNghiHolder extends RecyclerView.ViewHolder{
 
-        private CardView tiennghi_item;
+        CardView tiennghi_item;
         ImageView img;
         TextView name;
 

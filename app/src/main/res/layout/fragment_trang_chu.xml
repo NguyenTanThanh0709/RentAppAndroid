@@ -194,20 +194,10 @@
                 android:id="@+id/listimagekhampha_recycle"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_height="130dp">
+                android:layout_height="200dp">
 
             </androidx.recyclerview.widget.RecyclerView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Xem thêm >>"
-                android:padding="5dp"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:textColor="#ffa500"
-                android:id="@+id/xemthembaidang"
-                android:textSize="18sp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -233,11 +223,21 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listbaivietnoibat_recycle"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="10dp"
-                android:layout_height="130dp">
+                android:layout_height="wrap_content">
 
             </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Xem thêm >>"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textColor="#ffa500"
+                android:id="@+id/xemthembaidang"
+                android:textSize="18sp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -263,9 +263,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listbaiviettimtro_recycle"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="10dp"
-                android:layout_height="130dp">
+                android:layout_height="wrap_content">
 
             </androidx.recyclerview.widget.RecyclerView>
             <TextView
@@ -303,9 +303,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listbaiviettimnguoioghep_recycle"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="10dp"
-                android:layout_height="130dp">
+                android:layout_height="wrap_content">
 
             </androidx.recyclerview.widget.RecyclerView>
             <TextView

@@ -202,6 +202,6 @@
         android:id="@+id/buttonthemtieuchi"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Thêm Tiêu chí"/>
+        android:text="Thêm Tiêu chí và chỉnh sửa"/>
 </LinearLayout>
 </ScrollView>

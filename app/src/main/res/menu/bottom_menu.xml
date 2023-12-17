@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/shorts"
-        android:title="Dịch Vụ"
+        android:title="Thông Báo"
         android:icon="@drawable/baseline_settings_input_antenna_24"/>
 
     <item

@@ -48,6 +48,26 @@
             android:text="Đường số 4, Phường Hiệp Bình phước, Quận Thủ Đức"
             android:alpha="0.5"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@drawable/baseline_date_range_24"
+            android:id="@+id/ngayup_timphong"
+            android:text="Đường số 4, Phường Hiệp Bình phước, Quận Thủ Đức"
+            android:alpha="0.5"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@drawable/baseline_diversity_2_24"
+            android:id="@+id/trangthai_timphong"
+            android:text="Đường số 4, Phường Hiệp Bình phước, Quận Thủ Đức"
+            android:alpha="0.5"/>
+
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

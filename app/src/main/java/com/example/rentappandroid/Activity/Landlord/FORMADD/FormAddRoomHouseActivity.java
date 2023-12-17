@@ -107,7 +107,7 @@
 
 
         private RecyclerView recyclerView;
-        private TienNghiAdapter tienNghiAdapter;
+
 
 
         private RecyclerView recyclerViewLoaiNha;
@@ -125,8 +125,7 @@
         private RecyclerView rule_recycleview;
 
 
-        private List<ServireChareReponse> serviceChargeList;
-        private ServiceChargeAdapter serviceChargeAdapter;
+
         private RecyclerView phidich_recycleview;
 
 
@@ -136,9 +135,13 @@
         private List<Provinces> listProvicense;
         private  List<District> districtList;
         private  List<Ward> wardList;
-        private List<LoaiNha> loaiNhaList;
+        private List<ServireChareReponse> serviceChargeList;
+        private ServiceChargeAdapter serviceChargeAdapter;
         private List<TienNghi> tienNghiList;
+        private TienNghiAdapter tienNghiAdapter;
+
         private Room room;
+        private List<LoaiNha> loaiNhaList;
 
         private String token;
         private String phoneOwner;
@@ -201,8 +204,6 @@
                     Log.e("Error", t.toString());
                 }
             });
-
-
             ApiAddress.apiDriverTrip.getListProvices().enqueue(new Callback<List<Provinces>>() {
                 @Override
                 public void onResponse(Call<List<Provinces>> call, Response<List<Provinces>> response) {
@@ -297,14 +298,13 @@
              token = preferences.getString("token", "");  // Replace "" with the default value if not found
              phoneOwner = preferences.getString("sdt", "");  // Replace "" with the default value if not found
              nameOwner = preferences.getString("name", "");  // Replace "" with the default value if not found
-
-            room = new Room();
-            tienNghiList = new ArrayList<>();
             loaiNhaList = new ArrayList<>();
             areaInformationList = new ArrayList<>();
-            serviceChargeList = new ArrayList<>();
-
+            room = new Room();
             rules = new ArrayList<>();
+
+            tienNghiList = new ArrayList<>();
+            serviceChargeList = new ArrayList<>();
             listProvicense = new ArrayList<>();
             districtList = new ArrayList<>();
             districtList.add(new District("Chọn Quận", -1,-1));

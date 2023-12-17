@@ -22,6 +22,7 @@ public class AreaInformationAdapter extends RecyclerView.Adapter<AreaInformation
     private List<AreaInformationReponse> areaInformationList;
     private Context context;
 
+    private String type = "";
     public void updatePhi(String  position, Double distance, String mota) {
         for (int i = 0; i < areaInformationList.size(); i++) {
             AreaInformationReponse servireChareReponse = areaInformationList.get(i);
@@ -51,6 +52,12 @@ public class AreaInformationAdapter extends RecyclerView.Adapter<AreaInformation
         this.context = context;
     }
 
+    public AreaInformationAdapter(List<AreaInformationReponse> areaInformationList, Context context, String type) {
+        this.areaInformationList = areaInformationList;
+        this.context = context;
+        this.type = type;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,7 +72,7 @@ public class AreaInformationAdapter extends RecyclerView.Adapter<AreaInformation
         // Set data to views
         holder.descriptionTextView.setText(areaInformation.getDescription());
         holder.ten_khuvuc.setText(areaInformation.getAreainformation_name());
-        holder.distanceTextView.setText(String.valueOf(areaInformation.getDistance()));
+        holder.distanceTextView.setText("Cách " +  String.valueOf(areaInformation.getDistance()) + "km");
 
         // Load image using Glide or your preferred image loading library
         Picasso.with(context)
@@ -78,7 +85,10 @@ public class AreaInformationAdapter extends RecyclerView.Adapter<AreaInformation
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onAreaClick(areaInformation);
+                if (!type.equals("INFO")){
+                    listener.onAreaClick(areaInformation);
+
+                }
             }
         });
     }

@@ -27,9 +27,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Activity.Tenant.HoaDon.ListHoaDonActivity"
+            android:name=".Activity.Tenant.Detail_info_tim_o_ghep_Activity"
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
             android:exported="false" />
+        <activity
+            android:name=".Activity.Tenant.DetailInfoFindHouseActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.HoaDon.ListHoaDonActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Tenant.TieuChiTim.FormTieuChiTimActivity"
             android:exported="false"

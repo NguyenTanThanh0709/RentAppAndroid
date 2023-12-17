@@ -1,12 +1,17 @@
 package com.example.rentappandroid.Fragment.Landlord;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +19,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.rentappandroid.Adapter.BaiVietAdapter;
+import com.example.rentappandroid.Adapter.FindRoomHouseAdapter;
+import com.example.rentappandroid.Adapter.Khamdapter;
+import com.example.rentappandroid.Adapter.TimNguoiOGhepAdapter;
+import com.example.rentappandroid.Model.BaiViet;
+import com.example.rentappandroid.Model.FindRoomHouseResponse;
+import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.api.ApiBaiDang;
+import com.example.rentappandroid.api.ApiPostFindHouse;
+import com.example.rentappandroid.api.ApiTimNguoiOGhep;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -130,13 +152,130 @@ public class TrangChuFragment extends Fragment {
         });
     }
 
+    private String token;
+    private  String role;
+
+    private List<String> quanCuaThanhPho;
+    private Khamdapter khamdapter;
+
+
+    private List<BaiViet> baiVietList;
+    private BaiVietAdapter baiVietAdapter;
+    private List<FindRoomHouseResponse> findRoomHouseResponseList;
+    private FindRoomHouseAdapter findRoomHouseAdapter;
+
+    private List<TimNguoiOGhep> timNguoiOGhepList;
+    private TimNguoiOGhepAdapter timNguoiOGhepAdapter;
+
+
+
+    private void getData(){
+        quanCuaThanhPho.add("Quận 1");
+        quanCuaThanhPho.add("Quận 2");
+        quanCuaThanhPho.add("Quận 3");
+        quanCuaThanhPho.add("Quận 4");
+        quanCuaThanhPho.add("Quận 5");
+        quanCuaThanhPho.add("Quận 6");
+        quanCuaThanhPho.add("Quận 7");
+        quanCuaThanhPho.add("Quận 8");
+
+        ApiTimNguoiOGhep.apiApiTimNguoiOGhep.getAllTimNguoiOGheps(token).enqueue(new Callback<List<TimNguoiOGhep>>() {
+            @Override
+            public void onResponse(Call<List<TimNguoiOGhep>> call, Response<List<TimNguoiOGhep>> response) {
+                timNguoiOGhepList.addAll(response.body());
+                timNguoiOGhepAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<TimNguoiOGhep>> call, Throwable t) {
+
+            }
+        });
+
+        ApiPostFindHouse.apiApiPostFindHouse.getAllFindRoomHouses(token).enqueue(new Callback<List<FindRoomHouseResponse>>() {
+            @Override
+            public void onResponse(Call<List<FindRoomHouseResponse>> call, Response<List<FindRoomHouseResponse>> response) {
+                findRoomHouseResponseList.addAll(response.body());
+                findRoomHouseAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<FindRoomHouseResponse>> call, Throwable t) {
+
+            }
+        });
+
+        ApiBaiDang.apiBaiDang.getallBaiDang(token).enqueue(new Callback<List<BaiViet>>() {
+            @Override
+            public void onResponse(Call<List<BaiViet>> call, Response<List<BaiViet>> response) {
+                if (response.isSuccessful()) {
+                    // Xử lý khi response thành công
+                    baiVietList.addAll(response.body());
+                    baiVietAdapter.notifyDataSetChanged();
+                } else {
+                    // Xử lý khi response không thành công (ví dụ: server trả về lỗi)
+                    Log.e("API Response", "Error: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BaiViet>> call, Throwable t) {
+                // Xử lý khi request thất bại (ví dụ: không có kết nối internet)
+                Log.e("API Request", "Failure: " + t.getMessage(), t);
+            }
+        });
+
+    }
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_trang_chu, container, false);
+        SharedPreferences preferences =  getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
+        token = preferences.getString("token", "");
+        role = preferences.getString("role", "");
         init(view);
         handleEvent();
+        quanCuaThanhPho = new ArrayList<>();
+        baiVietList = new ArrayList<>();
+        findRoomHouseResponseList = new ArrayList<>();
+        timNguoiOGhepList = new ArrayList<>();
+        getData();
+
+        // KHÁM PHÁ
+
+        khamdapter = new Khamdapter(getContext() ,quanCuaThanhPho, token);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        listimagekhampha_recycle.setLayoutManager(layoutManager);
+        listimagekhampha_recycle.setAdapter(khamdapter);
+
+        // BÀI VIẾT
+        int spanCount = 1; // Number of items per row
+        GridLayoutManager layoutManagerBaiViet = new GridLayoutManager(getContext(), spanCount);
+        listbaivietnoibat_recycle.setLayoutManager(layoutManagerBaiViet);
+        baiVietAdapter = new BaiVietAdapter(  baiVietList,getContext(),role, token);
+        listbaivietnoibat_recycle.setAdapter(baiVietAdapter);
+
+        // TÌM TRỌ
+        GridLayoutManager layoutManagerBaiVietTIMTRO = new GridLayoutManager(getContext(), spanCount);
+        listbaiviettimtro_recycle.setLayoutManager(layoutManagerBaiVietTIMTRO);
+        findRoomHouseAdapter = new FindRoomHouseAdapter(getContext(),findRoomHouseResponseList,token, role, "");
+        listbaiviettimtro_recycle.setAdapter(findRoomHouseAdapter);
+
+
+        // TÌM NGƯỜI Ở GHÉP
+        // TÌM NGƯỜI Ở GHÉP
+        GridLayoutManager layoutManagerBaiVietTIMnguoighep = new GridLayoutManager(getContext(), spanCount);
+        listbaiviettimnguoioghep_recycle.setLayoutManager(layoutManagerBaiVietTIMnguoighep);
+// Use timNguoiOGhepAdapter instead of findRoomHouseAdapter
+        timNguoiOGhepAdapter = new TimNguoiOGhepAdapter(getContext(), timNguoiOGhepList, token, role, "");
+        listbaiviettimnguoioghep_recycle.setAdapter(timNguoiOGhepAdapter);
+
+
         return view;
     }
 }
