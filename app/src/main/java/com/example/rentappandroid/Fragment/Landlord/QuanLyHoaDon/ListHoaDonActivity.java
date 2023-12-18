@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.rentappandroid.Adapter.HoaDonAdapter;
 import com.example.rentappandroid.Adapter.Landlord.LeaseContractAdapter;
 import com.example.rentappandroid.Model.HoaDon;
+import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiHoadon;
 
@@ -32,6 +35,10 @@ public class ListHoaDonActivity extends AppCompatActivity {
     private HoaDonAdapter hoaDonAdapter;
     private RecyclerView recyclerView;
 
+    private Button hoadonchuathanhtoanButton;
+    private Button hoadondahanhtoanButton;
+    private String type = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +52,15 @@ public class ListHoaDonActivity extends AppCompatActivity {
         int spanCount = 1; // Number of items per row
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-        hoaDonAdapter = new HoaDonAdapter( listhoadon, this,role,token);
+        type = intent.getStringExtra("type");
+        hoaDonAdapter = new HoaDonAdapter( listhoadon, this,role,token, type);
         recyclerView.setAdapter(hoaDonAdapter);
 
 
-        if (intent.hasExtra("idContract")) {
+        if (intent.hasExtra("idContract") ) {
 
             String id = intent.getStringExtra("idContract");
+
             Log.d("ok","OK");
             ApiHoadon.apiHoadon.getAllHoaDonByContract(id,token).enqueue(new Callback<List<HoaDon>>() {
                 @Override
@@ -66,6 +75,41 @@ public class ListHoaDonActivity extends AppCompatActivity {
                 }
             });
         }
+
+
+        hoadonchuathanhtoanButton = findViewById(R.id.hoadonchuathanhtoan);
+        hoadondahanhtoanButton = findViewById(R.id.hoadondahanhtoan);
+
+        hoadonchuathanhtoanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<HoaDon> temp = new ArrayList<>();
+                for(HoaDon t : listhoadon) {
+                    if(!t.getStatus()){
+                        temp.add(t);
+                    }
+                }
+
+                hoaDonAdapter.setRoomList(temp);
+                hoaDonAdapter.notifyDataSetChanged();
+            }
+        });
+
+        hoadondahanhtoanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<HoaDon> temp = new ArrayList<>();
+                for(HoaDon t : listhoadon) {
+                    if(t.getStatus()){
+                        temp.add(t);
+                    }
+                }
+
+                hoaDonAdapter.setRoomList(temp);
+                hoaDonAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override

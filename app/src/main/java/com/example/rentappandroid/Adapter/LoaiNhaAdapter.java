@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -38,6 +39,29 @@ public class LoaiNhaAdapter extends RecyclerView.Adapter<LoaiNhaAdapter.LoaiNhaV
         if (loaiNha.get__v() == 1) {
             holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
         }
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Change __v to 1 and background color
+                if (loaiNha.get__v() == 0) {
+
+
+                    for (LoaiNha loaiNha1:loaiNhaList){
+                            if(loaiNha1.get__v() == 1 && loaiNha.get_id() != loaiNha1.get_id()){
+                                Toast.makeText(context,"Vui lòng gỡ chọn loại nhà cũ", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                    }
+                    loaiNha.set__v(1);
+                    holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+                } else {
+                    loaiNha.set__v(0);
+                    // Set the default background color here
+                    holder.cardView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+                }
+            }
+        });
     }
 
     @Override

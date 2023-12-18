@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormBillActivity;
+import com.example.rentappandroid.Activity.Tenant.HoaDon.InfoBillTenantActivity;
 import com.example.rentappandroid.Model.HoaDon;
 import com.example.rentappandroid.R;
 
@@ -24,12 +25,21 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonView
     private Context context;
     private String role;
     private String token;
+    private String type;
 
     public HoaDonAdapter(List<HoaDon> hoaDonList, Context context,String role, String token) {
         this.hoaDonList = hoaDonList;
         this.context = context;
         this.token = token;
         this.role = role;
+    }
+
+    public HoaDonAdapter(List<HoaDon> hoaDonList, Context context,String role, String token, String type) {
+        this.hoaDonList = hoaDonList;
+        this.context = context;
+        this.token = token;
+        this.role = role;
+        this.type = type;
     }
 
     @NonNull
@@ -53,9 +63,18 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonView
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, FormBillActivity.class);
-                intent.putExtra("idBill", hoaDon.get_id());
-                context.startActivity(intent);
+
+                if(type.equals("see")){
+                    Intent intent = new Intent(context, InfoBillTenantActivity.class);
+                    intent.putExtra("idBill", hoaDon.get_id());
+                    context.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(context, FormBillActivity.class);
+                    intent.putExtra("idBill", hoaDon.get_id());
+                    context.startActivity(intent);
+                }
+
+
             }
         });
     }
@@ -63,6 +82,10 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonView
     @Override
     public int getItemCount() {
         return hoaDonList.size();
+    }
+
+    public void setRoomList(List<HoaDon> temp) {
+        hoaDonList = temp;
     }
 
     public static class HoaDonViewHolder extends RecyclerView.ViewHolder {

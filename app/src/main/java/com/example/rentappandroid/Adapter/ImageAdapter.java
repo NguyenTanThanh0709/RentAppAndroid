@@ -19,6 +19,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     private List<Uri> imageList;
     private Context context;
+    private String type = "";
 
     public void setData(List<Uri> list){
         this.imageList   = list;
@@ -28,6 +29,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public ImageAdapter(Context context, List<Uri> imageList) {
         this.context = context;
         this.imageList = imageList;
+    }
+
+    public ImageAdapter(Context context, List<Uri> imageList, String type) {
+        this.context = context;
+        this.imageList = imageList;
+        this.type = type;
     }
 
     @NonNull
@@ -45,6 +52,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.apartment)
                 .into(holder.imageView);
+
+        if(type.equals("see")){
+            holder.deleteImage.setVisibility(View.GONE);
+        }
 
         holder.deleteImage.setOnClickListener(new View.OnClickListener() {
             @Override

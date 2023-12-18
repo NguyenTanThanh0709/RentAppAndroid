@@ -4,6 +4,12 @@ public class Provinces {
     private String name;
     private  int code;
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
+
     public Provinces(String name, int code) {
         this.name = name;
         this.code = code;

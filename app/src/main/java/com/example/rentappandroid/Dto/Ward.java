@@ -5,6 +5,11 @@ public class Ward {
     private  int code;
     private  int district_code;
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public Ward(String name, int code, int district_code) {
         this.name = name;
         this.code = code;

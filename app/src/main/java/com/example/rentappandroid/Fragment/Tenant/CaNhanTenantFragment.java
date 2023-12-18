@@ -15,11 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rentappandroid.Activity.LoginActivity;
-import com.example.rentappandroid.Activity.Tenant.BaiDang.FormTimPhongActivity;
-import com.example.rentappandroid.Activity.Tenant.BaiDang.ListBaiDangTimPhongActivity;
 import com.example.rentappandroid.Activity.Tenant.BaiDang.MainBaiDangActivity;
 import com.example.rentappandroid.Activity.Tenant.BaiYeuThich.ListBaiYeuThichActivity;
-import com.example.rentappandroid.Activity.Tenant.HoaDon.ListHoaDonActivity;
 import com.example.rentappandroid.Activity.Tenant.HopDong.ListHopDongActivity;
 import com.example.rentappandroid.Activity.Tenant.TieuChiTim.FormTieuChiTimActivity;
 import com.example.rentappandroid.R;
@@ -107,7 +104,14 @@ public class CaNhanTenantFragment extends Fragment {
         hoadon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ListHoaDonActivity.class));
+                //startActivity(new Intent(getActivity(), ListHoaDonActivity.class));
+
+
+                Intent intent = new Intent(getActivity(), ListHopDongActivity.class);
+
+                intent.putExtra("type", "bill_");
+
+                startActivity(intent);
             }
         });
 

@@ -34,6 +34,9 @@ public interface ApiHopDong {
     @GET("leasecontract/landlord/{id}")
     Call<List<Leasecontracts>> getallleasecontractByOwner(@Path("id") String id, @Header("Authorization") String token);
 
+    @GET("leasecontract/tenant/{id}")
+    Call<List<Leasecontracts>> getallleasecontractBytenant(@Path("id") String id, @Header("Authorization") String token);
+
     @GET("leasecontract/{id}")
     Call<Leasecontracts> getallleasecontractByid(@Path("id") String id, @Header("Authorization") String token);
 

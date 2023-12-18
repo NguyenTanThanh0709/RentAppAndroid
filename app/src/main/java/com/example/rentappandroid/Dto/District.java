@@ -34,6 +34,12 @@ public class District {
         return province_code;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
+
     public void setProvince_code(int province_code) {
         this.province_code = province_code;
     }

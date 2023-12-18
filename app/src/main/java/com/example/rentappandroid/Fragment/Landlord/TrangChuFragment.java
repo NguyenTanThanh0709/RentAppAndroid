@@ -154,7 +154,7 @@ public class TrangChuFragment extends Fragment {
 
     private String token;
     private  String role;
-
+    private  String phoneOwner;
     private List<String> quanCuaThanhPho;
     private Khamdapter khamdapter;
 
@@ -238,6 +238,7 @@ public class TrangChuFragment extends Fragment {
         SharedPreferences preferences =  getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");
         role = preferences.getString("role", "");
+        phoneOwner = preferences.getString("sdt", "");
         init(view);
         handleEvent();
         quanCuaThanhPho = new ArrayList<>();
@@ -257,7 +258,7 @@ public class TrangChuFragment extends Fragment {
         int spanCount = 1; // Number of items per row
         GridLayoutManager layoutManagerBaiViet = new GridLayoutManager(getContext(), spanCount);
         listbaivietnoibat_recycle.setLayoutManager(layoutManagerBaiViet);
-        baiVietAdapter = new BaiVietAdapter(  baiVietList,getContext(),role, token);
+        baiVietAdapter = new BaiVietAdapter(  baiVietList,getContext(),role, token, "", phoneOwner);
         listbaivietnoibat_recycle.setAdapter(baiVietAdapter);
 
         // TÌM TRỌ

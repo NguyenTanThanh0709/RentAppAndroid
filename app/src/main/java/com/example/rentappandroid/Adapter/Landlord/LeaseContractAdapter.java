@@ -16,6 +16,7 @@ import com.example.rentappandroid.Activity.Landlord.FORMADD.FormBillActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormContractActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormPostActivity;
 import com.example.rentappandroid.Activity.Tenant.DetailInfoRoomActivity;
+import com.example.rentappandroid.Activity.Tenant.HopDong.InfoContractActivity;
 import com.example.rentappandroid.Fragment.Landlord.QuanLyHoaDon.ListHoaDonActivity;
 import com.example.rentappandroid.Model.Leasecontracts;
 import com.example.rentappandroid.R;
@@ -69,7 +70,18 @@ public class LeaseContractAdapter extends RecyclerView.Adapter<LeaseContractAdap
                     Intent intent = new Intent(context, FormBillActivity.class);
                     intent.putExtra("idContract", leaseContract.get_id());
                     context.startActivity(intent);
-                }else {
+                }else if(type.equals("tenantsee")){
+                    Intent intent = new Intent(context, InfoContractActivity.class);
+                    intent.putExtra("idContract", leaseContract.get_id());
+                    context.startActivity(intent);
+                }else if(type.equals("bill_")){
+                    Intent intent = new Intent(context, ListHoaDonActivity.class);
+                    intent.putExtra("idContract", leaseContract.get_id());
+                    intent.putExtra("type", "see");
+                    context.startActivity(intent);
+                }
+
+                else {
                     Intent intent = new Intent(context, ListHoaDonActivity.class);
                     intent.putExtra("idContract", leaseContract.get_id());
                     context.startActivity(intent);

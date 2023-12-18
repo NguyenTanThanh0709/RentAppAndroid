@@ -46,8 +46,27 @@ public class TienNghiAdapter extends RecyclerView.Adapter<TienNghiAdapter.TienNg
                 .error(R.drawable.apartment)
                 .into(holder.img);
 
+        holder.tiennghi_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Change __v to 1 and background color
+                if (tienNghi.get__v() == 0) {
+                    tienNghi.set__v(1);
+                    holder.tiennghi_item.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+                } else {
+                    tienNghi.set__v(0);
+                    // Set the default background color here
+                    holder.tiennghi_item.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+                }
+            }
+        });
+
+        // Set background color based on __v value
         if (tienNghi.get__v() == 1) {
             holder.tiennghi_item.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+        } else {
+            // Set the default background color here
+            holder.tiennghi_item.setBackgroundColor(context.getResources().getColor(android.R.color.white));
         }
     }
 

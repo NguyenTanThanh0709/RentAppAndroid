@@ -6,6 +6,24 @@ public class HoaDon {
     private String payment_date;
     private String description;
     private Leasecontracts leaseContract;
+    private Boolean status;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public HoaDon(String _id, int amount, String payment_date, String description, Leasecontracts leaseContract, Boolean status) {
+        this._id = _id;
+        this.amount = amount;
+        this.payment_date = payment_date;
+        this.description = description;
+        this.leaseContract = leaseContract;
+        this.status = status;
+    }
 
     public HoaDon() {
     }

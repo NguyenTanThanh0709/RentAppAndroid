@@ -27,15 +27,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Activity.Tenant.Detail_info_tim_o_ghep_Activity"
+            android:name=".Activity.Tenant.HoaDon.InfoBillTenantActivity"
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
             android:exported="false" />
         <activity
-            android:name=".Activity.Tenant.DetailInfoFindHouseActivity"
+            android:name=".Activity.Tenant.HopDong.InfoContractActivity"
             android:exported="false"
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
-            android:name=".Activity.Tenant.HoaDon.ListHoaDonActivity"
+            android:name=".Activity.Tenant.Detail_info_tim_o_ghep_Activity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.Tenant.DetailInfoFindHouseActivity"
             android:exported="false"
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
@@ -100,20 +104,24 @@
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Landlord.FORMADD.FormBillActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Landlord.FORMADD.FormContractActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Landlord.FORMADD.FormTenantActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Landlord.FORMADD.FormToaNhaActivity"
             android:exported="false"
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Landlord.FORMADD.FormPostActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Landlord.FORMADD.FormAddRoomHouseActivity"
             android:exported="false"
