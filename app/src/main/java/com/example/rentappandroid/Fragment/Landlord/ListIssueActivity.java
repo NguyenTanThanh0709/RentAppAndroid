@@ -17,7 +17,10 @@ import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
 import com.example.rentappandroid.Dto.Reponse.Room;
 import com.example.rentappandroid.Model.Issue;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.Utils.CommentEntryDialog;
+import com.example.rentappandroid.Utils.IsssueEntryDialog;
 import com.example.rentappandroid.api.ApiIssue;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +65,27 @@ public class ListIssueActivity extends AppCompatActivity {
 
         getData();
         HandelClick();
+
+        FloatingActionButton fabAddIssue = findViewById(R.id.menu_add_issue);
+        if (role.equals("ADMIN")) {
+            fabAddIssue.setVisibility(View.GONE);
+        } else {
+            fabAddIssue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showCommentEntryDialog();
+                }
+            });
+        }
+    }
+
+    private void showCommentEntryDialog() {
+        IsssueEntryDialog commentEntryDialog = new IsssueEntryDialog(this, token, phoneOwner);
+        commentEntryDialog.show();
     }
 
     private  void HandelClick(){
+
         chuaxulyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +100,6 @@ public class ListIssueActivity extends AppCompatActivity {
                 issueAdapter.notifyDataSetChanged();
             }
         });
-
         dangxulyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +114,6 @@ public class ListIssueActivity extends AppCompatActivity {
                 issueAdapter.notifyDataSetChanged();
             }
         });
-
         daxulyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,7 +128,6 @@ public class ListIssueActivity extends AppCompatActivity {
                 issueAdapter.notifyDataSetChanged();
             }
         });
-
 
     }
 

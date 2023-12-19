@@ -474,6 +474,12 @@
 
             </LinearLayout>
 
+            <Button
+                android:layout_width="match_parent"
+                android:text="xem đánh giá nhà trọ"
+                android:id="@+id/danhgianhatro"
+                android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"

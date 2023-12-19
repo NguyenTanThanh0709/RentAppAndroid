@@ -1,6 +1,7 @@
 package com.example.rentappandroid.api;
 
 import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
+import com.example.rentappandroid.Dto.Request.Schema.IssueRequest;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.Issue;
 import com.google.gson.Gson;
@@ -11,9 +12,11 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiIssue {
@@ -38,4 +41,8 @@ public interface ApiIssue {
 
     @PATCH("issue/update-status/{id}/{status}")
     Call<String> update(@Path("id") String id,@Path("status") String status, @Header("Authorization") String token);
+
+    @POST("issue")
+    Call<Void> createIssue(@Body IssueRequest request, @Header("Authorization") String token);
+
 }

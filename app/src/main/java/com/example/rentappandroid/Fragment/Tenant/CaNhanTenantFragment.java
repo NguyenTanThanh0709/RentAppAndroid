@@ -18,7 +18,9 @@ import com.example.rentappandroid.Activity.LoginActivity;
 import com.example.rentappandroid.Activity.Tenant.BaiDang.MainBaiDangActivity;
 import com.example.rentappandroid.Activity.Tenant.BaiYeuThich.ListBaiYeuThichActivity;
 import com.example.rentappandroid.Activity.Tenant.HopDong.ListHopDongActivity;
+import com.example.rentappandroid.Activity.Tenant.TenantCommentActivity;
 import com.example.rentappandroid.Activity.Tenant.TieuChiTim.FormTieuChiTimActivity;
+import com.example.rentappandroid.Fragment.Landlord.ListIssueActivity;
 import com.example.rentappandroid.R;
 
 /**
@@ -70,7 +72,7 @@ public class CaNhanTenantFragment extends Fragment {
 
     private ImageView imageView3, imageView4, imageView, imageView2;
     private TextView textView, tenantName, textView4, textView3, textView2;
-    private LinearLayout quanlyhopdong, quanlybaidang, quanlybaiyeuthich, quanlytieuchitim, hoadon, dangxuat;
+    private LinearLayout quanlyhopdong, quanlybaidang, quanlybaiyeuthich, quanlytieuchitim, hoadon, dangxuat, tenant_comment, tenant_issue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,9 +99,27 @@ public class CaNhanTenantFragment extends Fragment {
         quanlytieuchitim = view.findViewById(R.id.tenant_quanlytieuchitim);
         hoadon = view.findViewById(R.id.tenant_hoadon);
         dangxuat = view.findViewById(R.id.tenant_dangxuat);
+        tenant_comment = view.findViewById(R.id.tenant_comment);
+        tenant_issue = view.findViewById(R.id.tenant_issue);
     }
 
     private void event(){
+
+        tenant_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), TenantCommentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tenant_issue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ListIssueActivity.class);
+                startActivity(intent);
+            }
+        });
 
         hoadon.setOnClickListener(new View.OnClickListener() {
             @Override

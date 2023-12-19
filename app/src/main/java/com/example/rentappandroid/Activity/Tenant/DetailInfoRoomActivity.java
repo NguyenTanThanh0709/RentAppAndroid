@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.rentappandroid.Activity.CommentActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyHopDongActivity;
 import com.example.rentappandroid.Adapter.AreaInformationAdapter;
 import com.example.rentappandroid.Adapter.BaiVietAdapter;
 import com.example.rentappandroid.Adapter.ImageAdapter;
@@ -26,6 +28,8 @@ import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
 import com.example.rentappandroid.Dto.Reponse.ServiceCharge;
 import com.example.rentappandroid.Dto.Reponse.ServireChareReponse;
 import com.example.rentappandroid.Model.BaiViet;
+import com.example.rentappandroid.Model.CommentReview;
+import com.example.rentappandroid.Model.LichHen;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiBaiDang;
 import com.squareup.picasso.Picasso;
@@ -74,6 +78,8 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
     private String postId  = "";
     private String token = "";
     private String role = "";
+
+    private Button danhgianhatro;
 
     private TienNghiAdapter tienNghiAdapter;
     private ServiceChargeAdapter serviceChargeAdapter;
@@ -207,6 +213,18 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
     }
 
     private void event() {
+
+        danhgianhatro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailInfoRoomActivity.this, CommentActivity.class);
+
+                intent.putExtra("idhouse", baiViet.getRoom().get_id());
+                startActivity(intent);
+            }
+        });
+
+
         chatBtnBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,7 +235,10 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
         giuChoBtnBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle the click event for the giu cho button
+                Intent intent = new Intent(DetailInfoRoomActivity.this, LichHenActivity.class);
+                intent.putExtra("idhouse", baiViet.getRoom().get_id());
+                intent.putExtra("id", baiViet.getRoom().getOwner().get_id());
+                startActivity(intent);
             }
         });
 
@@ -268,11 +289,16 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
         giuChoBtnBottom = findViewById(R.id.giucho_btn_bottom);
         goiBtnBottom = findViewById(R.id.goi_btn_bottom);
         baoCaoBtnBottom = findViewById(R.id.baocao_btn_bottom);
+
+        danhgianhatro= findViewById(R.id.danhgianhatro);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+
+
         return true;
     }
     @Override

@@ -27,9 +27,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Activity.MessageActivity"
-            android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
+            android:name=".Activity.Tenant.LichHenActivity"
             android:exported="false" />
+        <activity
+            android:name=".Activity.Tenant.TenantCommentActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.CommentActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+        <activity
+            android:name=".Activity.MessageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Tenant.HoaDon.InfoBillTenantActivity"
             android:exported="false"
