@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "464046716285",
+    "firebase_url": "https://tsimple-384dd-default-rtdb.firebaseio.com",
+    "project_id": "tsimple-384dd",
+    "storage_bucket": "tsimple-384dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464046716285:android:3205ae00f0c6de7ddfc814",
+        "android_client_info": {
+          "package_name": "com.example.rentappandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "464046716285-prdcohfq29ca8a6h616g4rjminhkm1dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr2UokIbhDSEHyBVr3oLpf2CG4jvOjCzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "464046716285-prdcohfq29ca8a6h616g4rjminhkm1dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464046716285:android:1643ad759ae6005ddfc814",
+        "android_client_info": {
+          "package_name": "com.example.studentmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "464046716285-prdcohfq29ca8a6h616g4rjminhkm1dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr2UokIbhDSEHyBVr3oLpf2CG4jvOjCzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "464046716285-prdcohfq29ca8a6h616g4rjminhkm1dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

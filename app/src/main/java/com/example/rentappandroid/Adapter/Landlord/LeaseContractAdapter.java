@@ -84,6 +84,7 @@ public class LeaseContractAdapter extends RecyclerView.Adapter<LeaseContractAdap
                 else {
                     Intent intent = new Intent(context, ListHoaDonActivity.class);
                     intent.putExtra("idContract", leaseContract.get_id());
+                    intent.putExtra("type", "xemhoadon_landrod");
                     context.startActivity(intent);
                 }
 

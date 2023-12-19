@@ -5,16 +5,24 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormPostActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLtBaiDangActivity;
+import com.example.rentappandroid.Activity.Tenant.BaiDang.MainBaiDangActivity;
 import com.example.rentappandroid.Fragment.Landlord.CaNhanFragment;
 import com.example.rentappandroid.Fragment.Landlord.DichVuFragment;
 import com.example.rentappandroid.Fragment.Landlord.TinNhanFragment;
 import com.example.rentappandroid.Fragment.Landlord.TrangChuFragment;
 import com.example.rentappandroid.Fragment.Tenant.CaNhanTenantFragment;
 import com.example.rentappandroid.R;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,9 +83,28 @@ public class MainActivity extends AppCompatActivity {
         phoneOwner = preferences.getString("sdt", "");  // Replace "" with the default value if not found
         role = preferences.getString("role", "");
 
+        FloatingActionButton fabButton = findViewById(R.id.fabButton);
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(MainActivity.this, "BottomAppBar Clicked", Toast.LENGTH_SHORT).show();
+                if(role.equals("ADMIN")){
+                    Intent intent = new Intent(MainActivity.this, QuanLtBaiDangActivity.class);
+                    startActivity(intent);
+                }else {
+                    startActivity(new Intent(MainActivity.this, MainBaiDangActivity.class));
+                }
+            }
+        });
+
+
         rePlaceFragment(new TrangChuFragment());
         init();
         event();
+
+
+
     }
 
     private  void rePlaceFragment(Fragment fragment){

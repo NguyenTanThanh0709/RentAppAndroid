@@ -27,9 +27,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Activity.Tenant.HoaDon.InfoBillTenantActivity"
+            android:name=".Activity.MessageActivity"
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
             android:exported="false" />
+        <activity
+            android:name=".Activity.Tenant.HoaDon.InfoBillTenantActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Tenant.HopDong.InfoContractActivity"
             android:exported="false"

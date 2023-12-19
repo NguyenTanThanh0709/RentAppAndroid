@@ -132,7 +132,11 @@ public class CaNhanTenantFragment extends Fragment {
         quanlyhopdong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ListHopDongActivity.class));
+                Intent intent = new Intent(getActivity(), ListHopDongActivity.class);
+
+                intent.putExtra("type", "tenantsee");
+
+                startActivity(intent);
             }
         });
         quanlybaidang.setOnClickListener(new View.OnClickListener() {

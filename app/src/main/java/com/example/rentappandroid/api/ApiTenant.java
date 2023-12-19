@@ -10,7 +10,10 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiTenant {
     Gson gson = new GsonBuilder()
@@ -28,4 +31,7 @@ public interface ApiTenant {
 
     @POST("tenant/login")
     Call<Owner> login(@Body Login login);
+
+    @GET("tenant/getById/{id}")
+    Call<Owner> getOne(@Path("id") String id, @Header("Authorization") String token);
 }

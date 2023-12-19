@@ -16,6 +16,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiLandrod {
     Gson gson = new GsonBuilder()
@@ -33,4 +34,7 @@ public interface ApiLandrod {
 
     @POST("landlord/login")
     Call<Owner> login(@Body Login login);
+
+    @GET("landlord/getById/{id}")
+    Call<Owner> getOne(@Path("id") String id, @Header("Authorization") String token);
 }

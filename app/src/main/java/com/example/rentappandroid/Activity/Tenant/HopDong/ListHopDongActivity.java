@@ -86,7 +86,6 @@ public class ListHopDongActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             receivedData = intent.getStringExtra("type");
-            Toast.makeText(this, "Chọn Hợp Đồng để xem hóa đơn của phòng đó", Toast.LENGTH_SHORT).show();
         }
 
         int spanCount = 1; // Number of items per row
