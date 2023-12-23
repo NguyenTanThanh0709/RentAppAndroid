@@ -128,8 +128,9 @@
         private RecyclerView recyclerView;
         private RecyclerView recyclerViewLoaiNha;
         private LoaiNhaAdapter loaiNhaAdapter;
-        StorageReference storageReference;
+
         private ArrayList<Uri> selectedImages = new ArrayList<>();
+        StorageReference storageReference;
         private List<String> list;
         private RecyclerView imgRecyclerView;
         private ImageAdapter imageAdapter;
@@ -589,7 +590,7 @@
 
             FirebaseApp.initializeApp(getApplicationContext());
             storageReference = FirebaseStorage.getInstance().getReference();
-
+            list = new ArrayList<>();
             SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
 
 // Retrieve values
@@ -608,7 +609,7 @@
             districtList.add(new District("Chọn Quận", -1,-1));
             wardList = new ArrayList<>();
             wardList.add(new Ward("Chọn Phường", -1,-1));
-            list = new ArrayList<>();
+
             init();
 
 
@@ -818,6 +819,8 @@
             imageAdapter = new ImageAdapter(this, selectedImages);
             imgRecyclerView.setAdapter(imageAdapter);
         }
+
+
         private void openAddRuleModal() {
             // Inflate the modal layout
             View modalView = getLayoutInflater().inflate(R.layout.modal_layout, null);

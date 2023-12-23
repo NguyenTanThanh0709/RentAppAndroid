@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_edit_see_baiviet"
-        android:title="Chỉnh sửa và xem chi tiết phòng trọ" />
+        android:title="Chỉnh sửa và xem chi tiết bài đăng" />
     <item
         android:id="@+id/menu_delete_baiviet"
-        android:title="Xóa phòng trọ" />
+        android:title="Xóa bài đăng" />
 </menu>

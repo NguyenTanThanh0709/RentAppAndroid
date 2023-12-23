@@ -1,6 +1,7 @@
 package com.example.rentappandroid.api;
 
 import com.example.rentappandroid.Dto.Reponse.ServireChareReponse;
+import com.example.rentappandroid.Dto.Request.Add.TimtroRequest;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.FindRoomHouseResponse;
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -35,6 +37,11 @@ public interface ApiPostFindHouse {
 
     @GET("/findhouse/findRoomHouses")
     Call<List<FindRoomHouseResponse>> getAllFindRoomHouses(@Header("Authorization") String token);
+
+    @POST("/findhouse/findRoomHouses")
+    Call<Void> add(@Body TimtroRequest timtroRequest , @Header("Authorization") String token);
+    @PUT("/findhouse/findRoomHouses/{id}")
+    Call<Void> update(@Path("id") String id, @Body TimtroRequest timtroRequest, @Header("Authorization") String token);
 
     @DELETE("/findhouse/findRoomHouses/{id}")
     Call<Void> deleteFindRoomHouse(@Path("id") String id, @Header("Authorization") String token);

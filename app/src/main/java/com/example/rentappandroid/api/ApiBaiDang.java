@@ -12,9 +12,11 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiBaiDang {
@@ -41,6 +43,13 @@ public interface ApiBaiDang {
 
     @GET("baiviet/{id}")
     Call<BaiViet> getallBaiDangByid(@Path("id") String id, @Header("Authorization") String token);
+
+    @PUT("baiviet/update/{id}")
+    Call<Void> update(@Path("id") String id,@Body PostRequest postRequest, @Header("Authorization") String token);
+
+
+    @DELETE("baiviet/delete/{id}")
+    Call<Void> delete(@Path("id") String id, @Header("Authorization") String token);
 
 
 

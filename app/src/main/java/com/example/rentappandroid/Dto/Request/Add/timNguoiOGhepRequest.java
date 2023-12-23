@@ -1,15 +1,12 @@
-package com.example.rentappandroid.Model;
+package com.example.rentappandroid.Dto.Request.Add;
 
-import com.example.rentappandroid.Dto.Reponse.Owner;
-import com.example.rentappandroid.Dto.Reponse.ServiceCharge;
 import com.example.rentappandroid.Dto.Request.Schema.Address;
 
 import java.util.List;
 
-public class TimNguoiOGhep {
-    private String _id;
+public class timNguoiOGhepRequest {
     private String title;
-    private Owner user;
+    private String user;
     private String description;
     private int peopeleNumber;
     private int price;
@@ -17,17 +14,11 @@ public class TimNguoiOGhep {
     private int square_feet;
     private String status;
     private String day_up;
+    private List<String> amenities;
     private Address address;
+    private List<ServiceChargeRE> serviceCharge;
 
-    public TimNguoiOGhep() {
-    }
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
+    public timNguoiOGhepRequest() {
     }
 
     public String getTitle() {
@@ -38,11 +29,11 @@ public class TimNguoiOGhep {
         this.title = title;
     }
 
-    public Owner getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(Owner user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -102,6 +93,16 @@ public class TimNguoiOGhep {
         this.day_up = day_up;
     }
 
+
+
+    public List<String> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(List<String> amenities) {
+        this.amenities = amenities;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -110,34 +111,15 @@ public class TimNguoiOGhep {
         this.address = address;
     }
 
-
-
-    public List<TienNghi> getAmenities() {
-        return amenities;
-    }
-
-    public void setAmenities(List<TienNghi> amenities) {
-        this.amenities = amenities;
-    }
-
-    public List<ServiceCharge> getServiceCharge() {
+    public List<ServiceChargeRE> getServiceCharge() {
         return serviceCharge;
     }
 
-    public void setServiceCharge(List<ServiceCharge> serviceCharge) {
+    public void setServiceCharge(List<ServiceChargeRE> serviceCharge) {
         this.serviceCharge = serviceCharge;
     }
 
-    public int get__v() {
-        return __v;
-    }
-
-    public void set__v(int __v) {
-        this.__v = __v;
-    }
-
-    public TimNguoiOGhep(String _id, String title, Owner user, String description, int peopeleNumber, int price, List<String> image_url, int square_feet, String status, String day_up, Address address,  List<TienNghi> amenities, List<ServiceCharge> serviceCharge, int __v) {
-        this._id = _id;
+    public timNguoiOGhepRequest(String title, String user, String description, int peopeleNumber, int price, List<String> image_url, int square_feet, String status, String day_up, List<String> amenities, Address address, List<ServiceChargeRE> serviceCharge) {
         this.title = title;
         this.user = user;
         this.description = description;
@@ -147,15 +129,8 @@ public class TimNguoiOGhep {
         this.square_feet = square_feet;
         this.status = status;
         this.day_up = day_up;
-        this.address = address;
         this.amenities = amenities;
+        this.address = address;
         this.serviceCharge = serviceCharge;
-        this.__v = __v;
     }
-
-
-
-    private List<TienNghi> amenities;
-    private List<ServiceCharge> serviceCharge;
-    private int __v;
 }

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormAddRoomHouseActivity;
 import com.example.rentappandroid.Adapter.DistrictAdapter;
@@ -25,6 +26,9 @@ import com.example.rentappandroid.Adapter.ProvincesAdapter;
 import com.example.rentappandroid.Adapter.TienNghiAdapter;
 import com.example.rentappandroid.Dto.District;
 import com.example.rentappandroid.Dto.Provinces;
+import com.example.rentappandroid.Dto.Reponse.ServireChareReponse;
+import com.example.rentappandroid.Dto.Request.Add.ServiceChargeRE;
+import com.example.rentappandroid.Dto.Request.Add.TimtroRequest;
 import com.example.rentappandroid.Dto.Ward;
 import com.example.rentappandroid.Model.FindRoomHouseResponse;
 import com.example.rentappandroid.Model.LoaiNha;
@@ -35,6 +39,7 @@ import com.example.rentappandroid.api.ApiPostFindHouse;
 import com.example.rentappandroid.api.ApiTienNghi;
 import com.example.rentappandroid.api.ApiTypeHouse;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +50,7 @@ import retrofit2.Response;
 public class FormTimPhongActivity extends AppCompatActivity {
     private String token = "";
     private String receivedId = "";
+    private String iduser = "";
     private FindRoomHouseResponse findRoomHouseResponse;
 
     private EditText editTextTieuDe;
@@ -89,7 +95,7 @@ public class FormTimPhongActivity extends AppCompatActivity {
 
     }
 
-
+private String type = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +105,7 @@ public class FormTimPhongActivity extends AppCompatActivity {
 
 // Retrieve values
         token = preferences.getString("token", "");
-
+        iduser = preferences.getString("sdt", "");
         findRoomHouseResponse = new FindRoomHouseResponse();
         tienNghiList = new ArrayList<>();
         loaiNhaList = new ArrayList<>();
@@ -124,9 +130,17 @@ public class FormTimPhongActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("ID_KEY") && intent.hasExtra("token")) {
+        if (intent != null) {
             receivedId = intent.getStringExtra("ID_KEY");
-            getDatae();
+            type = intent.getStringExtra("type");
+            receivedId = (receivedId != null) ? receivedId : "";
+
+// If type is null, set it to an empty string
+            type = (type != null) ? type : "";
+            if(type.equals("edit")){
+                getDatae();
+            }
+
         }
     }
 
@@ -254,5 +268,137 @@ public class FormTimPhongActivity extends AppCompatActivity {
         recyclerViewLoaiNha = findViewById(R.id.loainhamongmuontim_recycleview);
         recyclerViewTienNghi = findViewById(R.id.tienmongmuontim_recycleview);
         buttonTimNguoiOGhep = findViewById(R.id.buttontimnguoioghep);
+        handleButton();
+    }
+
+    private void handleButton(){
+        buttonTimNguoiOGhep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    int soluong = 0;
+                    int maxprice = 0;
+                     soluong = Integer.parseInt(editTextSoLuongNguoiO.getText().toString());
+                     maxprice = Integer.parseInt(editTextGiaTro.getText().toString());
+                    String status = "Đang hoạt động";
+                    String title = editTextTieuDe.getText().toString();
+                    String mota = editTextMoTa.getText().toString();
+                    String date = LocalDate.now().toString();
+                    String selectedProvince = spinnerProvinces.getSelectedItem().toString();
+                    String selectedDistrict = spinnerDistrict.getSelectedItem().toString();
+                    String address = selectedProvince + "-" + selectedDistrict;
+                    if (soluong <= 0) {
+                        showToast("Số lượng phải là một số dương lớn hơn 0");
+                        return;
+                    }
+                    if (maxprice <= 0) {
+                        showToast("Giá trọ phải là một số dương lớn hơn 0");
+                        return;
+                    }
+                    if (title.isEmpty()) {
+                        // Show an error message or handle the case where the title is empty
+                        showToast("Vui lòng nhập tiêu đề");
+                        return;
+                    }
+
+                    if (mota.isEmpty()) {
+                        // Show an error message or handle the case where the description is empty
+                        showToast("Vui lòng nhập mô tả");
+                        return;
+                    }
+
+                    if (selectedProvince.equals("Chọn Tỉnh") || selectedDistrict.equals("Chọn Quận")) {
+                        // Show an error message or handle the case where the province or district is not selected
+                        showToast("Vui lòng chọn tỉnh/thành phố và quận/huyện");
+                        return;
+                    }
+
+                    String typeHouse = "";
+                    for (LoaiNha loaiNha: loaiNhaList){
+                        if(loaiNha.get__v() == 1){
+                            typeHouse = loaiNha.get_id();
+                            break;
+                        }
+                    }
+
+                    if (typeHouse.isEmpty()) {
+                        // Show an error message or handle the case where the description is empty
+                        showToast("Vui lòng nhập loại nhà");
+                        return;
+                    }
+
+                    List<String> tiennghi1 = new ArrayList<>();
+                    for (TienNghi tienNghi2 : tienNghiList){
+                        if(tienNghi2.get__v() == 1){
+                            tiennghi1.add(tienNghi2.get_id());
+                        }
+                    }
+
+
+
+                    TimtroRequest timtroRequest = new TimtroRequest(iduser,date,
+                            typeHouse, tiennghi1, soluong,address,maxprice,mota,title,status);
+
+                    if(type.equals("")) {
+                        ApiPostFindHouse.apiApiPostFindHouse.add(timtroRequest,token).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    showToast("Thêm Bài đăng Thành Công");
+                                    Log.d("API Call Success", "API call was successful");
+                                } else {
+                                    showToast("Thêm Bài đăng Thất Bại");
+
+                                    // Log information when the API call is not successful
+                                    Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                                    String errorMessage = "Thêm Nhà Trọ Thất Bại\n" + response.message();
+                                    showToast(errorMessage);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                showToast("Thêm Bài đăng Thất Bại");
+
+                            }
+                        });
+                    }else {
+                        ApiPostFindHouse.apiApiPostFindHouse.update(receivedId,timtroRequest,token).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    showToast("Chỉnh Bài đăng Thành Công");
+                                    Log.d("API Call Success", "API call was successful");
+                                } else {
+                                    showToast("Chỉnh Bài đăng Thất Bại");
+
+                                    // Log information when the API call is not successful
+                                    Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                                    String errorMessage = "Thêm Nhà Trọ Thất Bại\n" + response.message();
+                                    showToast(errorMessage);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                showToast("Chỉnh Bài đăng Thất Bại");
+
+                            }
+                        });
+                    }
+
+
+                } catch (NumberFormatException e) {
+                    // Handle the case where parsing integer values fails
+                    showToast("Vui lòng nhập số nguyên hợp lệ cho số lượng và giá trọ");
+                }
+
+
+            }
+        });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -110,6 +110,7 @@ public class FindRoomHouseAdapter extends RecyclerView.Adapter<FindRoomHouseAdap
                 if (item.getItemId() == R.id.menu_edit) {
                     Intent intent = new Intent(context, FormTimPhongActivity.class);
                     intent.putExtra("ID_KEY", findRoomHouse.get_id());
+                    intent.putExtra("type", "edit");
                     intent.putExtra("token", token);
                     context.startActivity(intent); // Corrected line
                     return true;

@@ -35,6 +35,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -122,43 +126,83 @@ public class FormPostActivity extends AppCompatActivity {
                          date, idTro,mota,status
                          );
 
+                 if(type.equals("")){
+                     ApiBaiDang.apiBaiDang.Add(postRequest,token).enqueue(new Callback<Void>() {
+                         @Override
+                         public void onResponse(Call<Void> call, Response<Void> response) {
+                             if (response.isSuccessful()) {
+                                 showToast("Thêm Bài Thành Công");
+                                 Log.d("API Call Success", "API call was successful");
+                             } else {
+                                 showToast("Thêm Bài Thất Bại");
 
-                 ApiBaiDang.apiBaiDang.Add(postRequest,token).enqueue(new Callback<Void>() {
-                     @Override
-                     public void onResponse(Call<Void> call, Response<Void> response) {
-                         if (response.isSuccessful()) {
-                             showToast("Thêm Bài Thành Công");
-                             Log.d("API Call Success", "API call was successful");
-                         } else {
+                                 // Log information when the API call is not successful
+                                 Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                                 String errorMessage = "Thêm Bài Thất Bại\n" + response.message();
+                                 showToast(errorMessage);
+                             }
+                         }
+
+                         @Override
+                         public void onFailure(Call<Void> call, Throwable t) {
                              showToast("Thêm Bài Thất Bại");
 
-                             // Log information when the API call is not successful
-                             Log.e("API Call Error", "Error during API call. Response code: " + response.code());
-                             String errorMessage = "Thêm Bài Thất Bại\n" + response.message();
+                             // Log the error
+                             Log.e("API Call Error", "Error during API call", t);
+
+                             // You can also log the error message
+                             // Log.e("API Call Error", "Error message: " + t.getMessage());
+
+                             // If you want to display the error message in the toast, you can do something like this:
+                             String errorMessage = "Thêm Bài Thất Bại\n" + t.getMessage();
                              showToast(errorMessage);
                          }
+                     });
+
+                 }else {
+                     if(!postRequest.getDay_up().contains("/")){
+
+
+                     String inputDateString = postRequest.getDay_up();
+
+                     // Parse the input string to Instant
+                     Instant instant = Instant.parse(inputDateString);
+
+                     // Convert Instant to LocalDateTime
+                     LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"));
+
+                     // Format LocalDateTime to the desired format
+                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                     String formattedDate = localDateTime.format(formatter);
+                     postRequest.setDay_up(formattedDate);
                      }
+                     ApiBaiDang.apiBaiDang.update(id,postRequest,token).enqueue(new Callback<Void>() {
+                         @Override
+                         public void onResponse(Call<Void> call, Response<Void> response) {
+                             if (response.isSuccessful()) {
+                                 showToast("Chỉnh Bài Thành Công");
+                                 Log.d("API Call Success", "API call was successful");
+                             } else {
+                                 showToast("Thêm Chỉnh Thất Bại");
 
-                     @Override
-                     public void onFailure(Call<Void> call, Throwable t) {
-                         showToast("Thêm Bài Thất Bại");
+                                 // Log information when the API call is not successful
+                                 Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                                 String errorMessage = "Chỉnh Bài Thất Bại\n" + response.message();
+                                 showToast(errorMessage);
+                             }
+                         }
 
-                         // Log the error
-                         Log.e("API Call Error", "Error during API call", t);
+                         @Override
+                         public void onFailure(Call<Void> call, Throwable t) {
+                             showToast("Chỉnh Thất Bại");
 
-                         // You can also log the error message
-                         // Log.e("API Call Error", "Error message: " + t.getMessage());
+                         }
+                     });
+                 }
 
-                         // If you want to display the error message in the toast, you can do something like this:
-                         String errorMessage = "Thêm Bài Thất Bại\n" + t.getMessage();
-                         showToast(errorMessage);
-                     }
-                 });
 
              }
          });
-
-
 
         editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -25,6 +25,7 @@ import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
 import com.example.rentappandroid.Model.BaiViet;
 import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.api.ApiBaiDang;
 import com.example.rentappandroid.api.ApiFavouriteRoom;
 import com.squareup.picasso.Picasso;
 
@@ -186,6 +187,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
 
                     Intent intent = new Intent(context, FormPostActivity.class);
                     intent.putExtra("idPost", roomingHouseComplex);
+                    intent.putExtra("type", "edit");
                     context.startActivity(intent);
                     return true;
 
@@ -208,6 +210,39 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                ApiBaiDang.apiBaiDang.delete(email,token).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            int position = -1;
+                            for (int i = 0; i < baiVietList.size(); i++) {
+                                if (email.equals(baiVietList.get(i).get_id())) {
+                                    position = i;
+                                    break;
+                                }
+                            }
+
+                            if (position != -1) {
+                                baiVietList.remove(position);
+                                notifyItemRemoved(position);
+                                Toast.makeText(context, "Xóa Thành Công", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                // Handle the case where the item to be removed is not found
+                            }
+                        } else {
+                            Toast.makeText(context, "Xóa Không Thành Công", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(context, "Xóa Không Thành Công", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 
 
             }

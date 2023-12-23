@@ -63,7 +63,7 @@ public class ListBaiYeuThichActivity extends AppCompatActivity {
         ApiFavouriteRoom.apiApiFavouriteRoom.getFavouritesRoomByUser(phoneOwner, token).enqueue(new Callback<FavouritesRoom>() {
             @Override
             public void onResponse(Call<FavouritesRoom> call, Response<FavouritesRoom> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     favouritesRoom = response.body();
                     list.addAll(response.body().getPost());
                     baiVietAdapter.notifyDataSetChanged();

@@ -1,5 +1,6 @@
 package com.example.rentappandroid.api;
 
+import com.example.rentappandroid.Dto.Request.Add.timNguoiOGhepRequest;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.google.gson.Gson;
@@ -32,11 +33,11 @@ public interface ApiTimNguoiOGhep {
             .build()
             .create(ApiTimNguoiOGhep.class);
     @POST("timnguoioghep/timNguoiOGheps")
-    Call<Void> createTimNguoiOGhep(@Body TimNguoiOGhep timNguoiOGhep);
+    Call<Void> add(@Body timNguoiOGhepRequest timNguoiOGhep, @Header("Authorization") String token);
 
     // Update an existing TimNguoiOGhep by ID
     @PUT("timnguoioghep/timNguoiOGheps/{id}")
-    Call<Void> updateTimNguoiOGhep(@Path("id") String id, @Body TimNguoiOGhep timNguoiOGhep);
+    Call<Void> put(@Path("id") String id, @Body timNguoiOGhepRequest timNguoiOGhep, @Header("Authorization") String token);
 
     // Delete a TimNguoiOGhep by ID
     @DELETE("timnguoioghep/timNguoiOGheps/{id}")

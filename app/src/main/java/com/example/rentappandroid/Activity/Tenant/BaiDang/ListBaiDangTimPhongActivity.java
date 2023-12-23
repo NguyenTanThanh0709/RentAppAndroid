@@ -83,7 +83,7 @@ public class ListBaiDangTimPhongActivity extends AppCompatActivity {
     }
 
     private void getData(){
-        ApiPostFindHouse.apiApiPostFindHouse.getAllFindRoomHouses(token).enqueue(new Callback<List<FindRoomHouseResponse>>() {
+        ApiPostFindHouse.apiApiPostFindHouse.getFindRoomHousesByUser(phoneOwner,token).enqueue(new Callback<List<FindRoomHouseResponse>>() {
             @Override
             public void onResponse(Call<List<FindRoomHouseResponse>> call, Response<List<FindRoomHouseResponse>> response) {
                 findRoomHouseResponseList.addAll(response.body());
