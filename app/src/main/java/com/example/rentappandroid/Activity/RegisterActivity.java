@@ -3,15 +3,16 @@ package com.example.rentappandroid.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +22,12 @@ import com.example.rentappandroid.Adapter.ProvincesAdapter;
 import com.example.rentappandroid.Adapter.WardAdapter;
 import com.example.rentappandroid.Dto.District;
 import com.example.rentappandroid.Dto.Provinces;
+import com.example.rentappandroid.Dto.Request.Add.UserRegister;
 import com.example.rentappandroid.Dto.Ward;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiAddress;
+import com.example.rentappandroid.api.ApiLandrod;
+import com.example.rentappandroid.api.ApiTenant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +56,10 @@ public class RegisterActivity extends AppCompatActivity {
     private  List<District> districtList;
     private  List<Ward> wardList;
 
+    private RadioGroup radioGroup;
+    private RadioButton radioButtonTenant;
+    private RadioButton radioButtonLandlord;
+
     private void init(){
         nameEditText = findViewById(R.id.name_register);
         provincesSpinner = findViewById(R.id.provinces);
@@ -65,49 +73,107 @@ public class RegisterActivity extends AppCompatActivity {
         loginTextView = findViewById(R.id.login);
         address = findViewById(R.id.address);
         spinner = findViewById(R.id.spinner);
+        radioGroup = findViewById(R.id.radioGroup1);
+        radioButtonTenant = findViewById(R.id.radioButtonTenant1);
+        radioButtonLandlord = findViewById(R.id.radioButtonLandlord1);
     }
 
-    private void showRoleSelectionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Bạn Là Ai?")
-                .setItems(new CharSequence[]{"Người Cho Thuê", "Người Đi Tìm Phòng"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle the selected role
-                        switch (which) {
-                            case 0:
-                                // Người Cho Thuê
-                                // Implement your logic here
-                                address.setVisibility(View.VISIBLE);
-                                spinner.setVisibility(View.VISIBLE);
-                                Toast.makeText(RegisterActivity.this, "Người Cho Thuê", Toast.LENGTH_SHORT).show();
-                                break;
-                            case 1:
-                                // Người Đi Tìm Phòng
-                                // Implement your logic here
-                                Toast.makeText(RegisterActivity.this, "Người Đi Tìm Phòng", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        // Dismiss the dialog only if a role is selected
-                        dialog.dismiss();
-                    }
-                });
 
-        // Set a listener to handle the dialog cancellation
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+    private  void event(){
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancel(DialogInterface dialog) {
-                showRoleSelectionDialog();
-                // Handle the case when the user cancels the dialog without selecting a role
-                // You can display a message or take appropriate action
-                Toast.makeText(RegisterActivity.this, "Vui lòng chọn một vai trò", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                String name = nameEditText.getText().toString().trim();
+                String email = emailEditText.getText().toString().trim();
+                String sdt = phoneNumberEditText.getText().toString().trim();
+                String mk = passwordEditText.getText().toString().trim();
+                String remk = repasswordEditText.getText().toString().trim();
+                String selectedProvince = provincesSpinner.getSelectedItem().toString();
+                String selectedDistrict = districtSpinner.getSelectedItem().toString();
+                String selectedWard = wardsSpinner.getSelectedItem().toString();
+
+                if (TextUtils.isEmpty(name)) {
+                    // Show an error and stop further processing
+                    Toast.makeText(getApplicationContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
+                    return; // Stop further processing
+                }
+
+// Check if email is a valid email address
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    // Show an error and stop further processing
+                    Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+                    return; // Stop further processing
+                }
+
+// Check if password and re-entered password are the same
+                if (!mk.equals(remk) || TextUtils.isEmpty(mk)) {
+                    // Show an error and stop further processing
+                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    return; // Stop further processing
+                }
+
+// Check if other fields are not null or empty
+                if (TextUtils.isEmpty(sdt)) {
+                    // Show an error and stop further processing
+                    Toast.makeText(getApplicationContext(), "Phone number cannot be empty", Toast.LENGTH_SHORT).show();
+                    return; // Stop further processing
+                }
+
+                if (selectedProvince.equals("Chọn Tỉnh") || selectedDistrict.equals("Chọn Quận") || selectedWard.equals("Chọn Phường")) {
+                    // Show an error and stop further processing
+                    Toast.makeText(getApplicationContext(), "Please select province, district, and ward", Toast.LENGTH_SHORT).show();
+                    return; // Stop further processing
+                }
+
+                String address = selectedProvince+"-" + selectedDistrict + "-" + selectedWard;
+                if (radioButtonTenant.isChecked()) {
+
+                    UserRegister userRegister = new UserRegister(name,email,mk,sdt,address,"USER");
+                    ApiTenant.apiTenant.register(userRegister).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+                                finish();
+                            }else {
+                                Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                } else if (radioButtonLandlord.isChecked()) {
+                    UserRegister userRegister = new UserRegister(name,email,mk,sdt,address,"ADMIN");
+                    ApiLandrod.apiLandrod.register(userRegister).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+                                finish();
+                            }else {
+                                Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
 
-        builder.create().show();
-    }
 
-    private  void event(){
         loginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,6 +280,5 @@ public class RegisterActivity extends AppCompatActivity {
         wardList.add(new Ward("Chọn Phường", -1,-1));
         init();
         event();
-        showRoleSelectionDialog();
     }
 }

@@ -10,11 +10,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.rentappandroid.Dto.Request.Schema.IssueRequest;
+import com.example.rentappandroid.Dto.Request.Add.IssueRequest;
 import com.example.rentappandroid.Model.Leasecontracts;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiHopDong;

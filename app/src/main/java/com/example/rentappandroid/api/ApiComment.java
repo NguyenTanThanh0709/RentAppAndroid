@@ -1,6 +1,6 @@
 package com.example.rentappandroid.api;
 
-import com.example.rentappandroid.Dto.Request.Schema.CommentReviewData;
+import com.example.rentappandroid.Dto.Request.Add.CommentReviewData;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.CommentReview;
 import com.google.gson.Gson;

@@ -1,7 +1,8 @@
 package com.example.rentappandroid.api;
 
 import com.example.rentappandroid.Dto.Reponse.Owner;
-import com.example.rentappandroid.Dto.Request.Schema.Login;
+import com.example.rentappandroid.Dto.Request.Add.Login;
+import com.example.rentappandroid.Dto.Request.Add.UserRegister;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,6 +32,8 @@ public interface ApiTenant {
 
     @POST("tenant/login")
     Call<Owner> login(@Body Login login);
+    @POST("tenant/register")
+    Call<Void> register(@Body UserRegister login);
 
     @GET("tenant/getById/{id}")
     Call<Owner> getOne(@Path("id") String id, @Header("Authorization") String token);

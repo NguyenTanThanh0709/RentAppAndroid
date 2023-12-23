@@ -184,6 +184,15 @@
                 android:text="Tên tòa nhà"
                 android:textStyle="bold"
                 android:textSize="18sp"/>
+            <Spinner
+                android:id="@+id/toanha_phongtro"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/edittext_background"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textAlignment="textStart"
+                android:spinnerMode="dropdown" />
 
             <EditText
                 android:layout_width="match_parent"

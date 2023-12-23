@@ -1,5 +1,6 @@
 package com.example.rentappandroid.api;
 
+import com.example.rentappandroid.Dto.Request.Add.PostRequest;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.BaiViet;
 import com.google.gson.Gson;
@@ -10,8 +11,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiBaiDang {
@@ -38,4 +41,9 @@ public interface ApiBaiDang {
 
     @GET("baiviet/{id}")
     Call<BaiViet> getallBaiDangByid(@Path("id") String id, @Header("Authorization") String token);
+
+
+
+    @POST("baiviet/create")
+    Call<Void> Add(@Body PostRequest postRequest, @Header("Authorization") String token);
 }

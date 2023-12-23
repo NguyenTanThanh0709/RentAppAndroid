@@ -1,7 +1,6 @@
 package com.example.rentappandroid.api;
 
-import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
-import com.example.rentappandroid.Dto.Request.Schema.IssueRequest;
+import com.example.rentappandroid.Dto.Request.Add.IssueRequest;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.example.rentappandroid.Model.Issue;
 import com.google.gson.Gson;

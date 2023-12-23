@@ -43,6 +43,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
     private boolean isBookmarked = false;
     private String like = "";
     private String idusser = "";
+    private String hi = "1";
 
     // Constructor to initialize the data
     public BaiVietAdapter(List<BaiViet> baiVietList, Context context,String role, String token) {
@@ -59,6 +60,16 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
         this.token = token;
         this.like = like;
         this.idusser = idusser;
+    }
+
+    public BaiVietAdapter(List<BaiViet> baiVietList, Context context,String role, String token, String like, String idusser, String hi) {
+        this.baiVietList = baiVietList;
+        this.context = context;
+        this.role = role;
+        this.token = token;
+        this.like = like;
+        this.idusser = idusser;
+        this.hi = hi;
     }
 
     @NonNull
@@ -94,7 +105,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHold
             @Override
             public void onClick(View view) {
 
-                if(role.equals("ADMIN")){
+                if(role.equals("ADMIN") && !hi.equals("")){
                     showPopupMenu(view, baiViet.get_id());
                 }else {
                     Intent intent = new Intent(context, DetailInfoRoomActivity.class);

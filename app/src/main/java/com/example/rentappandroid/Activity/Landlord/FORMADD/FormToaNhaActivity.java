@@ -41,6 +41,9 @@ import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
 import com.example.rentappandroid.Dto.Reponse.Room;
 import com.example.rentappandroid.Dto.Reponse.RoomReponseComplex;
 import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
+import com.example.rentappandroid.Dto.Request.Add.AreaInformationRequest;
+import com.example.rentappandroid.Dto.Request.Add.RoomingHouseComplexRequest;
+import com.example.rentappandroid.Dto.Request.Schema.Address;
 import com.example.rentappandroid.Dto.Ward;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.Utils.MultiSelectionSpinner;
@@ -48,12 +51,19 @@ import com.example.rentappandroid.api.ApiAddress;
 import com.example.rentappandroid.api.ApiArea;
 import com.example.rentappandroid.api.ApiRoomHouse;
 import com.example.rentappandroid.api.ApiRoomingHouseComplex;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,13 +71,12 @@ import retrofit2.Response;
 
 public class FormToaNhaActivity extends AppCompatActivity implements AreaInformationAdapter.AreaClickListener{
     private EditText editTextTenToaNha, tenDuong;
-    private TextView diaChiCuThe, danhsachtrohientai_toanha_recycleview;
+    private TextView diaChiCuThe;
     private Spinner spinnerProvinces, spinnerDistrict, spinnerWards;
     private EditText editTextDiaChiCuThe;
     private List<String> listNameNhaTro;
     private Button buttonAddRoomComplex;
     private List<Room> listRoom ;
-
     private List<Provinces> listProvicense;
     private  List<District> districtList;
     private  List<Ward> wardList;
@@ -78,7 +87,7 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
     private String phoneOwner;
     private String nameOwner;
 
-
+    List<String> list;
     private void init(){
         // Find views by ID
         editTextTenToaNha = findViewById(R.id.editText_TenToaNha);
@@ -89,29 +98,142 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
         editTextDiaChiCuThe = findViewById(R.id.diachicuathe);
         vucxungquanh_toanha_recycleview = findViewById(R.id.vucxungquanh_toanha_recycleview);
         khuvucxungquanh_toanha_recycleview = findViewById(R.id.khuvucxungquanh_toanha_recycleview);
-
         tenDuong= findViewById(R.id.tenDuong);
         buttonAddRoomComplex = findViewById(R.id.buttonAddRoomComplex);
-        danhsachtrohientai_toanha_recycleview = findViewById(R.id.danhsachtrohientai_toanha_recycleview);
+
+
+    }
+    StorageReference storageReference;
+    private ArrayList<Uri> selectedImages = new ArrayList<>();
+    private void upload(ArrayList<Uri> selectedImages) {
+        int totalImages = selectedImages.size();
+        final int[] uploadedImages = {0};
+
+        for (Uri imageUri : selectedImages) {
+            StorageReference storageReference1 = storageReference.child("image/" + UUID.randomUUID().toString());
+            storageReference1.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Increment the counter for successful uploads
+                    uploadedImages[0]++;
+
+                    Toast.makeText(FormToaNhaActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                    storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri downloadUri) {
+                            // Handle the download URL
+                            String imageUrl = downloadUri.toString();
+                            Log.d("URL", imageUrl);
+                            list.add(imageUrl);
+
+                            // Check if all images are uploaded
+                            if (uploadedImages[0] == totalImages) {
+                                // All images are uploaded, now you can trigger the API call
+                                addRoomingHouseComplex();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Handle any errors getting the download URL
+                            Toast.makeText(FormToaNhaActivity.this, "Error getting download URL", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Handle upload failure
+                    Toast.makeText(FormToaNhaActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void addRoomingHouseComplex() {
+        String RoomingHouseComplex_name = editTextTenToaNha.getText().toString().trim();
+        String owner = phoneOwner;
+        String selectedProvince = spinnerProvinces.getSelectedItem().toString();
+        String selectedDistrict = spinnerDistrict.getSelectedItem().toString();
+        String selectedWard = spinnerWards.getSelectedItem().toString();
+        String tenduong= tenDuong.getText().toString();
+        Address address = new Address(selectedProvince,selectedDistrict,selectedWard,tenduong);
+        List<AreaInformationRequest> areaInformationRequests = new ArrayList<>();
+        for (AreaInformationReponse areaInformationReponse: areaInformationList){
+            AreaInformationRequest areaInformationRequest = new AreaInformationRequest(areaInformationReponse.get_id(),areaInformationReponse.getDistance(),areaInformationReponse.getDescription());
+            areaInformationRequests.add(areaInformationRequest);
+        }
+
+        if(selectedImages.size() == 0){
+            Toast.makeText(FormToaNhaActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(list.size() != selectedImages.size()){
+            return;
+        }
+
+
+        RoomingHouseComplexRequest roomingHouseComplexRequest = new RoomingHouseComplexRequest(
+                RoomingHouseComplex_name,
+                list,
+                owner,
+                address,
+                areaInformationRequests
+        );
+
+
+        if(type.equals("edit")){
+
+            ApiRoomingHouseComplex.apiRoomingHouseComplex.put(roomingHouseComplexId,roomingHouseComplexRequest,token).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Toast.makeText(FormToaNhaActivity.this, "Chỉnh sửa Thành Công", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(FormToaNhaActivity.this, "CHỉnh sửa không Thành Công", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            ApiRoomingHouseComplex.apiRoomingHouseComplex.add(roomingHouseComplexRequest,token).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Toast.makeText(FormToaNhaActivity.this, "Thêm Thành Công", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(FormToaNhaActivity.this, "Thêm Không Thành Công", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+
 
 
     }
 
-    private ArrayList<Uri> selectedImages = new ArrayList<>();
     private RecyclerView khuvucxungquanh_toanha_recycleview, vucxungquanh_toanha_recycleview;
     private ImageAdapter imageAdapter;
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int GALLERY_REQUEST_CODE = 102;
 
     private RoomingHouseComplex roomingHouseComplex;
+    private String type = "";
+    String roomingHouseComplexId ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_toa_nha);
 
+        FirebaseApp.initializeApp(getApplicationContext());
+        storageReference = FirebaseStorage.getInstance().getReference();
+        list  = new ArrayList<>();
         SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
-
 // Retrieve values
         token = preferences.getString("token", "");  // Replace "" with the default value if not found
         phoneOwner = preferences.getString("sdt", "");  // Replace "" with the default value if not found
@@ -153,50 +275,34 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
         event();
         Intent intent = getIntent();
         if (intent != null) {
-            String roomingHouseComplexId = intent.getStringExtra("roomingHouseComplex");
-            fillData(roomingHouseComplexId);
+             roomingHouseComplexId = intent.getStringExtra("roomingHouseComplex");
+            type = intent.getStringExtra("type");
+            roomingHouseComplexId = (roomingHouseComplexId != null) ? roomingHouseComplexId : "";
+
+// If type is null, set it to an empty string
+            type = (type != null) ? type : "";
+            if(type.equals("edit")){
+                fillData(roomingHouseComplexId);
+            }
         }
 
     }
 
     private void event() {
 
-      ApiRoomHouse.apiRoom.getListRoomByOwner(phoneOwner,token).enqueue(new Callback<List<Room>>() {
-          @Override
-          public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
-              listRoom = response.body();
-              for (Room room: listRoom){
-                  String  s  = room.getTitle() + " - " + room.get_id();
-                  listNameNhaTro.add(s);
-              }
+        buttonAddRoomComplex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                list.clear();
+                upload(selectedImages);
+            }
+        });
 
-              MultiSelectionSpinner multiSelectionSpinner = findViewById(R.id.multiSelectionSpinner);
-
-              // Set items for the spinner
-
-              multiSelectionSpinner.setItems(listNameNhaTro);
-
-              // Set listener to handle selected items
-              multiSelectionSpinner.setListener(selected -> {
-                  // Handle the selected items
-                  for (int i = 0; i < selected.length; i++) {
-                      if (selected[i]) {
-                          String selectedItem = listNameNhaTro.get(i);
-                          // Do something with the selected item
-                      }
-                  }
-              });
-          }
-
-          @Override
-          public void onFailure(Call<List<Room>> call, Throwable t) {
-            Log.e("Error", t.toString());
-          }
-      });
         ApiArea.apiArea.getListArea(token).enqueue(new Callback<List<AreaInformationReponse>>() {
             @Override
             public void onResponse(Call<List<AreaInformationReponse>> call, Response<List<AreaInformationReponse>> response) {
                 areaInformationList.addAll(response.body());
+                areaInformationAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -330,7 +436,7 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
                 for(RoomReponseComplex roomReponseComplex: roomingHouseComplex.getListroom()){
                     ok += roomReponseComplex.getTitle() + " - ";
                 }
-                danhsachtrohientai_toanha_recycleview.setText(ok);
+
 
 
             }

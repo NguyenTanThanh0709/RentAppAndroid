@@ -11,25 +11,38 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormToaNhaActivity;
+import com.example.rentappandroid.Dto.Reponse.RoomReponseComplex;
 import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.api.ApiRoomingHouseComplex;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ToaNhaAdapter extends RecyclerView.Adapter<ToaNhaAdapter.ViewHolder>{
     private List<RoomingHouseComplex> roomingHouseComplexList;
     private Context context;
-
+private String token;
     public ToaNhaAdapter(List<RoomingHouseComplex> roomingHouseComplexList, Context context) {
         this.roomingHouseComplexList = roomingHouseComplexList;
         this.context = context;
+    }
+
+    public ToaNhaAdapter(List<RoomingHouseComplex> roomingHouseComplexList, Context context, String token) {
+        this.roomingHouseComplexList = roomingHouseComplexList;
+        this.context = context;
+        this.token = token;
     }
 
     @NonNull
@@ -95,6 +108,7 @@ public class ToaNhaAdapter extends RecyclerView.Adapter<ToaNhaAdapter.ViewHolder
 
                     Intent intent = new Intent(context, FormToaNhaActivity.class);
                     intent.putExtra("roomingHouseComplex", roomingHouseComplex.get_id());
+                    intent.putExtra("type", "edit");
                     context.startActivity(intent);
                     return true;
 
@@ -118,6 +132,36 @@ public class ToaNhaAdapter extends RecyclerView.Adapter<ToaNhaAdapter.ViewHolder
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                ApiRoomingHouseComplex.apiRoomingHouseComplex.delete(email,token).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            int position = -1;
+                            for (int i = 0; i < roomingHouseComplexList.size(); i++) {
+                                if (email.equals(roomingHouseComplexList.get(i).get_id())) {
+                                    position = i;
+                                    break;
+                                }
+                            }
+
+                            if (position != -1) {
+                                roomingHouseComplexList.remove(position);
+                                notifyItemRemoved(position);
+                            } else {
+                                // Handle the case where the item to be removed is not found
+                            }
+                        } else {
+                            // Handle unsuccessful response
+                        }
+
+                        Toast.makeText(context, "Xóa Thành Công", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(context, "Xóa không Thành Công", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });

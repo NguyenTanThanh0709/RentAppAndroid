@@ -1,13 +1,10 @@
 package com.example.rentappandroid.api;
 
-import com.example.rentappandroid.Dto.Request.Schema.TieuChiChonPhongRequest;
+import com.example.rentappandroid.Dto.Request.Add.TieuChiChonPhongRequest;
 import com.example.rentappandroid.Global.ValueGlobal;
-import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.example.rentappandroid.Model.searchcriterias;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

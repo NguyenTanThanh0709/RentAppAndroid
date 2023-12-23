@@ -192,55 +192,6 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        android:background="@drawable/rounded_corners">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Danh sách trọ muôn thêm vào"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:id="@+id/spinner_nhatro"
-                android:orientation="vertical">
-
-                <com.example.rentappandroid.Utils.MultiSelectionSpinner
-                    android:id="@+id/multiSelectionSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"/>
-
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Danh sách trọ hiện tại"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_margin="10dp"
-                android:id="@+id/danhsachtrohientai_toanha_recycleview"
-                android:layout_height="wrap_content"
-                android:text=""/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
     <Button
         android:id="@+id/buttonAddRoomComplex"
         android:layout_width="match_parent"

@@ -18,14 +18,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rentappandroid.Activity.Tenant.BaiDang.FormTimPhongActivity;
 import com.example.rentappandroid.Adapter.DistrictAdapter;
 import com.example.rentappandroid.Adapter.LoaiNhaAdapter;
 import com.example.rentappandroid.Adapter.ProvincesAdapter;
 import com.example.rentappandroid.Adapter.TienNghiAdapter;
 import com.example.rentappandroid.Dto.District;
 import com.example.rentappandroid.Dto.Provinces;
-import com.example.rentappandroid.Dto.Request.Schema.TieuChiChonPhongRequest;
+import com.example.rentappandroid.Dto.Request.Add.TieuChiChonPhongRequest;
 import com.example.rentappandroid.Model.LoaiNha;
 import com.example.rentappandroid.Model.TienNghi;
 import com.example.rentappandroid.Model.searchcriterias;

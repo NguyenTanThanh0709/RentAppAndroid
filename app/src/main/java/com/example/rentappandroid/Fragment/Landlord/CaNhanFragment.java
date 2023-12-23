@@ -22,6 +22,7 @@ import com.example.rentappandroid.Activity.Landlord.FORMADD.FormTenantActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormToaNhaActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLtBaiDangActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyHopDongActivity;
+import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyNguoiThue;
 import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyPhongTroActivity;
 import com.example.rentappandroid.Activity.LoginActivity;
 import com.example.rentappandroid.Activity.MainActivity;
@@ -136,7 +137,8 @@ public class CaNhanFragment extends Fragment {
         quanlynguoithue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Tính Năng Đang Trong thời gian phát triển", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), QuanLyNguoiThue.class);
+                startActivity(intent);
             }
         });
 

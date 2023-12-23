@@ -14,7 +14,7 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.rentappandroid.Dto.Request.Schema.CommentReviewData;
+import com.example.rentappandroid.Dto.Request.Add.CommentReviewData;
 import com.example.rentappandroid.Model.Leasecontracts;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiComment;

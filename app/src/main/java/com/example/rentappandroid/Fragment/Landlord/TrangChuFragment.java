@@ -258,7 +258,7 @@ public class TrangChuFragment extends Fragment {
         int spanCount = 1; // Number of items per row
         GridLayoutManager layoutManagerBaiViet = new GridLayoutManager(getContext(), spanCount);
         listbaivietnoibat_recycle.setLayoutManager(layoutManagerBaiViet);
-        baiVietAdapter = new BaiVietAdapter(  baiVietList,getContext(),role, token, "", phoneOwner);
+        baiVietAdapter = new BaiVietAdapter(  baiVietList,getContext(),role, token, "", phoneOwner, "");
         listbaivietnoibat_recycle.setAdapter(baiVietAdapter);
 
         // TÌM TRỌ

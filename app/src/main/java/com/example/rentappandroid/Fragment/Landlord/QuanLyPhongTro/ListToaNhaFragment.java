@@ -101,7 +101,7 @@ public class ListToaNhaFragment extends Fragment {
         int spanCount = 1; // Number of items per row
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-        toaNhaAdapter = new ToaNhaAdapter(roomingHouseComplexList, getContext());
+        toaNhaAdapter = new ToaNhaAdapter(roomingHouseComplexList, getContext(),token);
         recyclerView.setAdapter(toaNhaAdapter);
         getData();
 

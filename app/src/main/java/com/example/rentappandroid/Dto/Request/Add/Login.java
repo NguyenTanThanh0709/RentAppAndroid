@@ -1,4 +1,4 @@
-package com.example.rentappandroid.Dto.Request.Schema;
+package com.example.rentappandroid.Dto.Request.Add;
 
 public class Login {
     private String email;

@@ -6,7 +6,7 @@ public class ServireChareReponse {
     private String servicecharge_name;
     private String servicecharge_img;
     private boolean status;
-    private String phi ="";
+    private String phi ="0";
 
     public int get__v() {
         return __v;

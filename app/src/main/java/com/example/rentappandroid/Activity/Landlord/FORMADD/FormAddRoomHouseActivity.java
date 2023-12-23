@@ -12,6 +12,7 @@
     import android.view.MenuItem;
     import android.view.View;
     import android.widget.AdapterView;
+    import android.widget.ArrayAdapter;
     import android.widget.Button;
     import android.widget.EditText;
     import android.widget.MultiAutoCompleteTextView;
@@ -40,9 +41,16 @@
     import com.example.rentappandroid.Adapter.WardAdapter;
     import com.example.rentappandroid.Dto.District;
     import com.example.rentappandroid.Dto.Provinces;
+    import com.example.rentappandroid.Dto.Reponse.AreaInformation;
     import com.example.rentappandroid.Dto.Reponse.AreaInformationReponse;
     import com.example.rentappandroid.Dto.Reponse.Room;
+    import com.example.rentappandroid.Dto.Reponse.RoomingHouseComplex;
+    import com.example.rentappandroid.Dto.Reponse.ServiceCharge;
     import com.example.rentappandroid.Dto.Reponse.ServireChareReponse;
+    import com.example.rentappandroid.Dto.Request.Add.AreaInformationRequest;
+    import com.example.rentappandroid.Dto.Request.Add.RoomingHouseRequest;
+    import com.example.rentappandroid.Dto.Request.Add.ServiceChargeRE;
+    import com.example.rentappandroid.Dto.Request.Schema.Address;
     import com.example.rentappandroid.Dto.Ward;
     import com.example.rentappandroid.Model.LoaiNha;
     import com.example.rentappandroid.Model.TienNghi;
@@ -51,11 +59,22 @@
     import com.example.rentappandroid.api.ApiArea;
     import com.example.rentappandroid.api.ApiPhiDichVu;
     import com.example.rentappandroid.api.ApiRoomHouse;
+    import com.example.rentappandroid.api.ApiRoomingHouseComplex;
     import com.example.rentappandroid.api.ApiTienNghi;
     import com.example.rentappandroid.api.ApiTypeHouse;
+    import com.google.android.gms.tasks.OnFailureListener;
+    import com.google.android.gms.tasks.OnSuccessListener;
+    import com.google.firebase.FirebaseApp;
+    import com.google.firebase.storage.FirebaseStorage;
+    import com.google.firebase.storage.StorageReference;
+    import com.google.firebase.storage.UploadTask;
 
+    import java.time.LocalDate;
     import java.util.ArrayList;
+    import java.util.HashMap;
     import java.util.List;
+    import java.util.Map;
+    import java.util.UUID;
 
     import retrofit2.Call;
     import retrofit2.Callback;
@@ -64,8 +83,6 @@
     public class FormAddRoomHouseActivity extends AppCompatActivity implements ServiceChargeAdapter.ServiceChargeClickListener, AreaInformationAdapter.AreaClickListener{
         private static final int PERMISSION_REQUEST_CODE = 100;
         private static final int GALLERY_REQUEST_CODE = 102;
-
-
         private EditText editText_TenPhongtro;
         private MultiAutoCompleteTextView editText_MoTaPhongTro;
         private EditText editText_giatro;
@@ -73,7 +90,7 @@
         private EditText editText_SucChua;
         private EditText editText_TenToaNha;
         private Spinner spinner_provinces_phongtro;
-        private Spinner spinner_district_phongtro;
+        private Spinner spinner_district_phongtro, toanha_phongtro;
         private Spinner spinner_wards_phongtro;
         private EditText tenDuong_phongtro;
         private EditText diachicuathe_phongtro;
@@ -81,8 +98,10 @@
         private RadioButton radioButtonRented;
         private RadioButton radioButtonEmptyRoom;
         private RadioButton radioButtonMaintenance;
+        private String type = "1";
 
         private void init(){
+            buttonAddRoom = findViewById(R.id.buttonAddRoom);
             editText_TenPhongtro = findViewById(R.id.editText_TenPhongtro);
             editText_MoTaPhongTro = findViewById(R.id.editText_MoTaPhongTro);
             editText_giatro = findViewById(R.id.editText_giatro);
@@ -103,32 +122,21 @@
             phidich_recycleview = findViewById(R.id.phidich_recycleview);
             recyclerViewLoaiNha = findViewById(R.id.loainha_recycleview);
             imgRecyclerView = findViewById(R.id.img_recycleview);
+            toanha_phongtro =  findViewById(R.id.toanha_phongtro);
         }
-
-
+        private List<String> tenToaNha;
         private RecyclerView recyclerView;
-
-
-
         private RecyclerView recyclerViewLoaiNha;
         private LoaiNhaAdapter loaiNhaAdapter;
-
-
+        StorageReference storageReference;
         private ArrayList<Uri> selectedImages = new ArrayList<>();
+        private List<String> list;
         private RecyclerView imgRecyclerView;
         private ImageAdapter imageAdapter;
-
-
-
         private List<String> rules;
         private RuleAdapter ruleAdapter;
         private RecyclerView rule_recycleview;
-
-
-
         private RecyclerView phidich_recycleview;
-
-
         private  List<AreaInformationReponse> areaInformationList;
         private AreaInformationAdapter areaInformationAdapter;
         private RecyclerView khuvucxungquanh_recycleview;
@@ -139,16 +147,303 @@
         private ServiceChargeAdapter serviceChargeAdapter;
         private List<TienNghi> tienNghiList;
         private TienNghiAdapter tienNghiAdapter;
-
         private Room room;
         private List<LoaiNha> loaiNhaList;
-
         private String token;
         private String phoneOwner;
         private String nameOwner;
 
+        private Button buttonAddRoom;
+        private String roomingHouse = "";
+
+        private void upload(ArrayList<Uri> selectedImages) {
+            int totalImages = selectedImages.size();
+            final int[] uploadedImages = {0};
+
+            for (Uri imageUri : selectedImages) {
+                StorageReference storageReference1 = storageReference.child("image/" + UUID.randomUUID().toString());
+                storageReference1.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Increment the counter for successful uploads
+                        uploadedImages[0]++;
+
+                        Toast.makeText(FormAddRoomHouseActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                        storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri downloadUri) {
+                                // Handle the download URL
+                                String imageUrl = downloadUri.toString();
+                                Log.d("URL", imageUrl);
+                                list.add(imageUrl);
+
+                                // Check if all images are uploaded
+                                if (uploadedImages[0] == totalImages) {
+                                    // All images are uploaded, now you can trigger the API call
+                                    AddHouse();
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle any errors getting the download URL
+                                Toast.makeText(FormAddRoomHouseActivity.this, "Error getting download URL", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle upload failure
+                        Toast.makeText(FormAddRoomHouseActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
+        private void AddHouse() {
+
+            if(selectedImages.size() == 0){
+                Toast.makeText(FormAddRoomHouseActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(list.size() != selectedImages.size()){
+                return;
+            }
+
+            String title = editText_TenPhongtro.getText().toString();
+            String mota = editText_MoTaPhongTro.getText().toString();
+            if (title.trim().isEmpty()) {
+                showToast("Title cannot be empty");
+                return;
+            }
+
+            if (mota.trim().isEmpty()) {
+                showToast("Description cannot be empty");
+                return;
+            }
+
+            int giatro;
+            try {
+                giatro = Integer.parseInt(editText_giatro.getText().toString());
+            } catch (NumberFormatException e) {
+                showToast("Invalid GiaTro value");
+                return;
+            }
+
+            int dientich;
+            try {
+                dientich = Integer.parseInt(editText_dienTich.getText().toString());
+            } catch (NumberFormatException e) {
+                showToast("Invalid DienTich value");
+                return;
+            }
+
+            int succhua;
+            try {
+                succhua = Integer.parseInt(editText_SucChua.getText().toString());
+            } catch (NumberFormatException e) {
+                showToast("Invalid SucChua value");
+                return;
+            }
+
+            String selectedProvince = spinner_provinces_phongtro.getSelectedItem().toString();
+            String selectedDistrict = spinner_district_phongtro.getSelectedItem().toString();
+            String selectedWard = spinner_wards_phongtro.getSelectedItem().toString();
+            String tenduong= tenDuong_phongtro.getText().toString();
+
+            if (selectedProvince.equals("Chọn Tỉnh")) {
+                showToast("Please select a province");
+                return;
+            }
+
+// Check if a district is selected
+            if (selectedDistrict.equals("Chọn Quận")) {
+                showToast("Please select a district");
+                return;
+            }
+
+// Check if a ward is selected
+            if (selectedWard.equals("Chọn Phường")) {
+                showToast("Please select a ward");
+                return;
+            }
+
+// Validate EditText value (assuming it cannot be empty)
+            if (tenduong.trim().isEmpty()) {
+                showToast("Street name cannot be empty");
+                return;
+            }
+
+            Address address = new Address(selectedProvince,selectedDistrict,selectedWard,tenduong);
+            String status = "";
+
+            String tentoanha = null;
+            if(!toanha_phongtro.getSelectedItem().toString().equals("")){
+                String[] split = toanha_phongtro.getSelectedItem().toString().split("-");
+                tentoanha = split[split.length-1];
+            }
+            if(radioButtonRented.isChecked()){
+                status = "RENTED";
+            } else if (radioButtonEmptyRoom.isChecked()) {
+                status = "EMPTYROOM";
+            }else {
+                status = "MAINTENANCE";
+            }
+
+            String loaitro = "";
+            for (LoaiNha loaiNha: loaiNhaList){
+                if(loaiNha.get__v() == 1){
+                    loaitro = loaiNha.get_id();
+                    break;
+                }
+            }
+
+            List<String> listTienNghi = new ArrayList<>();
+            for (TienNghi tienNghi: tienNghiList){
+                if(tienNghi.get__v() == 1){
+                    listTienNghi.add(tienNghi.get_id());
+                }
+            }
+
+            // rules
+
+            List<ServiceChargeRE> listServiceChargeRE = new ArrayList<>();
+            for (ServireChareReponse servireChareReponse: serviceChargeList){
+                ServiceChargeRE s = new ServiceChargeRE(servireChareReponse.get_id(), Double.parseDouble(servireChareReponse.getPhi()));
+                listServiceChargeRE.add(s);
+            }
+
+            List<AreaInformationRequest> areaInformationRequests = new ArrayList<>();
+            for (AreaInformationReponse areaInformationReponse: areaInformationList){
+                AreaInformationRequest areaInformationRequest = new AreaInformationRequest(areaInformationReponse.get_id(),areaInformationReponse.getDistance(),areaInformationReponse.getDescription());
+                areaInformationRequests.add(areaInformationRequest);
+            }
+
+
+
+
+            String currentDate = LocalDate.now().toString();
+//String title, String description, int price, int squareFeet, String status, String roomingHouseComplex,
+// String availableDates, int peopleNumber, String owner, String typeHouse, List<String> amenities,
+// Address address, List<String> imageURL, List<String> rules, List<ServiceChargeRE> serviceCharge, List<AreaInformationRequest> areaInformation
+            RoomingHouseRequest roomingHouseRequest = new RoomingHouseRequest(title,mota
+                ,giatro, dientich,status, tentoanha, currentDate, succhua,phoneOwner,loaitro,listTienNghi,
+                    address, list, rules, listServiceChargeRE,areaInformationRequests
+            );
+
+
+            if(type.equals("edit")){
+                ApiRoomHouse.apiRoom.Put(roomingHouse,roomingHouseRequest, token).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            showToast("Chỉnh sửa Nhà Trọ Thành Công");
+                            Log.d("API Call Success", "API call was successful");
+                        } else {
+                            showToast("Chỉnh sửa Nhà Trọ Thất Bại");
+
+                            // Log information when the API call is not successful
+                            Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                            String errorMessage = "Chỉnh sửa Nhà Trọ Thất Bại\n" + response.message();
+                            showToast(errorMessage);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        showToast("Chỉnh sửa Nhà Trọ Thất Bại");
+
+                        // Log the error
+                        Log.e("API Call Error", "Error during API call", t);
+
+                        // You can also log the error message
+                        // Log.e("API Call Error", "Error message: " + t.getMessage());
+
+                        // If you want to display the error message in the toast, you can do something like this:
+                        String errorMessage = "Chỉnh sửa Nhà Trọ Thất Bại\n" + t.getMessage();
+                        showToast(errorMessage);
+                    }
+                });
+            }else {
+
+
+            ApiRoomHouse.apiRoom.add(roomingHouseRequest, token).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        showToast("Thêm Nhà Trọ Thành Công");
+                        Log.d("API Call Success", "API call was successful");
+                    } else {
+                        showToast("Thêm Nhà Trọ Thất Bại");
+
+                        // Log information when the API call is not successful
+                        Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                        String errorMessage = "Thêm Nhà Trọ Thất Bại\n" + response.message();
+                        showToast(errorMessage);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    showToast("Thêm Nhà Trọ Thất Bại");
+
+                    // Log the error
+                    Log.e("API Call Error", "Error during API call", t);
+
+                    // You can also log the error message
+                    // Log.e("API Call Error", "Error message: " + t.getMessage());
+
+                    // If you want to display the error message in the toast, you can do something like this:
+                    String errorMessage = "Thêm Nhà Trọ Thất Bại\n" + t.getMessage();
+                    showToast(errorMessage);
+                }
+            });
+            }
+
+
+        }
+
+        private void showToast(String message) {
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
 
         private void event(){
+
+            buttonAddRoom.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    list.clear();
+                    upload(selectedImages);
+
+                }
+            });
+
+
+            ApiRoomingHouseComplex.apiRoomingHouseComplex.getListRoomingHouseComplexByOwer(phoneOwner, token).enqueue(new Callback<List<RoomingHouseComplex>>() {
+                @Override
+                public void onResponse(Call<List<RoomingHouseComplex>> call, Response<List<RoomingHouseComplex>> response) {
+                    tenToaNha = new ArrayList<>();
+                    tenToaNha.add("");
+                    for(RoomingHouseComplex roomingHouseComplex : response.body()) {
+                        String id = roomingHouseComplex.getAddress().getFullAddress() + "-" + roomingHouseComplex.get_id();
+                        tenToaNha.add(id);
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(FormAddRoomHouseActivity.this, android.R.layout.simple_spinner_item, tenToaNha);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    toanha_phongtro.setAdapter(adapter);
+
+                }
+
+                @Override
+                public void onFailure(Call<List<RoomingHouseComplex>> call, Throwable t) {
+                    Log.e("OK", t.toString());
+                }
+            });
+
+
 
             ApiArea.apiArea.getListArea(token).enqueue(new Callback<List<AreaInformationReponse>>() {
                 @Override
@@ -292,6 +587,9 @@
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_form_add_room_house);
 
+            FirebaseApp.initializeApp(getApplicationContext());
+            storageReference = FirebaseStorage.getInstance().getReference();
+
             SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
 
 // Retrieve values
@@ -310,6 +608,7 @@
             districtList.add(new District("Chọn Quận", -1,-1));
             wardList = new ArrayList<>();
             wardList.add(new Ward("Chọn Phường", -1,-1));
+            list = new ArrayList<>();
             init();
 
 
@@ -370,8 +669,15 @@
             event();
             Intent intent = getIntent();
             if (intent != null) {
-                String roomingHouse = intent.getStringExtra("roomingHouse");
-                fillData(roomingHouse);
+                roomingHouse = intent.getStringExtra("roomingHouse");
+                type= intent.getStringExtra("type");
+                roomingHouse = (roomingHouse != null) ? roomingHouse : "";
+
+// If type is null, set it to an empty string
+                type = (type != null) ? type : "";
+                if(type.equals("edit")){
+                    fillData(roomingHouse);
+                }
             }
 
         }
@@ -395,6 +701,61 @@
                     }else {
                         radioButtonMaintenance.setChecked(true);
                     }
+                    for(LoaiNha in: loaiNhaList){
+                        if(room.getTypehouse().get_id().equals(in.get_id())){
+                            in.set__v(1);
+                        }
+                    }
+                    loaiNhaAdapter.notifyDataSetChanged();
+
+                    for(TienNghi in : room.getAmenities()){
+                        for(TienNghi on : tienNghiList){
+                            if(in.get_id().equals(on.get_id())){
+                                on.set__v(1);
+                                break;
+                            }
+                        }
+                    }
+                    tienNghiAdapter.notifyDataSetChanged();
+
+                    rules.clear();
+                    rules.addAll(room.getRules());
+                    ruleAdapter.notifyDataSetChanged();
+                    for (String imageUrl : room.getImage_url()) {
+                        Log.d("Image URL", imageUrl);
+                        Uri imageUri = Uri.parse(imageUrl);
+                        selectedImages.add(imageUri);
+                    }
+                    updateImageAdapter();
+
+                    Map<String, AreaInformationReponse> areaInformationMap = new HashMap<>();
+                    for (AreaInformationReponse areaInformationReponse : areaInformationList) {
+                        areaInformationMap.put(areaInformationReponse.get_id(), areaInformationReponse);
+                    }
+// Update AreaInformationReponse objects using the map
+                    for (AreaInformation areaInformation : room.getAreaInformation()) {
+                        String areaInformationId = areaInformation.getAreaInformationID().get_id();
+                        if (areaInformationMap.containsKey(areaInformationId)) {
+                            AreaInformationReponse areaInformationReponse = areaInformationMap.get(areaInformationId);
+                            areaInformationReponse.setDistance(areaInformation.getDistance());
+                            areaInformationReponse.setDescription(areaInformation.getDescription());
+                        }
+                    }
+                    areaInformationAdapter.notifyDataSetChanged();
+
+
+                    for (ServireChareReponse in: serviceChargeList){
+
+                        for (ServiceCharge serviceCharge : room.getServiceCharge()){
+                            if(in.get_id().equals(serviceCharge.getServiceChargeId().get_id())){
+                                in.setPhi(serviceCharge.getPrice()+"");
+                            }
+
+                        }
+                    }
+                    serviceChargeAdapter.notifyDataSetChanged();
+
+
                 }
 
                 @Override

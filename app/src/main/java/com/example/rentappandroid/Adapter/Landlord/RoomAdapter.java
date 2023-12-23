@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,18 +21,30 @@ import com.example.rentappandroid.Activity.Landlord.FORMADD.FormAddRoomHouseActi
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormToaNhaActivity;
 import com.example.rentappandroid.Dto.Reponse.Room;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.api.ApiRoomHouse;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder>{
 
     private Context context;
     private List<Room> roomList;
+    private String token;
 
     public RoomAdapter(Context context, List<Room> roomList) {
         this.context = context;
         this.roomList = roomList;
+    }
+
+    public RoomAdapter(Context context, List<Room> roomList, String token) {
+        this.context = context;
+        this.roomList = roomList;
+        this.token = token;
     }
 
     @NonNull
@@ -48,7 +61,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         holder.titleTextView.setText(room.getTitle());
         holder.diachiTextView.setText(room.getAddress().getFullAddress());
         holder.dientichTextView.setText("Diện tích: " + room.getSquare_feet() + " mét vuông");
-        holder.ngaythemTextView.setText("Ngày đăng: " + room.getUp_dates());
+        holder.ngaythemTextView.setText("Ngày đăng: " + room.getAvailable_dates());
         Picasso.with(context)
                 .load(room.getImage_url().get(0))
                 .placeholder(R.drawable.house)
@@ -77,6 +90,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
                     Intent intent = new Intent(context, FormAddRoomHouseActivity.class);
                     intent.putExtra("roomingHouse", room.get_id());
+                    intent.putExtra("type", "edit");
                     context.startActivity(intent);
                     return true;
 
@@ -99,6 +113,40 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                ApiRoomHouse.apiRoom.Delete(id,token).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            int position = -1;
+                            for (int i = 0; i < roomList.size(); i++) {
+                                if (id.equals(roomList.get(i).get_id())) {
+                                    position = i;
+                                    break;
+                                }
+                            }
+
+                            if (position != -1) {
+                                roomList.remove(position);
+                                notifyItemRemoved(position);
+                                Toast.makeText(context, "Xóa Thành Công", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                // Handle the case where the item to be removed is not found
+                            }
+                        } else {
+                            Toast.makeText(context, "Xóa Không Thành Công", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(context, "Xóa không Thành Công", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 
 
             }

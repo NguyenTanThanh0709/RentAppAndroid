@@ -1,13 +1,11 @@
 package com.example.rentappandroid.api;
 
 import com.example.rentappandroid.Dto.Reponse.Owner;
-import com.example.rentappandroid.Dto.Reponse.ServireChareReponse;
-import com.example.rentappandroid.Dto.Request.Schema.Login;
+import com.example.rentappandroid.Dto.Request.Add.Login;
+import com.example.rentappandroid.Dto.Request.Add.UserRegister;
 import com.example.rentappandroid.Global.ValueGlobal;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -34,6 +32,10 @@ public interface ApiLandrod {
 
     @POST("landlord/login")
     Call<Owner> login(@Body Login login);
+
+    @POST("landlord/register")
+    Call<Void> register(@Body UserRegister login);
+
 
     @GET("landlord/getById/{id}")
     Call<Owner> getOne(@Path("id") String id, @Header("Authorization") String token);

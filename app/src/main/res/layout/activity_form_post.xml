@@ -196,7 +196,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <Button
-        android:id="@+id/buttonAddRoom"
+        android:id="@+id/buttonAddPOST"
         android:layout_width="match_parent"
         android:layout_margin="10dp"
         android:layout_height="wrap_content"

@@ -103,7 +103,7 @@ public class ListPhongTroFragment extends Fragment {
         int spanCount = 1; // Number of items per row
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-        roomAdapter = new RoomAdapter( getContext(), roomList);
+        roomAdapter = new RoomAdapter( getContext(), roomList, token);
         recyclerView.setAdapter(roomAdapter);
         getData();
         handleButton(view);

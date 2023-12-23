@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rentappandroid.Dto.Reponse.Room;
+import com.example.rentappandroid.Dto.Request.Add.PostRequest;
 import com.example.rentappandroid.Model.BaiViet;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiBaiDang;
@@ -53,8 +55,108 @@ public class FormPostActivity extends AppCompatActivity {
     private RadioButton troChuaDuocThueRadioButton;
     private RadioButton troDaDuocThueRadioButton;
     private RadioButton hetHieuLucRadioButton;
-    private void event(){
+    private String id = "";
+    private String type = "";
+     private void event(){
 
+
+         buttonAddPOST.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 String selectedItem = danhSachPhongSpinner.getSelectedItem().toString();
+                 if (selectedItem.isEmpty()) {
+                     // Handle the case when no item is selected in the spinner
+                     showToast("Please select a room.");
+                     return;
+                 }
+                 String[] split = selectedItem.split("-");
+                 String idTro = split[split.length-1];
+
+                 String depositText = phiCocPhongEditText.getText().toString();
+                 if (depositText.isEmpty()) {
+                     // Handle the case when the deposit is empty
+                     showToast("Please enter a deposit value.");
+                     return;
+                 }
+                 int deposit;
+                 try {
+                      deposit = Integer.parseInt(depositText);
+                     // The 'deposit' variable now contains the valid integer value
+                 } catch (NumberFormatException e) {
+                     // Handle the case when the input is not a valid integer
+                     showToast("Invalid deposit value. Please enter a valid number.");
+                     return;
+                 }
+
+                 String date = editTextDate.getText().toString();
+                 if (date.isEmpty()) {
+                     // Handle the case when the date is empty
+                     showToast("Please enter a date.");
+                     return;
+                 }
+
+                 String mota = moTaBaiDangTextView.getText().toString();
+                 if (mota.isEmpty()) {
+                     // Handle the case when the description is empty
+                     showToast("Please enter a description.");
+                     return;
+                 }
+
+                 String status = "";
+                 if (troChuaDuocThueRadioButton.isChecked()) {
+                     // Handle the case when "Trọ Chưa Được Thuê" is selected
+                     status = "Trọ Chưa Được Thuê";
+                 } else if (troDaDuocThueRadioButton.isChecked()) {
+                     // Handle the case when "Trọ Đã Được Thuê" is selected
+                     status = "Trọ Đã Được Thuê";
+                 } else if (hetHieuLucRadioButton.isChecked()) {
+                     // Handle the case when "Hết Hiệu Lực" is selected
+                     status = "Bài Viết Hết Hiệu Lực";
+                 } else {
+                     showToast("Please check a status.");
+                     return;
+                 }
+
+
+                 PostRequest postRequest = new PostRequest(phoneOwner,deposit,
+                         date, idTro,mota,status
+                         );
+
+
+                 ApiBaiDang.apiBaiDang.Add(postRequest,token).enqueue(new Callback<Void>() {
+                     @Override
+                     public void onResponse(Call<Void> call, Response<Void> response) {
+                         if (response.isSuccessful()) {
+                             showToast("Thêm Bài Thành Công");
+                             Log.d("API Call Success", "API call was successful");
+                         } else {
+                             showToast("Thêm Bài Thất Bại");
+
+                             // Log information when the API call is not successful
+                             Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                             String errorMessage = "Thêm Bài Thất Bại\n" + response.message();
+                             showToast(errorMessage);
+                         }
+                     }
+
+                     @Override
+                     public void onFailure(Call<Void> call, Throwable t) {
+                         showToast("Thêm Bài Thất Bại");
+
+                         // Log the error
+                         Log.e("API Call Error", "Error during API call", t);
+
+                         // You can also log the error message
+                         // Log.e("API Call Error", "Error message: " + t.getMessage());
+
+                         // If you want to display the error message in the toast, you can do something like this:
+                         String errorMessage = "Thêm Bài Thất Bại\n" + t.getMessage();
+                         showToast(errorMessage);
+                     }
+                 });
+
+             }
+         });
 
 
 
@@ -64,6 +166,10 @@ public class FormPostActivity extends AppCompatActivity {
                 showDatePickerDialog(v);
             }
         });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
     public void showDatePickerDialog(View view) {
         final Calendar calendar = Calendar.getInstance();
@@ -104,7 +210,7 @@ public class FormPostActivity extends AppCompatActivity {
                 roomList.clear();
                 roomList.addAll(response.body());
                 for (Room room : roomList){
-                    String id = room.getTitle() + " - " +room.get_id();
+                    String id = room.getAddress().getFullAddress() + "-"+ room.getTitle() + "-" +room.get_id();
                     roomInfo.add(id);
                 }
 
@@ -125,6 +231,7 @@ public class FormPostActivity extends AppCompatActivity {
     private String token;
     private String phoneOwner;
     private String nameOwner;
+    private Button buttonAddPOST;
 
     private void init(){
         danhSachPhongSpinner = findViewById(R.id.danh_sach_phong_);
@@ -135,6 +242,7 @@ public class FormPostActivity extends AppCompatActivity {
         troDaDuocThueRadioButton = findViewById(R.id.trodaduocthue);
         hetHieuLucRadioButton = findViewById(R.id.hethieuluc);
         phonghientai = findViewById(R.id.phonghientai);
+        buttonAddPOST = findViewById(R.id.buttonAddPOST);
     }
 
     @Override
@@ -174,8 +282,16 @@ public class FormPostActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            String id = intent.getStringExtra("idPost");
-            fillData(id);
+             id = intent.getStringExtra("idPost");
+             type = intent.getStringExtra("type");
+            id = (id != null) ? id : "";
+
+// If type is null, set it to an empty string
+            type = (type != null) ? type : "";
+            if(type.equals("edit")){
+                fillData(id);
+            }
+
         }
     }
 
