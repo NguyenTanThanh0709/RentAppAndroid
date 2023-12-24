@@ -1,6 +1,10 @@
 package com.example.rentappandroid.Activity.Tenant;
-
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.rentappandroid.Activity.CommentActivity;
 import com.example.rentappandroid.Activity.Landlord.FORMLIST.QuanLyHopDongActivity;
+import com.example.rentappandroid.Activity.MessageActivity;
 import com.example.rentappandroid.Adapter.AreaInformationAdapter;
 import com.example.rentappandroid.Adapter.BaiVietAdapter;
 import com.example.rentappandroid.Adapter.ImageAdapter;
@@ -40,7 +45,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+import android.Manifest;
 public class DetailInfoRoomActivity extends AppCompatActivity {
     private ImageView imagePhongTro;
     private RecyclerView listImagePhongTroRecycle;
@@ -101,14 +106,22 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
             }
         });
     }
-    
+    String phoneOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_info_room);
+
+        SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
+
+         phoneOwner = preferences.getString("sdt", "");
+
         init();
         baiViet = new BaiViet();
+
+
+
         baiVietList = new ArrayList<>();
         event();
         Intent intent = getIntent();
@@ -228,7 +241,10 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
         chatBtnBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle the click event for the chat button
+                Intent intent = new Intent(DetailInfoRoomActivity.this, MessageActivity.class);
+                intent.putExtra("owner", baiViet.getRoom().getOwner().get_id());
+                intent.putExtra("tenant", phoneOwner);
+                startActivity(intent);
             }
         });
 
@@ -238,6 +254,8 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
                 Intent intent = new Intent(DetailInfoRoomActivity.this, LichHenActivity.class);
                 intent.putExtra("idhouse", baiViet.getRoom().get_id());
                 intent.putExtra("id", baiViet.getRoom().getOwner().get_id());
+                intent.putExtra("tenchu", baiViet.getRoom().getOwner().getName());
+                intent.putExtra("sdtchur", baiViet.getRoom().getOwner().getPhoneNumber());
                 startActivity(intent);
             }
         });
@@ -245,7 +263,14 @@ public class DetailInfoRoomActivity extends AppCompatActivity {
         goiBtnBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle the click event for the goi button
+                String phone = baiViet.getRoom().getOwner().getPhoneNumber();
+                if (ContextCompat.checkSelfPermission(DetailInfoRoomActivity.this,Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+
+                    ActivityCompat.requestPermissions(DetailInfoRoomActivity.this,new String[]{Manifest.permission.CALL_PHONE},100);
+                }
+                Intent i = new Intent(Intent.ACTION_CALL);
+                i.setData(Uri.parse("tel:"+phone));
+                startActivity(i);
             }
         });
 

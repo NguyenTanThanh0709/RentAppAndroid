@@ -15,21 +15,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormAddRoomHouseActivity;
 import com.example.rentappandroid.Adapter.BaiVietAdapter;
+import com.example.rentappandroid.Adapter.DistrictAdapter;
 import com.example.rentappandroid.Adapter.FindRoomHouseAdapter;
 import com.example.rentappandroid.Adapter.Khamdapter;
+import com.example.rentappandroid.Adapter.LoaiNhaAdapter;
+import com.example.rentappandroid.Adapter.ProvincesAdapter;
 import com.example.rentappandroid.Adapter.TimNguoiOGhepAdapter;
+import com.example.rentappandroid.Dto.District;
+import com.example.rentappandroid.Dto.Provinces;
 import com.example.rentappandroid.Model.BaiViet;
 import com.example.rentappandroid.Model.FindRoomHouseResponse;
+import com.example.rentappandroid.Model.LoaiNha;
 import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.example.rentappandroid.R;
+import com.example.rentappandroid.api.ApiAddress;
 import com.example.rentappandroid.api.ApiBaiDang;
 import com.example.rentappandroid.api.ApiPostFindHouse;
 import com.example.rentappandroid.api.ApiTimNguoiOGhep;
+import com.example.rentappandroid.api.ApiTypeHouse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +131,247 @@ public class TrangChuFragment extends Fragment {
         xemthemtimkiemoghep = view.findViewById(R.id.xemthemtimkiemoghep);
     }
 
+    private List<Provinces> listProvicense;
+    private  List<District> districtList;
+    private List<LoaiNha> loaiNhaList;
+    private LoaiNhaAdapter loaiNhaAdapter;
+
+
+    private String tieuChiTimTinh = "";
+    private String getTieuChiTimQuan = "";
+    private Integer  giatroMax = 0;
+    private String isMaxPrice = "0";
+    private String tieuChitimLoaiTro = "";
+
+    private void eventHande(){
+        SharedPreferences preferences = getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        // Save the access token and phone number
+        editor.putString("tieuchitimtinh", tieuChiTimTinh);
+        editor.putString("tieuchitimquan", getTieuChiTimQuan);
+        editor.putString("maxprice", giatroMax + "");
+        editor.putString("ismaxprice", isMaxPrice + "");
+        editor.putString("loainhatieuchitim", tieuChitimLoaiTro);
+        editor.apply();
+        eventHandelTimKiem();
+
+
+    }
+
+    private void eventHandelTimKiem(){
+        tieuChiTimTinh = (tieuChiTimTinh != null) ? tieuChiTimTinh : "";
+        getTieuChiTimQuan = (getTieuChiTimQuan != null) ? getTieuChiTimQuan : "";
+        tieuChitimLoaiTro = (tieuChitimLoaiTro != null) ? tieuChitimLoaiTro : "";
+
+        if (giatroMax == null) {
+            giatroMax = 0;
+        }
+
+        if(tieuChiTimTinh.equals("Chọn Tỉnh")){
+            tieuChiTimTinh = "";
+        }
+        if(getTieuChiTimQuan.equals("Chọn Quận")){
+            getTieuChiTimQuan = "";
+        }
+
+        if(tieuChiTimTinh.isEmpty() && getTieuChiTimQuan.isEmpty() && tieuChitimLoaiTro.isEmpty()){
+
+        }else {
+            List<BaiViet> baiVietList1 = new ArrayList<>();
+            for(BaiViet baiViet : baiVietList){
+
+                if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 0 && !tieuChitimLoaiTro.isEmpty()) {
+                    // Tất cả các item đều có giá trị không rỗng và giatroMax > 0
+                    if(
+                            baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                                    && baiViet.getRoom().getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
+                                    && baiViet.getRoom().getPrice() <= giatroMax
+                                    && tieuChitimLoaiTro.equals(baiViet.getRoom().getTypehouse().get_id())
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 0) {
+                    // Xử lý khi chỉ có tiêu chí tìm tỉnh, quận và giá trị tối đa
+                    if(
+                            baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                                    && baiViet.getRoom().getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
+                                    && baiViet.getRoom().getPrice() <= giatroMax
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty()) {
+                    // Chỉ xử lý tiêu chí tìm tỉnh và quận
+                    if(
+                            baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                                    && baiViet.getRoom().getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
+
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                } else if (giatroMax > 0 && !tieuChitimLoaiTro.isEmpty()) {
+                    // Chỉ xử lý giá trị tối đa và loại trọ
+                    if(
+                            baiViet.getRoom().getPrice() <= giatroMax
+                                    && tieuChitimLoaiTro.equals(baiViet.getRoom().getTypehouse().get_id())
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                } else if (!tieuChiTimTinh.isEmpty() && giatroMax > 0) {
+                    if(
+                            baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                                    && baiViet.getRoom().getPrice() <= giatroMax
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                }else if (!tieuChiTimTinh.isEmpty()) {
+                    if(
+                            baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                }else if (giatroMax > 0) {
+                    if(
+                            baiViet.getRoom().getPrice() <= giatroMax
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                } else if (!tieuChitimLoaiTro.isEmpty()) {
+                    if(
+                            tieuChitimLoaiTro.equals(baiViet.getRoom().getTypehouse().get_id())
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                } else {
+                    // Xử lý trường hợp khác
+                }
+
+            }
+            baiVietAdapter.updateList(baiVietList1);
+
+// timNguoiOGhepList findRoomHouseResponseList
+            List<TimNguoiOGhep> timNguoiOGhepList1 = new ArrayList<>();
+            for (TimNguoiOGhep timNguoiOGhep: timNguoiOGhepList){
+                if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1){
+                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                            && timNguoiOGhep.getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
+                            && timNguoiOGhep.getPrice() <= giatroMax
+                    ){
+                        timNguoiOGhepList1.add(timNguoiOGhep);
+                    }
+
+                }
+                if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1 && !tieuChitimLoaiTro.isEmpty() ){
+                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                            && timNguoiOGhep.getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
+                            && timNguoiOGhep.getPrice() <= giatroMax
+                    ){
+                        timNguoiOGhepList1.add(timNguoiOGhep);
+                    }
+
+                }
+                if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty()){
+                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                            && timNguoiOGhep.getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
+                    ){
+                        timNguoiOGhepList1.add(timNguoiOGhep);
+                    }
+
+                }
+                if(!tieuChiTimTinh.isEmpty()){
+                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                    ){
+                        timNguoiOGhepList1.add(timNguoiOGhep);
+                    }
+                }
+                if(!tieuChiTimTinh.isEmpty()  && giatroMax > 1){
+                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                            && timNguoiOGhep.getPrice() <= giatroMax
+                    ){
+                        timNguoiOGhepList1.add(timNguoiOGhep);
+                    }
+                }
+
+            }
+            timNguoiOGhepAdapter.updateList(timNguoiOGhepList1);
+
+            List<FindRoomHouseResponse> findRoomHouseResponses = new ArrayList<>();
+            for (FindRoomHouseResponse findRoomHouseResponse : findRoomHouseResponseList){
+                if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1 && !tieuChitimLoaiTro.isEmpty()) {
+                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
+                            && findRoomHouseResponse.getAddress().contentEquals(getTieuChiTimQuan)
+                            && findRoomHouseResponse.getMaxPrice() <=        giatroMax
+                            &&        tieuChitimLoaiTro.equals(findRoomHouseResponse.getTypehouse().get_id())
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+                } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1) {
+                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
+                            && findRoomHouseResponse.getAddress().contentEquals(getTieuChiTimQuan)
+                            && findRoomHouseResponse.getMaxPrice() <=        giatroMax
+
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+                } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty()) {
+                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
+                            && findRoomHouseResponse.getAddress().contentEquals(getTieuChiTimQuan)
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+
+                } else if (giatroMax > 0 && !tieuChitimLoaiTro.isEmpty()) {
+                    if(
+                            findRoomHouseResponse.getMaxPrice() <=        giatroMax
+                                    &&        tieuChitimLoaiTro.equals(findRoomHouseResponse.getTypehouse().get_id())
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+
+                } else if (!tieuChiTimTinh.isEmpty() && giatroMax > 1) {
+                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
+                            && findRoomHouseResponse.getMaxPrice() <=        giatroMax
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+                }else if (!tieuChiTimTinh.isEmpty()) {
+                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+                }else if (giatroMax > 1) {
+                    if( findRoomHouseResponse.getMaxPrice() <=        giatroMax
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+                } else if (!tieuChitimLoaiTro.isEmpty()) {
+                    if(tieuChitimLoaiTro.equals(findRoomHouseResponse.getTypehouse().get_id())
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+                } else {
+                    // Xử lý trường hợp khác
+                }
+            }
+            findRoomHouseAdapter.updateList(findRoomHouseResponses);
+        }
+
+
+
+
+
+
+
+    }
+
+    TextView modal_tieuchitim;
+    EditText priceEditText;
+    RadioButton highestPriceRadioButton;
+    RadioButton lowestPriceRadioButton;
+    RecyclerView roomTypeRecyclerView;
     private void handleEvent(){
+        listProvicense = new ArrayList<>();
+        districtList = new ArrayList<>();
+        loaiNhaList = new ArrayList<>();
         click_tieuchitimphong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,11 +383,153 @@ public class TrangChuFragment extends Fragment {
                 builder.setView(dialogView);
                 builder.setTitle("Bộ lọc tìm kiếm");
 
-                // Set up the dialog buttons or any other customization
+
+                modal_tieuchitim = dialogView.findViewById(R.id.modal_tieuchitim);
+                Spinner provincesSpinner = dialogView.findViewById(R.id.modal_timphong_provinces_phongtromuontim);
+                Spinner districtSpinner = dialogView.findViewById(R.id.modal_timphong_district_phongtromuontim);
+                priceEditText = dialogView.findViewById(R.id.modal_timphong_editText_giatromuontim);
+                RadioGroup radioGroup = dialogView.findViewById(R.id.modal_timphong_radioGroup);
+                highestPriceRadioButton = dialogView.findViewById(R.id.modal_timphong_radioHighestPrice);
+                lowestPriceRadioButton = dialogView.findViewById(R.id.modal_timphong_radioLowestPrice);
+                RadioGroup roomTypeRadioGroup = dialogView.findViewById(R.id.modal_timphong_radioGroup1);
+                roomTypeRecyclerView = dialogView.findViewById(R.id.modal_timphong_loaiphongmuontim_recycleview);
+
+
+                GridLayoutManager layoutManager1 = new GridLayoutManager(getContext(), 3);
+                roomTypeRecyclerView.setLayoutManager(layoutManager1);
+                loaiNhaAdapter = new LoaiNhaAdapter(getActivity(), loaiNhaList );
+                roomTypeRecyclerView.setAdapter(loaiNhaAdapter);
+
+
+
+                SharedPreferences preferences = getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
+
+// Retrieve values from SharedPreferences
+
+
+
+                modal_tieuchitim.setText(tieuChiTimTinh + "-" + getTieuChiTimQuan);
+                priceEditText.setText(giatroMax + "");
+                if(isMaxPrice.equals("1")){
+                    highestPriceRadioButton.setChecked(true);
+                }
+                if(isMaxPrice.equals("2")){
+                    lowestPriceRadioButton.setChecked(true);
+                }
+
+
+                for (LoaiNha in: loaiNhaList){
+                    if(in.get_id().equals(tieuChitimLoaiTro)){
+                        in.set__v(1);
+                        break;
+                    }
+                }
+                loaiNhaAdapter.notifyDataSetChanged();
+
+
+if(loaiNhaList.size() == 0){
+    ApiTypeHouse.apiTypeHouse.getListTypeHouse(token).enqueue(new Callback<List<LoaiNha>>() {
+        @Override
+        public void onResponse(Call<List<LoaiNha>> call, Response<List<LoaiNha>> response) {
+            loaiNhaList.addAll(response.body());
+            loaiNhaAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onFailure(Call<List<LoaiNha>> call, Throwable t) {
+            Log.e("Error", t.toString());
+        }
+    });
+
+}
+                ApiAddress.apiDriverTrip.getListProvices().enqueue(new Callback<List<Provinces>>() {
+                    @Override
+                    public void onResponse(Call<List<Provinces>> call, Response<List<Provinces>> response) {
+                        listProvicense =  response.body();
+                        listProvicense.add(0, new Provinces("Chọn Tỉnh", -1));
+                        ProvincesAdapter provincesAdapter = new ProvincesAdapter(getContext(), listProvicense);
+                        provincesSpinner.setAdapter(provincesAdapter);
+                        Log.d("OK","OK");
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Provinces>> call, Throwable t) {
+
+                    }
+                });
+                provincesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        // Lấy thông tin của mục được chọn từ danh sách Provinces
+                        Provinces selectedProvince = listProvicense.get(position);
+                        ApiAddress.apiDriverTrip.getListDistricts().enqueue(new Callback<List<District>>() {
+                            @Override
+                            public void onResponse(Call<List<District>> call, Response<List<District>> response) {
+                                List<District> listtemp = new ArrayList<>();
+                                listtemp = response.body();
+                                districtList.clear();
+                                districtList.add(new District("Chọn Quận", -1,-1));
+                                for (District district: listtemp){
+                                    if(district.getProvince_code() == selectedProvince.getCode()){
+                                        districtList.add(district);
+                                    }
+                                }
+                                DistrictAdapter prcesAdapter = new DistrictAdapter(getContext(), districtList);
+                                districtSpinner.setAdapter(prcesAdapter);
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<District>> call, Throwable t) {
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+                    }
+                });
+
+
+
+
+
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Handle OK button click
+                        try {
+                            tieuChiTimTinh = provincesSpinner.getSelectedItem().toString();
+                            getTieuChiTimQuan = districtSpinner.getSelectedItem().toString();
+                            if (priceEditText.getText().toString().equals("") || priceEditText.getText().toString() == null) {
+                                giatroMax = 0;
+                            } else {
+                                giatroMax = Integer.parseInt(priceEditText.getText().toString());
+                            }
+                            if (highestPriceRadioButton.isChecked()) {
+                                isMaxPrice = "1";
+                            }
+                            if (lowestPriceRadioButton.isChecked()) {
+                                isMaxPrice = "2";
+                            }
+                            String okln = "";
+                            for(LoaiNha loaiNha: loaiNhaList){
+                                if(loaiNha.get__v() == 1){
+                                    okln = loaiNha.get_id();
+                                    break;
+                                }
+                            }
+                            tieuChitimLoaiTro = okln;
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e("Error", "An error occurred: " + e.getMessage());
+                        }
+
+                        eventHande();
+
+
+
                     }
                 });
 
@@ -170,14 +566,7 @@ public class TrangChuFragment extends Fragment {
 
 
     private void getData(){
-        quanCuaThanhPho.add("Quận 1");
-        quanCuaThanhPho.add("Quận 2");
-        quanCuaThanhPho.add("Quận 3");
-        quanCuaThanhPho.add("Quận 4");
-        quanCuaThanhPho.add("Quận 5");
-        quanCuaThanhPho.add("Quận 6");
-        quanCuaThanhPho.add("Quận 7");
-        quanCuaThanhPho.add("Quận 8");
+
 
         ApiTimNguoiOGhep.apiApiTimNguoiOGhep.getAllTimNguoiOGheps(token).enqueue(new Callback<List<TimNguoiOGhep>>() {
             @Override
@@ -191,7 +580,6 @@ public class TrangChuFragment extends Fragment {
 
             }
         });
-
         ApiPostFindHouse.apiApiPostFindHouse.getAllFindRoomHouses(token).enqueue(new Callback<List<FindRoomHouseResponse>>() {
             @Override
             public void onResponse(Call<List<FindRoomHouseResponse>> call, Response<List<FindRoomHouseResponse>> response) {
@@ -204,13 +592,19 @@ public class TrangChuFragment extends Fragment {
 
             }
         });
-
         ApiBaiDang.apiBaiDang.getallBaiDang(token).enqueue(new Callback<List<BaiViet>>() {
             @Override
             public void onResponse(Call<List<BaiViet>> call, Response<List<BaiViet>> response) {
                 if (response.isSuccessful()) {
                     // Xử lý khi response thành công
                     baiVietList.addAll(response.body());
+                    for(BaiViet baiViet : baiVietList){
+                        String quan = baiViet.getRoom().getAddress().getDistrict();
+                        if(!quanCuaThanhPho.contains(quan)){
+                            quanCuaThanhPho.add(quan);
+                        }
+                    }
+                    khamdapter.notifyDataSetChanged();
                     baiVietAdapter.notifyDataSetChanged();
                 } else {
                     // Xử lý khi response không thành công (ví dụ: server trả về lỗi)
@@ -247,6 +641,19 @@ public class TrangChuFragment extends Fragment {
         timNguoiOGhepList = new ArrayList<>();
         getData();
 
+        String tieuChiTimTinh_ = preferences.getString("tieuchitimtinh", "");
+        tieuChiTimTinh = tieuChiTimTinh_;
+        String tieuChiTimQuan_ = preferences.getString("tieuchitimquan", "");
+        getTieuChiTimQuan = tieuChiTimQuan_;
+
+        String maxPrice = preferences.getString("maxprice", "0");
+        giatroMax = Integer.parseInt(maxPrice);
+        String tieuChiTimLoaiTro = preferences.getString("loainhatieuchitim", "");
+        tieuChitimLoaiTro = tieuChiTimLoaiTro;
+
+        String isMaxPrice_ = preferences.getString("ismaxprice", "0");
+        isMaxPrice = isMaxPrice_;
+
         // KHÁM PHÁ
 
         khamdapter = new Khamdapter(getContext() ,quanCuaThanhPho, token);
@@ -275,7 +682,9 @@ public class TrangChuFragment extends Fragment {
 // Use timNguoiOGhepAdapter instead of findRoomHouseAdapter
         timNguoiOGhepAdapter = new TimNguoiOGhepAdapter(getContext(), timNguoiOGhepList, token, role, "");
         listbaiviettimnguoioghep_recycle.setAdapter(timNguoiOGhepAdapter);
-
+        if(baiVietList.size() != 0 && timNguoiOGhepList.size() != 0 && findRoomHouseResponseList.size()!= 0){
+            eventHandelTimKiem();
+        }
 
         return view;
     }

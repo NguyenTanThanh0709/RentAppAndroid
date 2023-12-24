@@ -38,6 +38,10 @@ import retrofit2.Response;
 
 public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.ViewHolder>{
     private List<BaiViet> baiVietList;
+    public void updateList(List<BaiViet> newList) {
+        this.baiVietList = newList;
+        notifyDataSetChanged(); // Notify the adapter that the data set has changed
+    }
     private Context context;
     private String role;
     private String token;

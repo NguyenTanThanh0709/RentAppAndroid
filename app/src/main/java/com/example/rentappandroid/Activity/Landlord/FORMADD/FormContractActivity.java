@@ -32,21 +32,32 @@ import android.widget.Toast;
 
 import com.example.rentappandroid.Adapter.ImageAdapter;
 import com.example.rentappandroid.Dto.Reponse.Room;
+import com.example.rentappandroid.Dto.Request.Add.RentalContractRequest;
 import com.example.rentappandroid.Model.Leasecontracts;
+import com.example.rentappandroid.Model.Mess;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiHopDong;
 import com.example.rentappandroid.api.ApiRoomHouse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
 
 public class FormContractActivity extends AppCompatActivity {
 
@@ -72,12 +83,19 @@ public class FormContractActivity extends AppCompatActivity {
 
 
     private ArrayList<Uri> selectedImages = new ArrayList<>();
+    private List<String> list;
     private ImageAdapter imageAdapter;
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int GALLERY_REQUEST_CODE = 102;
     private int checkimg = -1;
+    StorageReference storageReference;
     private  Uri img;
+    private Uri img_cccd_front = null;
+    private Uri img_cccd_back= null;
+    private String link_cccd_front = "";
+    private String link_cccd_back = "";
     private void init() {
+        list = new ArrayList<>();
         spinner_kyhan_list = findViewById(R.id.spinner_kyhan_list);
         cccd_mattruoc = findViewById(R.id.cccd_mattruoc);
         cccd_matsau = findViewById(R.id.cccd_matsau);
@@ -93,9 +111,222 @@ public class FormContractActivity extends AppCompatActivity {
         buttonAddRoom = findViewById(R.id.buttonAddRoom_contract);
         phonghientai_contract = findViewById(R.id.phonghientai_contract);
         kihanhientai_contract  = findViewById(R.id.kihanhientai_contract);
+    }
+    private boolean isValidInput(String tenant_phone, String password, String room, String start_date, String end_date, String billing_start_date) {
+        // Perform your validation checks here
+        if (tenant_phone.isEmpty() || password.isEmpty() || room.isEmpty() || start_date.isEmpty() || end_date.isEmpty() || billing_start_date.isEmpty()) {
+            return false; // Invalid input
+        }
 
+        // Additional validation logic if needed
+
+        return true; // Input is valid
     }
 
+    private boolean isValidInput(int tienphong, int deposit, int payment_term) {
+        // Perform your validation checks here
+        if (tienphong <= 0 || deposit < 0 || payment_term <= 0) {
+            return false; // Invalid input
+        }
+
+        // Additional validation logic if needed
+
+        return true; // Input is valid
+    }
+    private void handleButton() {
+        buttonAddRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Add();
+
+            }
+        });
+    }
+
+    private  void upload(Uri image, int check){
+        StorageReference storageReference1 = storageReference.child("image/" + UUID.randomUUID().toString());
+        storageReference1.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(FormContractActivity.this,"OK",Toast.LENGTH_SHORT).show();
+                storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri downloadUri) {
+                        // Handle the download URL
+                        String imageUrl = downloadUri.toString();
+                        Log.d("URL", imageUrl);
+                        if(check ==0){
+                            link_cccd_front = imageUrl;
+                        }else {
+                            link_cccd_back = imageUrl;
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle any errors getting the download URL
+                        Toast.makeText(FormContractActivity.this, "Error getting download URL", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(FormContractActivity.this,"ERROR",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void upload(ArrayList<Uri> selectedImages) {
+        if(selectedImages.size() == 0){
+            Toast.makeText(FormContractActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int totalImages = selectedImages.size();
+        final int[] uploadedImages = {0};
+
+        for (Uri imageUri : selectedImages) {
+            StorageReference storageReference1 = storageReference.child("image/" + UUID.randomUUID().toString());
+            storageReference1.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Increment the counter for successful uploads
+                    uploadedImages[0]++;
+
+                    Toast.makeText(FormContractActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                    storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri downloadUri) {
+                            // Handle the download URL
+                            String imageUrl = downloadUri.toString();
+                            Log.d("URL", imageUrl);
+                            list.add(imageUrl);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Handle any errors getting the download URL
+                            Toast.makeText(FormContractActivity.this, "Error getting download URL", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Handle upload failure
+                    Toast.makeText(FormContractActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void Add(){
+
+
+        if(list.size() != selectedImages.size()){
+            return;
+        }
+        if(link_cccd_back.isEmpty() || link_cccd_front.isEmpty()){
+            return;
+        }
+
+        String tenant_phone = sdtKhachHangEditText.getText().toString();
+        String password = mkKhachHangEditText.getText().toString();
+        String tenant = "";
+        String landlord = phoneOwner;
+        String[] split = danhSachPhongSpinner.getSelectedItem().toString().split("-");
+        String room = split[split.length-1];
+        String create_date = LocalDate.now().toString();
+        String start_date = editTextday_ngaybatdau.getText().toString();
+        String end_date = editTextday_ngayketthuc.getText().toString();
+        String billing_start_date = editTextday_ngaythanhtoan_contract.getText().toString();
+        int tienphong = 0;
+        int deposit = 0;
+        int payment_term = 0;
+        try {
+            tienphong = Integer.parseInt(tienPhongEditText.getText().toString());
+            deposit = Integer.parseInt(phiCocPhongEditText.getText().toString());
+            payment_term = Integer.parseInt(spinner_kyhan_list.getSelectedItem().toString());
+
+            // Check additional conditions if needed
+            if (!isValidInput(tienphong, deposit, payment_term)) {
+                Toast.makeText(getApplicationContext(), "Invalid input. Please check your input data.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            // Handle the case where the input cannot be parsed as an integer
+            Toast.makeText(getApplicationContext(), "Invalid input. Please enter valid integers.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Boolean isPay = false;
+        if(payTrueRadioButton.isChecked()){
+            isPay = true;
+        }
+        Boolean isContract = false;
+        if(statusTrueRadioButton.isChecked()){
+            isContract = true;
+        }
+
+        if (!isValidInput(tenant_phone, password, room, start_date, end_date, billing_start_date)) {
+            Toast.makeText(getApplicationContext(), "Invalid input. Please check your input data.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        RentalContractRequest rentalContractRequest = new RentalContractRequest(
+                tenant_phone, password,"",phoneOwner,link_cccd_front,link_cccd_back,room,create_date,
+                start_date,end_date,billing_start_date,tienphong,deposit,payment_term,list,isContract,isPay
+        );
+
+        if(!type.equals("edit")){
+            ApiHopDong.apiHopDong.add(rentalContractRequest,token).enqueue(new Callback<Mess>() {
+                @Override
+                public void onResponse(Call<Mess> call, Response<Mess> response) {
+                    if (response.isSuccessful()) {
+                        showToast(response.body().getMessage());
+                        Log.d("API Call Success", "API call was successful");
+                    } else {
+                        showToast("Thêm Hợp đồng Thất Bại");
+
+                        // Log information when the API call is not successful
+                        Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Mess> call, Throwable t) {
+                    showToast("Thêm Hợp đồng Thất Bại");
+
+                }
+            });
+        }else {
+            String id1 = phonghientai_contract.getText().toString().split("-")[1].trim();
+            rentalContractRequest.setRoomingHouse(id1);
+            ApiHopDong.apiHopDong.put(id,rentalContractRequest,token).enqueue(new Callback<Mess>() {
+                @Override
+                public void onResponse(Call<Mess> call, Response<Mess> response) {
+                    if (response.isSuccessful()) {
+                        showToast(response.body().getMessage());
+                        Log.d("API Call Success", "API call was successful");
+                    } else {
+                        showToast("update Hợp đồng Thất Bại");
+
+                        // Log information when the API call is not successful
+                        Log.e("API Call Error", "Error during API call. Response code: " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Mess> call, Throwable t) {
+                    showToast("update Hợp đồng Thất Bại");
+
+                }
+            });
+        }
+    }
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
     private void eventData() {
         ArrayList<String> monthList = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
@@ -111,8 +342,10 @@ public class FormContractActivity extends AppCompatActivity {
                 roomList.clear();
                 roomList.addAll(response.body());
                 for (Room room : roomList){
-                    String id = room.getTitle() + " - " +room.get_id();
-                    roomInfo.add(id);
+                    if(room.getStatus().equals("EMPTYROOM")){
+                        String id = room.getAddress().getFullAddress() + "-" +room.get_id();
+                        roomInfo.add(id);
+                    }
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(FormContractActivity.this, android.R.layout.simple_spinner_item, roomInfo);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -134,6 +367,8 @@ public class FormContractActivity extends AppCompatActivity {
     private Leasecontracts leasecontracts;
     private List<Room> roomList;
     private List<String> roomInfo;
+    private String type = "";
+    private String id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +379,7 @@ public class FormContractActivity extends AppCompatActivity {
         roomList = new ArrayList<>();
         roomInfo = new ArrayList<>();
         leasecontracts = new Leasecontracts();
-
+        storageReference = FirebaseStorage.getInstance().getReference();
 // Retrieve values
         token = preferences.getString("token", "");  // Replace "" with the default value if not found
         phoneOwner = preferences.getString("sdt", "");  // Replace "" with the default value if not found
@@ -158,6 +393,7 @@ public class FormContractActivity extends AppCompatActivity {
         editTextday_ngaythanhtoan_contract = textinputday_ngaythanhtoan_contract.findViewById(R.id.editTextday_ngaythanhtoan_contract);
         init();
         event();
+        handleButton();
         eventData();
 
         TextView chooseImgTextView = findViewById(R.id.chooseIMG_contract);
@@ -177,11 +413,21 @@ public class FormContractActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            String id = intent.getStringExtra("idContract");
-            fillData(id);
+
+            id = intent.getStringExtra("idContract");
+            type= intent.getStringExtra("type");
+            id = (id != null) ? id : "";
+
+// If type is null, set it to an empty string
+            type = (type != null) ? type : "";
+            if(type.equals("edit")){
+                fillData(id);
+            }
         }
 
     }
+
+
 
     private void fillData(String id) {
         ApiHopDong.apiHopDong.getallleasecontractByid(id,token).enqueue(new Callback<Leasecontracts>() {
@@ -189,7 +435,7 @@ public class FormContractActivity extends AppCompatActivity {
             public void onResponse(Call<Leasecontracts> call, Response<Leasecontracts> response) {
                 leasecontracts = response.body();
                 phonghientai_contract.setText(leasecontracts.getRoomingHouse().getTitle() + " - " + leasecontracts.getRoomingHouse().get_id());
-                tienPhongEditText.setText(leasecontracts.getRoomingHouse().getPrice() + "");
+                tienPhongEditText.setText(leasecontracts.getRent_price() + "");
                 phiCocPhongEditText.setText(leasecontracts.getDeposit() + "");
                 editTextday_ngaybatdau.setText(leasecontracts.getBilling_start_date());
                 editTextday_ngayketthuc.setText(leasecontracts.getEnd_date());
@@ -205,6 +451,9 @@ public class FormContractActivity extends AppCompatActivity {
                 }else {
                     payFalseRadioButton.setChecked(true);
                 }
+                link_cccd_front = leasecontracts.getCccd_front();
+                link_cccd_back = leasecontracts.getCccd_back();
+                list = leasecontracts.getImage_url();
 
                 sdtKhachHangEditText.setText(leasecontracts.getTenant().getPhoneNumber());
                 Picasso.with(getApplicationContext())
@@ -360,11 +609,16 @@ public class FormContractActivity extends AppCompatActivity {
 
     private void updateImageAdapter() {
         if(checkimg == 0){
+            upload(selectedImages);
             imageAdapter = new ImageAdapter(this, selectedImages);
             hinhanhopdong_recycleview.setAdapter(imageAdapter);
         }else if(checkimg ==1){
+            img_cccd_front = img;
+            upload(img,0);
             cccd_mattruoc.setImageURI(img);
         }else  if(checkimg ==2){
+            img_cccd_back = img;
+            upload(img,1);
             cccd_matsau.setImageURI(img);
         }
 

@@ -158,6 +158,10 @@
         private String roomingHouse = "";
 
         private void upload(ArrayList<Uri> selectedImages) {
+            if(selectedImages.size() == 0){
+                Toast.makeText(FormAddRoomHouseActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
+                return;
+            }
             int totalImages = selectedImages.size();
             final int[] uploadedImages = {0};
 
@@ -203,11 +207,6 @@
         }
 
         private void AddHouse() {
-
-            if(selectedImages.size() == 0){
-                Toast.makeText(FormAddRoomHouseActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             if(list.size() != selectedImages.size()){
                 return;

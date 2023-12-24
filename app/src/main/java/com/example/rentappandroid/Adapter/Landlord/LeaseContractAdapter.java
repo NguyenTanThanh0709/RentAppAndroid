@@ -61,6 +61,7 @@ public class LeaseContractAdapter extends RecyclerView.Adapter<LeaseContractAdap
                     if(role.equals("ADMIN")){
                         Intent intent = new Intent(context, FormContractActivity.class);
                         intent.putExtra("idContract", leaseContract.get_id());
+                        intent.putExtra("type", "edit");
                         context.startActivity(intent);
                     }else {
 

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="8"
             android:layout_marginLeft="10dp"
-            android:drawableLeft="@drawable/baseline_not_listed_location_24"
+            android:drawableLeft="@drawable/baseline_chat_24"
             android:id="@+id/mota_notification"
             android:text="Mô tả"
             android:alpha="0.5"/>

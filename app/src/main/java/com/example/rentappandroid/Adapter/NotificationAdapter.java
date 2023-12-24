@@ -1,15 +1,27 @@
 package com.example.rentappandroid.Adapter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentappandroid.Activity.MessageActivity;
+import com.example.rentappandroid.Activity.Tenant.DetailInfoRoomActivity;
 import com.example.rentappandroid.Model.Notification;
 import com.example.rentappandroid.R;
 
@@ -55,13 +67,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             public void onClick(View view) {
                 if (notification.getType().equals("TIN NHẮN")) {
-
+                    Intent intent = new Intent(context, MessageActivity.class);
+                    intent.putExtra("id", notification.getId_type());
+                    context.startActivity(intent);
                 } else if (notification.getType().equals("SỰ CỐ")) {
 
                 } else if (notification.getType().equals("HÓA ĐƠN")) {
 
                 } else if (notification.getType().equals("LỊCH HẸN")) {
-
+                    showPopupMenu(view, notification);
                 } else if (notification.getType().equals("TIÊU CHÍ PHÙ HỢP")) {
 
                 } else {
@@ -72,6 +86,50 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             }
         });
     }
+
+    private void showPopupMenu(View view, Notification notification) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.your_popup_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_call) {
+                    if(role.equals("ADMIN")){
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // Request the CALL_PHONE permission
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 100);
+                        } else {
+                            // Permission is already granted, initiate the call
+                            Intent i = new Intent(Intent.ACTION_CALL);
+                            i.setData(Uri.parse("tel:" + notification.getTenant().getPhoneNumber()));
+                            context.startActivity(i);
+                        }
+                    } else {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // Request the CALL_PHONE permission
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 100);
+                        } else {
+                            // Permission is already granted, initiate the call
+                            Intent i = new Intent(Intent.ACTION_CALL);
+                            i.setData(Uri.parse("tel:" + notification.getLandlord().getPhoneNumber()));
+                            context.startActivity(i);
+                        }
+                    }
+
+                } else if (item.getItemId() == R.id.menu_chat) {
+                    Intent intent = new Intent(context, MessageActivity.class);
+                    intent.putExtra("id", notification.getId_type());
+                    context.startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+        popupMenu.show();
+    }
+
 
     @Override
     public int getItemCount() {

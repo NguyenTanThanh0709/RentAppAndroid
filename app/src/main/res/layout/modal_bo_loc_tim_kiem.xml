@@ -52,6 +52,11 @@
                     android:paddingEnd="16dp"
                     android:textAlignment="textStart"
                     android:spinnerMode="dropdown" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/modal_tieuchitim"
+                    />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </LinearLayout>
@@ -82,6 +87,7 @@
                 android:id="@+id/modal_timphong_editText_giatromuontim"
                 android:hint="Giá phòng trọ"
                 android:inputType="number"
+                android:text="0"
                 android:layout_marginTop="8dp"
                 />
         </LinearLayout>
@@ -114,13 +120,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- RadioButton cho Tin mới nhất -->
-                <RadioButton
-                    android:id="@+id/modal_timphong_radioLatestNews"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tin mới nhất"
-                    android:checked="true" />
+
 
                 <!-- RadioButton cho Giá cao nhất -->
                 <RadioButton

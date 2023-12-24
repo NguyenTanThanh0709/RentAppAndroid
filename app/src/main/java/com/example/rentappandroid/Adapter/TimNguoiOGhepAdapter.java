@@ -39,6 +39,10 @@ public class TimNguoiOGhepAdapter extends RecyclerView.Adapter<TimNguoiOGhepAdap
 
     private Context context;
     private List<TimNguoiOGhep> timNguoiOGhepList;
+    public void updateList(List<TimNguoiOGhep> newList) {
+        this.timNguoiOGhepList = newList;
+        notifyDataSetChanged(); // Notify the adapter that the data set has changed
+    }
     private String token;
     private String role;
     private String type;

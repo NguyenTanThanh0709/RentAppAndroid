@@ -20,6 +20,7 @@ import android.widget.EditText;
 import com.example.rentappandroid.Adapter.IssueAdapter;
 import com.example.rentappandroid.Adapter.MessageAdapter;
 import com.example.rentappandroid.Dto.Reponse.Owner;
+import com.example.rentappandroid.FireBase.FirebaseHelper;
 import com.example.rentappandroid.FireBase.MessageHelper;
 import com.example.rentappandroid.Model.Message;
 import com.example.rentappandroid.Model.Notification;
@@ -30,8 +31,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +51,9 @@ public class MessageActivity extends AppCompatActivity {
     private RecyclerView recyclerViewMessages;
     private EditText editTextMessage;
     private Button buttonSend;
+    private FirebaseHelper firebaseHelper;
+
+
 
     private Owner landlord;
     private Owner tenant;
@@ -82,12 +88,13 @@ public class MessageActivity extends AppCompatActivity {
 
 
     }
-
+    String idTent ;
+    String idOwner ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-
+        firebaseHelper = new FirebaseHelper();
         messageHelper = new MessageHelper();
         SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");
@@ -95,10 +102,31 @@ public class MessageActivity extends AppCompatActivity {
         phoneOwner = preferences.getString("sdt", "");
         list = new ArrayList<>();
 
+
+
+
         Intent intent = getIntent();
-        String conversationId = intent.getStringExtra("id");
-        String[] split = conversationId.split("_");
-        getdata(split[1],split[0]);
+
+        // Kiểm tra xem có Intent được truyền vào không
+        if (intent != null && intent.hasExtra("id")) {
+            String conversationId = intent.getStringExtra("id");
+
+            // Tiến hành xử lý thông tin trong Intent
+            idTent = conversationId.split("_")[1];
+            idOwner = conversationId.split("_")[0];
+            getdata(idTent, idOwner);
+        }
+        if (intent != null && intent.hasExtra("owner") && intent.hasExtra("tenant")) {
+            idTent = intent.getStringExtra("tenant");
+            idOwner = intent.getStringExtra("owner");
+
+            getdata(idTent, idOwner);
+        }
+
+
+
+
+
 
         recyclerViewMessages = findViewById(R.id.recyclerViewMessages);
         editTextMessage = findViewById(R.id.editTextMessage);
@@ -112,7 +140,7 @@ public class MessageActivity extends AppCompatActivity {
         recyclerViewMessages.setAdapter(messageAdapter);
 
 
-        messageHelper.getMessages(split[0], split[1], new ValueEventListener() {
+        messageHelper.getMessages(idOwner,idTent, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Xử lý dữ liệu nhận được từ Firebase
@@ -138,12 +166,16 @@ public class MessageActivity extends AppCompatActivity {
                 // TODO: Handle sending the message
                 String messageText = editTextMessage.getText().toString().trim();
                 if (!messageText.isEmpty()) {
-                    Message message = new Message(split[0],split[1],messageText,System.currentTimeMillis(),tenant.getName(),landlord.getName());
+                    Message message = new Message(idOwner,idTent,messageText,System.currentTimeMillis(),tenant.getName(),landlord.getName());
                     messageHelper.addMessage(message);
-
                     list.clear();
                     messageAdapter.notifyDataSetChanged();
                     editTextMessage.getText().clear();
+
+                    Notification notification = new Notification(UUID.randomUUID().toString()   , "Tin Nhắn Giữa Chủ trọ: " + landlord.getName() + " và khách hàng: " + tenant.getName() + " đã được thêm vào!"
+                            , tenant, landlord, LocalDate.now().toString(), "TIN NHẮN", landlord.get_id()+ "_" + tenant.get_id());
+                    firebaseHelper.addNotification(notification);
+
                 }
             }
         });

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentappandroid.Activity.Tenant.BaiDang.FormTimPhongActivity;
 import com.example.rentappandroid.Activity.Tenant.DetailInfoFindHouseActivity;
 import com.example.rentappandroid.Model.FindRoomHouseResponse;
+import com.example.rentappandroid.Model.TimNguoiOGhep;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiPostFindHouse;
 import com.example.rentappandroid.api.UpdateStatusRequest;
@@ -32,6 +33,10 @@ public class FindRoomHouseAdapter extends RecyclerView.Adapter<FindRoomHouseAdap
 
     private final Context context;
     private List<FindRoomHouseResponse> findRoomHouseList;
+    public void updateList(List<FindRoomHouseResponse> newList) {
+        this.findRoomHouseList = newList;
+        notifyDataSetChanged(); // Notify the adapter that the data set has changed
+    }
     private String token;
     private String role;
     private String type;
