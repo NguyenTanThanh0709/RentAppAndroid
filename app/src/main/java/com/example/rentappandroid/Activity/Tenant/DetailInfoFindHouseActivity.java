@@ -1,16 +1,25 @@
 package com.example.rentappandroid.Activity.Tenant;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.rentappandroid.Activity.MessageActivity;
 import com.example.rentappandroid.Adapter.TienNghiAdapter;
 import com.example.rentappandroid.Model.FindRoomHouseResponse;
 import com.example.rentappandroid.R;
@@ -79,13 +88,41 @@ public class DetailInfoFindHouseActivity extends AppCompatActivity {
 
         chatButton = findViewById(R.id.info_timtro_chat_btn_bottom);
         goiButton = findViewById(R.id.info_timtro_goi_btn_bottom);
+
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailInfoFindHouseActivity.this, MessageActivity.class);
+                intent.putExtra("owner", findRoomHouseResponse.getUser().get_id());
+                intent.putExtra("tenant", phoneOwner);
+                startActivity(intent);
+            }
+        });
+
+        goiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phone = findRoomHouseResponse.getUser().getPhoneNumber();
+                if (ContextCompat.checkSelfPermission(DetailInfoFindHouseActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+
+                    ActivityCompat.requestPermissions(DetailInfoFindHouseActivity.this,new String[]{Manifest.permission.CALL_PHONE},100);
+                }
+                Intent i = new Intent(Intent.ACTION_CALL);
+                i.setData(Uri.parse("tel:"+phone));
+                startActivity(i);
+            }
+        });
     }
 
+    String phoneOwner;
     private FindRoomHouseResponse findRoomHouseResponse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_info_find_house);
+        SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
+
+        phoneOwner = preferences.getString("sdt", "");
         findRoomHouseResponse = new FindRoomHouseResponse();
         init();
         Intent intent = getIntent();

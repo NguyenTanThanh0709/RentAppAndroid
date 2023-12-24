@@ -1,18 +1,27 @@
 package com.example.rentappandroid.Activity.Tenant;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.rentappandroid.Activity.MessageActivity;
 import com.example.rentappandroid.Adapter.Image_info_Adapter;
 import com.example.rentappandroid.Adapter.ServiceChargeAdapter;
 import com.example.rentappandroid.Adapter.TienNghiAdapter;
@@ -115,6 +124,30 @@ public class Detail_info_tim_o_ghep_Activity extends AppCompatActivity {
         tienNghiRecycleView = findViewById(R.id.tenant_timnguoi_oGhep_tiennghi_baidanginfo_recycleview);
         chatBtnBottom = findViewById(R.id.tenant_timnguoi_oGhep_chat_btn_bottom);
         goiBtnBottom = findViewById(R.id.tenant_timnguoi_oGhep_goi_btn_bottom);
+
+        chatBtnBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Detail_info_tim_o_ghep_Activity.this, MessageActivity.class);
+                intent.putExtra("owner", timNguoiOGhep.getUser().get_id());
+                intent.putExtra("tenant", phoneOwner);
+                startActivity(intent);
+            }
+        });
+
+        goiBtnBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phone = timNguoiOGhep.getUser().getPhoneNumber();
+                if (ContextCompat.checkSelfPermission(Detail_info_tim_o_ghep_Activity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+
+                    ActivityCompat.requestPermissions(Detail_info_tim_o_ghep_Activity.this,new String[]{Manifest.permission.CALL_PHONE},100);
+                }
+                Intent i = new Intent(Intent.ACTION_CALL);
+                i.setData(Uri.parse("tel:"+phone));
+                startActivity(i);
+            }
+        });
     }
 
 
@@ -123,11 +156,15 @@ public class Detail_info_tim_o_ghep_Activity extends AppCompatActivity {
     private String postId  = "";
     private String token = "";
     private String role = "";
+    String phoneOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_info_tim_oghep);
+        SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
+
+        phoneOwner = preferences.getString("sdt", "");
         init();
         timNguoiOGhep = new TimNguoiOGhep();
         Intent intent = getIntent();

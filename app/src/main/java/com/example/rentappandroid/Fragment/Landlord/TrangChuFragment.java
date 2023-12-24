@@ -129,6 +129,16 @@ public class TrangChuFragment extends Fragment {
         xemthemtimkiemphongtro = view.findViewById(R.id.xemthemtimkiemphongtro);
         listbaiviettimnguoioghep_recycle = view.findViewById(R.id.listbaiviettimnguoioghep_recycle);
         xemthemtimkiemoghep = view.findViewById(R.id.xemthemtimkiemoghep);
+        handleXemThem();
+    }
+
+    private void handleXemThem(){
+        xemthembaidang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private List<Provinces> listProvicense;
@@ -174,9 +184,9 @@ public class TrangChuFragment extends Fragment {
             getTieuChiTimQuan = "";
         }
 
-        if(tieuChiTimTinh.isEmpty() && getTieuChiTimQuan.isEmpty() && tieuChitimLoaiTro.isEmpty()){
+        if(!tieuChiTimTinh.isEmpty() || !getTieuChiTimQuan.isEmpty() || !tieuChitimLoaiTro.isEmpty() || giatroMax != 0){
 
-        }else {
+
             List<BaiViet> baiVietList1 = new ArrayList<>();
             for(BaiViet baiViet : baiVietList){
 
@@ -190,7 +200,16 @@ public class TrangChuFragment extends Fragment {
                     ){
                         baiVietList1.add(baiViet);
                     }
-                } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 0) {
+                } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && !tieuChitimLoaiTro.isEmpty()) {
+                    // Xử lý khi chỉ có tiêu chí tìm tỉnh, quận và giá trị tối đa
+                    if(
+                            baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                                    && baiViet.getRoom().getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
+                                    && tieuChitimLoaiTro.equals(baiViet.getRoom().getTypehouse().get_id())
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                }else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 0) {
                     // Xử lý khi chỉ có tiêu chí tìm tỉnh, quận và giá trị tối đa
                     if(
                             baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
@@ -212,6 +231,13 @@ public class TrangChuFragment extends Fragment {
                     // Chỉ xử lý giá trị tối đa và loại trọ
                     if(
                             baiViet.getRoom().getPrice() <= giatroMax
+                                    && tieuChitimLoaiTro.equals(baiViet.getRoom().getTypehouse().get_id())
+                    ){
+                        baiVietList1.add(baiViet);
+                    }
+                } else if (!tieuChiTimTinh.isEmpty() && !tieuChitimLoaiTro.isEmpty()) {
+                    if(
+                            baiViet.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
                                     && tieuChitimLoaiTro.equals(baiViet.getRoom().getTypehouse().get_id())
                     ){
                         baiVietList1.add(baiViet);
@@ -251,70 +277,72 @@ public class TrangChuFragment extends Fragment {
 // timNguoiOGhepList findRoomHouseResponseList
             List<TimNguoiOGhep> timNguoiOGhepList1 = new ArrayList<>();
             for (TimNguoiOGhep timNguoiOGhep: timNguoiOGhepList){
-                if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1){
+
+                if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1  ){
                     if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
                             && timNguoiOGhep.getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
                             && timNguoiOGhep.getPrice() <= giatroMax
+
                     ){
                         timNguoiOGhepList1.add(timNguoiOGhep);
                     }
 
-                }
-                if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1 && !tieuChitimLoaiTro.isEmpty() ){
-                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
-                            && timNguoiOGhep.getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
-                            && timNguoiOGhep.getPrice() <= giatroMax
-                    ){
-                        timNguoiOGhepList1.add(timNguoiOGhep);
-                    }
-
-                }
-                if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty()){
+                }else if(!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty()){
                     if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
                             && timNguoiOGhep.getAddress().getDistrict().toLowerCase().equals(getTieuChiTimQuan.toLowerCase())
                     ){
                         timNguoiOGhepList1.add(timNguoiOGhep);
                     }
 
-                }
-                if(!tieuChiTimTinh.isEmpty()){
-                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
-                    ){
-                        timNguoiOGhepList1.add(timNguoiOGhep);
-                    }
-                }
+                } else
                 if(!tieuChiTimTinh.isEmpty()  && giatroMax > 1){
                     if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
                             && timNguoiOGhep.getPrice() <= giatroMax
                     ){
                         timNguoiOGhepList1.add(timNguoiOGhep);
                     }
-                }
+                } else
 
+                if(!tieuChiTimTinh.isEmpty()){
+                    if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())
+                    ){
+                        timNguoiOGhepList1.add(timNguoiOGhep);
+                    }
+
+                }
             }
             timNguoiOGhepAdapter.updateList(timNguoiOGhepList1);
 
             List<FindRoomHouseResponse> findRoomHouseResponses = new ArrayList<>();
             for (FindRoomHouseResponse findRoomHouseResponse : findRoomHouseResponseList){
                 if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1 && !tieuChitimLoaiTro.isEmpty()) {
-                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
-                            && findRoomHouseResponse.getAddress().contentEquals(getTieuChiTimQuan)
+                    if(findRoomHouseResponse.getAddress().contains(tieuChiTimTinh)
+                            && findRoomHouseResponse.getAddress().contains(getTieuChiTimQuan)
                             && findRoomHouseResponse.getMaxPrice() <=        giatroMax
                             &&        tieuChitimLoaiTro.equals(findRoomHouseResponse.getTypehouse().get_id())
                     ){
                         findRoomHouseResponses.add(findRoomHouseResponse);
                     }
                 } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && giatroMax > 1) {
-                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
-                            && findRoomHouseResponse.getAddress().contentEquals(getTieuChiTimQuan)
+                    if(findRoomHouseResponse.getAddress().contains(tieuChiTimTinh)
+                            && findRoomHouseResponse.getAddress().contains(getTieuChiTimQuan)
                             && findRoomHouseResponse.getMaxPrice() <=        giatroMax
 
                     ){
                         findRoomHouseResponses.add(findRoomHouseResponse);
                     }
+                }
+                else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty() && !tieuChitimLoaiTro.isEmpty()) {
+                    if(findRoomHouseResponse.getAddress().contains(tieuChiTimTinh)
+                            && findRoomHouseResponse.getAddress().contains(getTieuChiTimQuan)
+                            &&        tieuChitimLoaiTro.equals(findRoomHouseResponse.getTypehouse().get_id())
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
+
                 } else if (!tieuChiTimTinh.isEmpty() && !getTieuChiTimQuan.isEmpty()) {
-                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
-                            && findRoomHouseResponse.getAddress().contentEquals(getTieuChiTimQuan)
+                    if(findRoomHouseResponse.getAddress().contains(tieuChiTimTinh)
+                            && findRoomHouseResponse.getAddress().contains(getTieuChiTimQuan)
                     ){
                         findRoomHouseResponses.add(findRoomHouseResponse);
                     }
@@ -327,6 +355,14 @@ public class TrangChuFragment extends Fragment {
                         findRoomHouseResponses.add(findRoomHouseResponse);
                     }
 
+                } else if (!tieuChiTimTinh.isEmpty() && !tieuChitimLoaiTro.isEmpty()) {
+                    if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
+                            && findRoomHouseResponse.getMaxPrice() <=        giatroMax
+                            &&        tieuChitimLoaiTro.equals(findRoomHouseResponse.getTypehouse().get_id())
+
+                    ){
+                        findRoomHouseResponses.add(findRoomHouseResponse);
+                    }
                 } else if (!tieuChiTimTinh.isEmpty() && giatroMax > 1) {
                     if(findRoomHouseResponse.getAddress().contentEquals(tieuChiTimTinh)
                             && findRoomHouseResponse.getMaxPrice() <=        giatroMax
@@ -354,11 +390,6 @@ public class TrangChuFragment extends Fragment {
             }
             findRoomHouseAdapter.updateList(findRoomHouseResponses);
         }
-
-
-
-
-
 
 
     }
@@ -547,14 +578,11 @@ if(loaiNhaList.size() == 0){
             }
         });
     }
-
     private String token;
     private  String role;
     private  String phoneOwner;
     private List<String> quanCuaThanhPho;
     private Khamdapter khamdapter;
-
-
     private List<BaiViet> baiVietList;
     private BaiVietAdapter baiVietAdapter;
     private List<FindRoomHouseResponse> findRoomHouseResponseList;
@@ -568,11 +596,24 @@ if(loaiNhaList.size() == 0){
     private void getData(){
 
 
+
         ApiTimNguoiOGhep.apiApiTimNguoiOGhep.getAllTimNguoiOGheps(token).enqueue(new Callback<List<TimNguoiOGhep>>() {
             @Override
             public void onResponse(Call<List<TimNguoiOGhep>> call, Response<List<TimNguoiOGhep>> response) {
+
                 timNguoiOGhepList.addAll(response.body());
-                timNguoiOGhepAdapter.notifyDataSetChanged();
+                if(tieuChiTimTinh.isEmpty()){
+                    timNguoiOGhepAdapter.notifyDataSetChanged();
+                }else {
+                    List<TimNguoiOGhep> list = new ArrayList<>();
+                    for (TimNguoiOGhep timNguoiOGhep : timNguoiOGhepList){
+                        if(timNguoiOGhep.getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())){
+                            list.add(timNguoiOGhep);
+                        }
+                    }
+                    timNguoiOGhepAdapter.updateList(list);
+                }
+
             }
 
             @Override
@@ -583,8 +624,24 @@ if(loaiNhaList.size() == 0){
         ApiPostFindHouse.apiApiPostFindHouse.getAllFindRoomHouses(token).enqueue(new Callback<List<FindRoomHouseResponse>>() {
             @Override
             public void onResponse(Call<List<FindRoomHouseResponse>> call, Response<List<FindRoomHouseResponse>> response) {
+
+
+
+
                 findRoomHouseResponseList.addAll(response.body());
-                findRoomHouseAdapter.notifyDataSetChanged();
+                if(tieuChiTimTinh.isEmpty()){
+                    findRoomHouseAdapter.notifyDataSetChanged();
+                }else {
+                    List<FindRoomHouseResponse> list = new ArrayList<>();
+                    for (FindRoomHouseResponse timNguoiOGhep : findRoomHouseResponseList){
+                        if(timNguoiOGhep.getAddress().contains(tieuChiTimTinh)){
+                            list.add(timNguoiOGhep);
+                        }
+                    }
+                    findRoomHouseAdapter.updateList(list);
+                }
+
+
             }
 
             @Override
@@ -597,7 +654,23 @@ if(loaiNhaList.size() == 0){
             public void onResponse(Call<List<BaiViet>> call, Response<List<BaiViet>> response) {
                 if (response.isSuccessful()) {
                     // Xử lý khi response thành công
+
+
                     baiVietList.addAll(response.body());
+
+                    if(tieuChiTimTinh.isEmpty()){
+                        baiVietAdapter.notifyDataSetChanged();
+                    }else {
+                        List<BaiViet> list = new ArrayList<>();
+                        for (BaiViet timNguoiOGhep : baiVietList){
+                            if(timNguoiOGhep.getRoom().getAddress().getCity().toLowerCase().equals(tieuChiTimTinh.toLowerCase())){
+                                list.add(timNguoiOGhep);
+                            }
+                        }
+                        baiVietAdapter.updateList(list);
+                    }
+
+
                     for(BaiViet baiViet : baiVietList){
                         String quan = baiViet.getRoom().getAddress().getDistrict();
                         if(!quanCuaThanhPho.contains(quan)){
@@ -605,7 +678,7 @@ if(loaiNhaList.size() == 0){
                         }
                     }
                     khamdapter.notifyDataSetChanged();
-                    baiVietAdapter.notifyDataSetChanged();
+
                 } else {
                     // Xử lý khi response không thành công (ví dụ: server trả về lỗi)
                     Log.e("API Response", "Error: " + response.code() + " - " + response.message());
@@ -639,7 +712,7 @@ if(loaiNhaList.size() == 0){
         baiVietList = new ArrayList<>();
         findRoomHouseResponseList = new ArrayList<>();
         timNguoiOGhepList = new ArrayList<>();
-        getData();
+
 
         String tieuChiTimTinh_ = preferences.getString("tieuchitimtinh", "");
         tieuChiTimTinh = tieuChiTimTinh_;
@@ -653,7 +726,7 @@ if(loaiNhaList.size() == 0){
 
         String isMaxPrice_ = preferences.getString("ismaxprice", "0");
         isMaxPrice = isMaxPrice_;
-
+        getData();
         // KHÁM PHÁ
 
         khamdapter = new Khamdapter(getContext() ,quanCuaThanhPho, token);
