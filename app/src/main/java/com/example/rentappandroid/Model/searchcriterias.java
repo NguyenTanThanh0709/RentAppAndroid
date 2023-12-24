@@ -4,7 +4,6 @@ import java.util.List;
 
 public class searchcriterias {
     private String _id;
-
     private String tenant;
     private String location;
     private int maxPrice;

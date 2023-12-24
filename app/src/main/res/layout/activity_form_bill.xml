@@ -91,6 +91,48 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/rounded_corners">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tình trạng hóa đơn"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <RadioGroup
+                    android:id="@+id/radioGroupStatus_contract"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/status_true_bill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="đã thanh toán"/>
+
+                    <RadioButton
+                        android:id="@+id/status_false_bill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="chưa thanh toán"/>
+
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

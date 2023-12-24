@@ -13,16 +13,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.rentappandroid.Dto.Reponse.Owner;
 import com.example.rentappandroid.Dto.Request.Add.IssueRequest;
+import com.example.rentappandroid.FireBase.FirebaseHelper;
 import com.example.rentappandroid.Model.Leasecontracts;
+import com.example.rentappandroid.Model.Notification;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiHopDong;
 import com.example.rentappandroid.api.ApiIssue;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +40,8 @@ public class IsssueEntryDialog extends Dialog {
     private Button addButton;
 
     private List<String > rooms;
-
+    private List<Leasecontracts> leasecontracts;
+    private FirebaseHelper firebaseHelper;
     private String token;
     private String phoneOwner;
     public IsssueEntryDialog(Context context, String token, String phoneOwner) {
@@ -48,12 +54,12 @@ public class IsssueEntryDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_issue_entry);
-
+        firebaseHelper = new FirebaseHelper();
         roomingHouseSpinner = findViewById(R.id.spinnerRoomingHouseissue);
         contentEditText = findViewById(R.id.editTextContentissue);
         addButton = findViewById(R.id.btnAddissue);
         rooms = new ArrayList<>();
-
+        leasecontracts = new ArrayList<>();
         getData();
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,9 +69,19 @@ public class IsssueEntryDialog extends Dialog {
             }
         });
     }
-
+    Owner tenant ;
+    Owner landord;
     private void addIssue() {
         String selectedRoomingHouse = roomingHouseSpinner.getSelectedItem().toString();
+         tenant = new Owner();
+         landord = new Owner();
+        for (Leasecontracts leasecontracts1 : leasecontracts){
+            if(selectedRoomingHouse.equals(leasecontracts1.getRoomingHouse().getAddress().getFullAddress() + "_" + leasecontracts1.getRoomingHouse().get_id() + "_" + leasecontracts1.getRoomingHouse().getOwner().get_id())){
+                tenant = leasecontracts1.getTenant();
+                landord = leasecontracts1.getLandlord();
+                break;
+            }
+        }
         String content = contentEditText.getText().toString();
         String plit[] = selectedRoomingHouse.split("_");
         Date currentDate = new Date();
@@ -80,7 +96,11 @@ public class IsssueEntryDialog extends Dialog {
         ApiIssue.apiApiIssue.createIssue(issueRequest,token).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(getContext(),"Thành Công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Thành Công và đã được gửi đến chủ nhà trọ", Toast.LENGTH_SHORT).show();
+                Notification notification = new Notification(UUID.randomUUID().toString()   , "Có sự cố với nhà trọ: " + issueRequest.getRoom() + " Vui lòng kiểm tra"
+                        , tenant, landord, LocalDate.now().toString(), "SỰ CỐ", ""
+                );
+                firebaseHelper.addNotification(notification);
             }
 
             @Override
@@ -98,10 +118,10 @@ public class IsssueEntryDialog extends Dialog {
             @Override
             public void onResponse(Call<List<Leasecontracts>> call, Response<List<Leasecontracts>> response) {
                 if (response.isSuccessful()) {
+                    leasecontracts.addAll(response.body());
                     for (Leasecontracts leasecontracts : response.body()) {
                         String id = leasecontracts.getRoomingHouse().getAddress().getFullAddress() + "_" + leasecontracts.getRoomingHouse().get_id() + "_" + leasecontracts.getRoomingHouse().getOwner().get_id();
 
-                        // Check if the id already exists in the rooms list
                         if (!rooms.contains(id)) {
                             rooms.add(id);
                         }

@@ -71,6 +71,7 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonView
                 }else if(type.equals("xemhoadon_landrod")) {
 
                     Intent intent = new Intent(context, FormBillActivity.class);
+                    intent.putExtra("type", "edit");
                     intent.putExtra("idBill", hoaDon.get_id());
                     context.startActivity(intent);
                 }

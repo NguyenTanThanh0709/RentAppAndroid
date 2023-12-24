@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentappandroid.Activity.MessageActivity;
 import com.example.rentappandroid.Activity.Tenant.DetailInfoRoomActivity;
+import com.example.rentappandroid.Activity.Tenant.HoaDon.InfoBillTenantActivity;
+import com.example.rentappandroid.Fragment.Landlord.ListIssueActivity;
 import com.example.rentappandroid.Model.Notification;
 import com.example.rentappandroid.R;
 
@@ -72,8 +74,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     context.startActivity(intent);
                 } else if (notification.getType().equals("SỰ CỐ")) {
 
-                } else if (notification.getType().equals("HÓA ĐƠN")) {
+                    Intent intent = new Intent(context, ListIssueActivity.class);
+                    context.startActivity(intent);
 
+                } else if (notification.getType().equals("HÓA ĐƠN")) {
+                    Intent intent = new Intent(context, InfoBillTenantActivity.class);
+                    intent.putExtra("idBill", notification.getId_type());
+                    context.startActivity(intent);
                 } else if (notification.getType().equals("LỊCH HẸN")) {
                     showPopupMenu(view, notification);
                 } else if (notification.getType().equals("TIÊU CHÍ PHÙ HỢP")) {

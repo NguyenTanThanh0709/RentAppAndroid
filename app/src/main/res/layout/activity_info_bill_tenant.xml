@@ -65,20 +65,11 @@
                     android:textSize="18sp"/>
 
                 <!-- TextInputLayout with TextInputEditText -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/bill_tenant_textinputday_ngaythanhtoan"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/bill_tenant_editTextday_ngaythanhtoan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:hint="Hóa đơn tháng"
-                        android:focusable="false"
-                        android:onClick="showDatePickerDialog" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:text="ngày"
+                    android:id="@+id/bill_tenant_editTextday_ngaythanhtoan"/>
 
 
             </LinearLayout>

@@ -34,8 +34,8 @@ public class InfoBillTenantActivity extends AppCompatActivity {
     private String token;
 
 
-    private TextView  textView3, textView1, textView2, textView33, textView4 , t5;
-    private EditText editText1, editText2;
+    private TextView  textView3, textView1,editText2, textView2, textView33, textView4 , t5;
+    private EditText editText1 ;
     private Button button;
     private void init(){
         textView1 = findViewById(R.id.bill_tenant_kihan_hd);

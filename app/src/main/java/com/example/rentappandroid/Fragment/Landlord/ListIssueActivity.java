@@ -34,11 +34,9 @@ public class ListIssueActivity extends AppCompatActivity {
     private String token;
     private String phoneOwner;
     private String role;
-
     private RecyclerView recyclerView;
     private IssueAdapter issueAdapter;
     private List<Issue> issueList;
-
     private Button chuaxulyButton;
     private Button dangxulyButton;
     private Button daxulyButton;
