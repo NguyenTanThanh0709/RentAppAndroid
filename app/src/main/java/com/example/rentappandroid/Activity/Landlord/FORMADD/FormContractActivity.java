@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -137,7 +138,7 @@ public class FormContractActivity extends AppCompatActivity {
         buttonAddRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                progressBar.setVisibility(View.VISIBLE);
                 Add();
 
             }
@@ -166,6 +167,7 @@ public class FormContractActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Handle any errors getting the download URL
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(FormContractActivity.this, "Error getting download URL", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -173,12 +175,14 @@ public class FormContractActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(FormContractActivity.this,"ERROR",Toast.LENGTH_SHORT).show();
             }
         });
     }
     private void upload(ArrayList<Uri> selectedImages) {
         if(selectedImages.size() == 0){
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(FormContractActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -207,6 +211,7 @@ public class FormContractActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // Handle any errors getting the download URL
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(FormContractActivity.this, "Error getting download URL", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -215,6 +220,7 @@ public class FormContractActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     // Handle upload failure
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(FormContractActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -225,9 +231,11 @@ public class FormContractActivity extends AppCompatActivity {
 
 
         if(list.size() != selectedImages.size()){
+            progressBar.setVisibility(View.GONE);
             return;
         }
         if(link_cccd_back.isEmpty() || link_cccd_front.isEmpty()){
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
@@ -251,10 +259,12 @@ public class FormContractActivity extends AppCompatActivity {
 
             // Check additional conditions if needed
             if (!isValidInput(tienphong, deposit, payment_term)) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), "Invalid input. Please check your input data.", Toast.LENGTH_SHORT).show();
                 return;
             }
         } catch (NumberFormatException e) {
+            progressBar.setVisibility(View.GONE);
             // Handle the case where the input cannot be parsed as an integer
             Toast.makeText(getApplicationContext(), "Invalid input. Please enter valid integers.", Toast.LENGTH_SHORT).show();
             return;
@@ -270,6 +280,7 @@ public class FormContractActivity extends AppCompatActivity {
 
         if (!isValidInput(tenant_phone, password, room, start_date, end_date, billing_start_date)) {
             Toast.makeText(getApplicationContext(), "Invalid input. Please check your input data.", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
@@ -284,10 +295,11 @@ public class FormContractActivity extends AppCompatActivity {
                 public void onResponse(Call<Mess> call, Response<Mess> response) {
                     if (response.isSuccessful()) {
                         showToast(response.body().getMessage());
+                        progressBar.setVisibility(View.GONE);
                         Log.d("API Call Success", "API call was successful");
                     } else {
                         showToast("Thêm Hợp đồng Thất Bại");
-
+                        progressBar.setVisibility(View.GONE);
                         // Log information when the API call is not successful
                         Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                     }
@@ -296,6 +308,7 @@ public class FormContractActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Mess> call, Throwable t) {
                     showToast("Thêm Hợp đồng Thất Bại");
+                    progressBar.setVisibility(View.GONE);
 
                 }
             });
@@ -308,9 +321,10 @@ public class FormContractActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         showToast(response.body().getMessage());
                         Log.d("API Call Success", "API call was successful");
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         showToast("update Hợp đồng Thất Bại");
-
+                        progressBar.setVisibility(View.GONE);
                         // Log information when the API call is not successful
                         Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                     }
@@ -319,7 +333,7 @@ public class FormContractActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Mess> call, Throwable t) {
                     showToast("update Hợp đồng Thất Bại");
-
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         }
@@ -369,12 +383,12 @@ public class FormContractActivity extends AppCompatActivity {
     private List<String> roomInfo;
     private String type = "";
     private String id = "";
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_contract);
-
+        progressBar = findViewById(R.id.progressBarContract);
         SharedPreferences preferences =  getSharedPreferences("Owner", Context.MODE_PRIVATE);
         roomList = new ArrayList<>();
         roomInfo = new ArrayList<>();

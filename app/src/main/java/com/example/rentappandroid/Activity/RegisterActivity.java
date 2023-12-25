@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -82,8 +83,11 @@ public class RegisterActivity extends AppCompatActivity {
     private  void event(){
 
         registerButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+
                 String name = nameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String sdt = phoneNumberEditText.getText().toString().trim();
@@ -95,6 +99,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(name)) {
                     // Show an error and stop further processing
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(getApplicationContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
                     return; // Stop further processing
                 }
@@ -102,6 +108,8 @@ public class RegisterActivity extends AppCompatActivity {
 // Check if email is a valid email address
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     // Show an error and stop further processing
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
                     return; // Stop further processing
                 }
@@ -109,6 +117,8 @@ public class RegisterActivity extends AppCompatActivity {
 // Check if password and re-entered password are the same
                 if (!mk.equals(remk) || TextUtils.isEmpty(mk)) {
                     // Show an error and stop further processing
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return; // Stop further processing
                 }
@@ -116,12 +126,16 @@ public class RegisterActivity extends AppCompatActivity {
 // Check if other fields are not null or empty
                 if (TextUtils.isEmpty(sdt)) {
                     // Show an error and stop further processing
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(getApplicationContext(), "Phone number cannot be empty", Toast.LENGTH_SHORT).show();
                     return; // Stop further processing
                 }
 
                 if (selectedProvince.equals("Chọn Tỉnh") || selectedDistrict.equals("Chọn Quận") || selectedWard.equals("Chọn Phường")) {
                     // Show an error and stop further processing
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(getApplicationContext(), "Please select province, district, and ward", Toast.LENGTH_SHORT).show();
                     return; // Stop further processing
                 }
@@ -139,12 +153,16 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 finish();
                             }else {
+                                progressBar.setVisibility(View.GONE);
+
                                 Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
+                            progressBar.setVisibility(View.GONE);
+
                             Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -157,15 +175,20 @@ public class RegisterActivity extends AppCompatActivity {
                             if(response.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                progressBar.setVisibility(View.GONE);
 
                                 finish();
                             }else {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(RegisterActivity.this, "Resgister failed. Please check your credentials.", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(RegisterActivity.this, "Resgister failed. Please check your credentials.", Toast.LENGTH_SHORT).show();
                             Toast.makeText(RegisterActivity.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -268,11 +291,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        progressBar = findViewById(R.id.progressBarregister);
         listProvicense = new ArrayList<>();
         districtList = new ArrayList<>();
         districtList.add(new District("Chọn Quận", -1,-1));

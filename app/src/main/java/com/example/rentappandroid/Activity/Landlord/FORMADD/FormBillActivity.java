@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -71,6 +72,7 @@ public class FormBillActivity extends AppCompatActivity {
         try {
             amount = Integer.parseInt(tongTienBillTextView.getText().toString().replace("Đ", "").replace("Tổng: ", ""));
             if (amount <= 0) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(this, "Xem lại số tiền", Toast.LENGTH_SHORT).show();
                 return;
 
@@ -81,6 +83,7 @@ public class FormBillActivity extends AppCompatActivity {
         String date = editTextday_ngaythanhtoan.getText().toString();
         String des = editTextMotaBill.getText().toString();
         if(leasecontracts == null){
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Vui Chọn hóa đơn", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -103,11 +106,11 @@ public class FormBillActivity extends AppCompatActivity {
                                 );
                         firebaseHelper.addNotification(notification);
                         NotificationHelper.showNotification(FormBillActivity.this, "HÓA ĐƠN", "Hóa đơn tiền nhà tháng  này của bạn nè \n " + billRequest.getPayment_date() + "\n vui lòng thanh toán");
-
+                        progressBar.setVisibility(View.GONE);
                         Log.d("API Call Success", "API call was successful");
                     } else {
                         showToast("Add Bill Thất Bại");
-
+                        progressBar.setVisibility(View.GONE);
                         // Log information when the API call is not successful
                         Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                     }
@@ -116,6 +119,7 @@ public class FormBillActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Mess> call, Throwable t) {
                     showToast("Add Bill Thất Bại");
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         }else {
@@ -123,6 +127,7 @@ public class FormBillActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Mess> call, Response<Mess> response) {
                     if (response.isSuccessful()) {
+                        progressBar.setVisibility(View.GONE);
                         showToast("chỉnh sửa hóa đơn thành công, và đã được gửi đến khách hàng");
                         Notification notification = new Notification(UUID.randomUUID().toString()   , "(có chỉnh sửa)Hóa đơn tiền nhà tháng  này của bạn nè \n " + billRequest.getPayment_date() + "\n vui lòng thanh toán"
                                 , leasecontracts.getTenant(), leasecontracts.getLandlord(), LocalDate.now().toString(), "HÓA ĐƠN",response.body().getMessage()
@@ -131,7 +136,7 @@ public class FormBillActivity extends AppCompatActivity {
                         NotificationHelper.showNotification(FormBillActivity.this, "HÓA ĐƠN", "(có chỉnh sửa)Hóa đơn tiền nhà tháng  này của bạn nè \n " + billRequest.getPayment_date() + "\n vui lòng thanh toán");
                     } else {
                         showToast("update Bill Thất Bại");
-
+                        progressBar.setVisibility(View.GONE);
                         // Log information when the API call is not successful
                         Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                     }
@@ -140,6 +145,7 @@ public class FormBillActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Mess> call, Throwable t) {
                     showToast("update Bill Thất Bại");
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         }
@@ -162,6 +168,7 @@ public class FormBillActivity extends AppCompatActivity {
         buttonAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 Add();
             }
         });
@@ -173,11 +180,12 @@ public class FormBillActivity extends AppCompatActivity {
     private String nameOwner;
     private String type;
     private String idBill;
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_bill);
+        progressBar = findViewById(R.id.progressBarbill);
         firebaseHelper = new FirebaseHelper();
         SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
 

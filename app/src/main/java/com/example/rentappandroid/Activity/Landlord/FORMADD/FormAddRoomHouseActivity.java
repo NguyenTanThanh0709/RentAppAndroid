@@ -16,6 +16,7 @@
     import android.widget.Button;
     import android.widget.EditText;
     import android.widget.MultiAutoCompleteTextView;
+    import android.widget.ProgressBar;
     import android.widget.RadioButton;
     import android.widget.RadioGroup;
     import android.widget.Spinner;
@@ -159,6 +160,7 @@
 
         private void upload(ArrayList<Uri> selectedImages) {
             if(selectedImages.size() == 0){
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(FormAddRoomHouseActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -209,6 +211,7 @@
         private void AddHouse() {
 
             if(list.size() != selectedImages.size()){
+
                 return;
             }
 
@@ -216,11 +219,13 @@
             String mota = editText_MoTaPhongTro.getText().toString();
             if (title.trim().isEmpty()) {
                 showToast("Title cannot be empty");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
             if (mota.trim().isEmpty()) {
                 showToast("Description cannot be empty");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
@@ -229,6 +234,7 @@
                 giatro = Integer.parseInt(editText_giatro.getText().toString());
             } catch (NumberFormatException e) {
                 showToast("Invalid GiaTro value");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
@@ -237,6 +243,7 @@
                 dientich = Integer.parseInt(editText_dienTich.getText().toString());
             } catch (NumberFormatException e) {
                 showToast("Invalid DienTich value");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
@@ -245,6 +252,7 @@
                 succhua = Integer.parseInt(editText_SucChua.getText().toString());
             } catch (NumberFormatException e) {
                 showToast("Invalid SucChua value");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
@@ -255,24 +263,28 @@
 
             if (selectedProvince.equals("Chọn Tỉnh")) {
                 showToast("Please select a province");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
 // Check if a district is selected
             if (selectedDistrict.equals("Chọn Quận")) {
                 showToast("Please select a district");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
 // Check if a ward is selected
             if (selectedWard.equals("Chọn Phường")) {
                 showToast("Please select a ward");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
 // Validate EditText value (assuming it cannot be empty)
             if (tenduong.trim().isEmpty()) {
                 showToast("Street name cannot be empty");
+                progressBar.setVisibility(View.GONE);
                 return;
             }
 
@@ -341,9 +353,10 @@
                         if (response.isSuccessful()) {
                             showToast("Chỉnh sửa Nhà Trọ Thành Công");
                             Log.d("API Call Success", "API call was successful");
+                            progressBar.setVisibility(View.GONE);
                         } else {
                             showToast("Chỉnh sửa Nhà Trọ Thất Bại");
-
+                            progressBar.setVisibility(View.GONE);
                             // Log information when the API call is not successful
                             Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                             String errorMessage = "Chỉnh sửa Nhà Trọ Thất Bại\n" + response.message();
@@ -354,7 +367,7 @@
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         showToast("Chỉnh sửa Nhà Trọ Thất Bại");
-
+                        progressBar.setVisibility(View.GONE);
                         // Log the error
                         Log.e("API Call Error", "Error during API call", t);
 
@@ -374,10 +387,11 @@
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         showToast("Thêm Nhà Trọ Thành Công");
+                        progressBar.setVisibility(View.GONE);
                         Log.d("API Call Success", "API call was successful");
                     } else {
                         showToast("Thêm Nhà Trọ Thất Bại");
-
+                        progressBar.setVisibility(View.GONE);
                         // Log information when the API call is not successful
                         Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                         String errorMessage = "Thêm Nhà Trọ Thất Bại\n" + response.message();
@@ -388,7 +402,7 @@
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     showToast("Thêm Nhà Trọ Thất Bại");
-
+                    progressBar.setVisibility(View.GONE);
                     // Log the error
                     Log.e("API Call Error", "Error during API call", t);
 
@@ -412,8 +426,10 @@
         private void event(){
 
             buttonAddRoom.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View view) {
+                    progressBar.setVisibility(View.VISIBLE);
                     list.clear();
                     upload(selectedImages);
 
@@ -581,12 +597,12 @@
             });
 
         }
-
+        private ProgressBar progressBar;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_form_add_room_house);
-
+            progressBar = findViewById(R.id.progressBarAddHouse);
             FirebaseApp.initializeApp(getApplicationContext());
             storageReference = FirebaseStorage.getInstance().getReference();
             list = new ArrayList<>();

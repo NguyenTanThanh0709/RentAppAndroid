@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -106,6 +107,10 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
     StorageReference storageReference;
     private ArrayList<Uri> selectedImages = new ArrayList<>();
     private void upload(ArrayList<Uri> selectedImages) {
+        if(selectedImages.size() == 0){
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(FormToaNhaActivity.this ,"Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
+        }
         int totalImages = selectedImages.size();
         final int[] uploadedImages = {0};
 
@@ -165,6 +170,8 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
         }
 
         if(selectedImages.size() == 0){
+            progressBar.setVisibility(View.GONE);
+
             Toast.makeText(FormToaNhaActivity.this, "Vui Lòng Chọn Ảnh", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -188,11 +195,15 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
             ApiRoomingHouseComplex.apiRoomingHouseComplex.put(roomingHouseComplexId,roomingHouseComplexRequest,token).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(FormToaNhaActivity.this, "Chỉnh sửa Thành Công", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(FormToaNhaActivity.this, "CHỉnh sửa không Thành Công", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -201,11 +212,15 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
             ApiRoomingHouseComplex.apiRoomingHouseComplex.add(roomingHouseComplexRequest,token).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(FormToaNhaActivity.this, "Thêm Thành Công", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+                    progressBar.setVisibility(View.GONE);
+
                     Toast.makeText(FormToaNhaActivity.this, "Thêm Không Thành Công", Toast.LENGTH_SHORT).show();
 
                 }
@@ -224,12 +239,13 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
     private RoomingHouseComplex roomingHouseComplex;
     private String type = "";
     String roomingHouseComplexId ="";
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_toa_nha);
-
+        progressBar = findViewById(R.id.progressBarcomplex);
         FirebaseApp.initializeApp(getApplicationContext());
         storageReference = FirebaseStorage.getInstance().getReference();
         list  = new ArrayList<>();
@@ -293,6 +309,7 @@ public class FormToaNhaActivity extends AppCompatActivity implements AreaInforma
         buttonAddRoomComplex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 list.clear();
                 upload(selectedImages);
             }

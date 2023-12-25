@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 String email = emailEditText.getText().toString();
                 String pass = passwordEditText.getText().toString();
                 Login login = new Login(email,pass);
@@ -81,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.apply();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             } else {
-                                // Handle the unsuccessful response
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                             }
 
 
@@ -89,6 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<Owner> call, Throwable t) {
                             Log.e("API Request", "Failed", t);
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }else {
@@ -108,12 +113,17 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             } else {
                                 // Handle the unsuccessful response
+                                progressBar.setVisibility(View.GONE);
+
                                 Toast.makeText(LoginActivity.this, "Login failed. Please check your credentials.", Toast.LENGTH_SHORT).show();
                             }
                         }
                         @Override
                         public void onFailure(Call<Owner> call, Throwable t) {
                             Log.e("API Request", "Failed", t);
+
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(LoginActivity.this, "Login failed. Please check your credentials.", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -125,10 +135,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        progressBar = findViewById(R.id.progressBar);
+
         SharedPreferences preferences = getSharedPreferences("Owner", Context.MODE_PRIVATE);
         if (preferences.contains("token") && preferences.contains("sdt")) {
             // Proceed to start MainActivity

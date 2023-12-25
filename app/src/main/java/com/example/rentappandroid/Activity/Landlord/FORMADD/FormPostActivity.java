@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -67,9 +68,11 @@ public class FormPostActivity extends AppCompatActivity {
          buttonAddPOST.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+                 progressBar.setVisibility(View.VISIBLE);
                  String selectedItem = danhSachPhongSpinner.getSelectedItem().toString();
                  if (selectedItem.isEmpty()) {
                      // Handle the case when no item is selected in the spinner
+                     progressBar.setVisibility(View.GONE);
                      showToast("Please select a room.");
                      return;
                  }
@@ -79,6 +82,7 @@ public class FormPostActivity extends AppCompatActivity {
                  String depositText = phiCocPhongEditText.getText().toString();
                  if (depositText.isEmpty()) {
                      // Handle the case when the deposit is empty
+                     progressBar.setVisibility(View.GONE);
                      showToast("Please enter a deposit value.");
                      return;
                  }
@@ -88,6 +92,7 @@ public class FormPostActivity extends AppCompatActivity {
                      // The 'deposit' variable now contains the valid integer value
                  } catch (NumberFormatException e) {
                      // Handle the case when the input is not a valid integer
+                     progressBar.setVisibility(View.GONE);
                      showToast("Invalid deposit value. Please enter a valid number.");
                      return;
                  }
@@ -96,6 +101,7 @@ public class FormPostActivity extends AppCompatActivity {
                  if (date.isEmpty()) {
                      // Handle the case when the date is empty
                      showToast("Please enter a date.");
+                     progressBar.setVisibility(View.GONE);
                      return;
                  }
 
@@ -103,6 +109,7 @@ public class FormPostActivity extends AppCompatActivity {
                  if (mota.isEmpty()) {
                      // Handle the case when the description is empty
                      showToast("Please enter a description.");
+                     progressBar.setVisibility(View.GONE);
                      return;
                  }
 
@@ -133,10 +140,12 @@ public class FormPostActivity extends AppCompatActivity {
                              if (response.isSuccessful()) {
                                  showToast("Thêm Bài Thành Công");
                                  Log.d("API Call Success", "API call was successful");
+                                 progressBar.setVisibility(View.GONE);
                              } else {
                                  showToast("Thêm Bài Thất Bại");
 
                                  // Log information when the API call is not successful
+                                 progressBar.setVisibility(View.GONE);
                                  Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                                  String errorMessage = "Thêm Bài Thất Bại\n" + response.message();
                                  showToast(errorMessage);
@@ -146,7 +155,7 @@ public class FormPostActivity extends AppCompatActivity {
                          @Override
                          public void onFailure(Call<Void> call, Throwable t) {
                              showToast("Thêm Bài Thất Bại");
-
+                             progressBar.setVisibility(View.GONE);
                              // Log the error
                              Log.e("API Call Error", "Error during API call", t);
 
@@ -181,10 +190,11 @@ public class FormPostActivity extends AppCompatActivity {
                          public void onResponse(Call<Void> call, Response<Void> response) {
                              if (response.isSuccessful()) {
                                  showToast("Chỉnh Bài Thành Công");
+                                 progressBar.setVisibility(View.GONE);
                                  Log.d("API Call Success", "API call was successful");
                              } else {
                                  showToast("Thêm Chỉnh Thất Bại");
-
+                                 progressBar.setVisibility(View.GONE);
                                  // Log information when the API call is not successful
                                  Log.e("API Call Error", "Error during API call. Response code: " + response.code());
                                  String errorMessage = "Chỉnh Bài Thất Bại\n" + response.message();
@@ -195,7 +205,7 @@ public class FormPostActivity extends AppCompatActivity {
                          @Override
                          public void onFailure(Call<Void> call, Throwable t) {
                              showToast("Chỉnh Thất Bại");
-
+                             progressBar.setVisibility(View.GONE);
                          }
                      });
                  }
@@ -288,12 +298,12 @@ public class FormPostActivity extends AppCompatActivity {
         phonghientai = findViewById(R.id.phonghientai);
         buttonAddPOST = findViewById(R.id.buttonAddPOST);
     }
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_post);
-
+        progressBar = findViewById(R.id.progressBarpost);
         SharedPreferences preferences =  getSharedPreferences("Owner", Context.MODE_PRIVATE);
 
 // Retrieve values
