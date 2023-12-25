@@ -22,6 +22,7 @@ import com.example.rentappandroid.Adapter.MessageAdapter;
 import com.example.rentappandroid.Dto.Reponse.Owner;
 import com.example.rentappandroid.FireBase.FirebaseHelper;
 import com.example.rentappandroid.FireBase.MessageHelper;
+import com.example.rentappandroid.Global.NotificationHelper;
 import com.example.rentappandroid.Model.Message;
 import com.example.rentappandroid.Model.Notification;
 import com.example.rentappandroid.R;
@@ -175,6 +176,7 @@ public class MessageActivity extends AppCompatActivity {
                     Notification notification = new Notification(UUID.randomUUID().toString()   , "Tin Nhắn Giữa Chủ trọ: " + landlord.getName() + " và khách hàng: " + tenant.getName() + " đã được thêm vào!"
                             , tenant, landlord, LocalDate.now().toString(), "TIN NHẮN", landlord.get_id()+ "_" + tenant.get_id());
                     firebaseHelper.addNotification(notification);
+                    NotificationHelper.showNotification(MessageActivity.this, "TIN NHẮN", "Tin Nhắn Giữa Chủ trọ: " + landlord.getName() + " và khách hàng: " + tenant.getName() + " đã được thêm vào!");
 
                 }
             }

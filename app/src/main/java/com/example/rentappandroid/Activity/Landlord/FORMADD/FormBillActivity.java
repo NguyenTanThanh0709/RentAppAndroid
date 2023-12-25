@@ -25,6 +25,7 @@ import com.example.rentappandroid.Adapter.ServiceChargeAdapterBill;
 import com.example.rentappandroid.Dto.Reponse.ServiceCharge;
 import com.example.rentappandroid.Dto.Request.Add.BillRequest;
 import com.example.rentappandroid.FireBase.FirebaseHelper;
+import com.example.rentappandroid.Global.NotificationHelper;
 import com.example.rentappandroid.Model.HoaDon;
 import com.example.rentappandroid.Model.Leasecontracts;
 import com.example.rentappandroid.Model.Mess;
@@ -101,6 +102,8 @@ public class FormBillActivity extends AppCompatActivity {
                                 , leasecontracts.getTenant(), leasecontracts.getLandlord(), LocalDate.now().toString(), "HÓA ĐƠN",response.body().getMessage()
                                 );
                         firebaseHelper.addNotification(notification);
+                        NotificationHelper.showNotification(FormBillActivity.this, "HÓA ĐƠN", "Hóa đơn tiền nhà tháng  này của bạn nè \n " + billRequest.getPayment_date() + "\n vui lòng thanh toán");
+
                         Log.d("API Call Success", "API call was successful");
                     } else {
                         showToast("Add Bill Thất Bại");
@@ -125,6 +128,7 @@ public class FormBillActivity extends AppCompatActivity {
                                 , leasecontracts.getTenant(), leasecontracts.getLandlord(), LocalDate.now().toString(), "HÓA ĐƠN",response.body().getMessage()
                         );
                         firebaseHelper.addNotification(notification);
+                        NotificationHelper.showNotification(FormBillActivity.this, "HÓA ĐƠN", "(có chỉnh sửa)Hóa đơn tiền nhà tháng  này của bạn nè \n " + billRequest.getPayment_date() + "\n vui lòng thanh toán");
                     } else {
                         showToast("update Bill Thất Bại");
 

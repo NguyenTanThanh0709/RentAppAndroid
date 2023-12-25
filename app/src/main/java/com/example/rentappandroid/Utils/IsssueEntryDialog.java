@@ -13,9 +13,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.rentappandroid.Activity.Landlord.FORMADD.FormBillActivity;
 import com.example.rentappandroid.Dto.Reponse.Owner;
 import com.example.rentappandroid.Dto.Request.Add.IssueRequest;
 import com.example.rentappandroid.FireBase.FirebaseHelper;
+import com.example.rentappandroid.Global.NotificationHelper;
 import com.example.rentappandroid.Model.Leasecontracts;
 import com.example.rentappandroid.Model.Notification;
 import com.example.rentappandroid.R;
@@ -101,6 +103,8 @@ public class IsssueEntryDialog extends Dialog {
                         , tenant, landord, LocalDate.now().toString(), "SỰ CỐ", ""
                 );
                 firebaseHelper.addNotification(notification);
+                NotificationHelper.showNotification(getContext(), "SỰ CỐ", "Có sự cố với nhà trọ: " + issueRequest.getRoom() + " Vui lòng kiểm tra");
+
             }
 
             @Override

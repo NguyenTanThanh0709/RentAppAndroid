@@ -968,6 +968,7 @@
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             getMenuInflater().inflate(R.menu.menu_main, menu);
+
             return true;
         }
 

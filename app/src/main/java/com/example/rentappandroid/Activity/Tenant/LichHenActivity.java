@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.rentappandroid.Activity.MessageActivity;
 import com.example.rentappandroid.Dto.Reponse.Owner;
 import com.example.rentappandroid.Dto.Reponse.Room;
 import com.example.rentappandroid.Dto.Request.Schema.AppointmentRequest;
 import com.example.rentappandroid.FireBase.FirebaseHelper;
+import com.example.rentappandroid.Global.NotificationHelper;
 import com.example.rentappandroid.Model.Notification;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiLandrod;
@@ -140,6 +142,7 @@ public class LichHenActivity extends AppCompatActivity {
                 Notification notification = new Notification(UUID.randomUUID().toString()   , des1
                         , tenant, landlord, LocalDate.now().toString(), "LỊCH HẸN", landlord.get_id()+ "_" + tenant.get_id());
                 firebaseHelper.addNotification(notification);
+                NotificationHelper.showNotification(LichHenActivity.this, "LỊCH HẸN", des1);
 
 
             }
