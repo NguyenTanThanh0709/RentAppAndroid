@@ -1,6 +1,7 @@
 package com.example.rentappandroid.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentappandroid.Activity.ListInfoActivity;
 import com.example.rentappandroid.R;
 import com.squareup.picasso.Picasso;
 
@@ -45,6 +47,16 @@ public class Khamdapter extends RecyclerView.Adapter<Khamdapter.KhamViewHolder>{
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.apartment)
                 .into(holder.img_khampha);
+
+        holder.img_khampha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ListInfoActivity.class);
+                intent.putExtra("type", "address");
+                intent.putExtra("quan", title);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

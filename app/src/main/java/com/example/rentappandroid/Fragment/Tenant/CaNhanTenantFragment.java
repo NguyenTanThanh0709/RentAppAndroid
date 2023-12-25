@@ -81,6 +81,9 @@ public class CaNhanTenantFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ca_nhan_tenant, container, false);
         init(view);
         event();
+        SharedPreferences preferences =  getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
+        String name1 = preferences.getString("name", "");
+        tenantName.setText(name1);
         return view;
     }
 
@@ -179,6 +182,7 @@ public class CaNhanTenantFragment extends Fragment {
                     editor.remove("sdt");
                     editor.remove("name");
                     editor.remove("role");
+                    editor.remove("address");
                     editor.apply();
                 }
 

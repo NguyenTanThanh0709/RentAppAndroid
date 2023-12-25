@@ -109,12 +109,13 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("sdt", response.body().get_id());
                                 editor.putString("name", response.body().getName());
                                 editor.putString("role", response.body().getRole());
+
+                                editor.putString("address", response.body().getAddress());
                                 editor.apply();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             } else {
                                 // Handle the unsuccessful response
                                 progressBar.setVisibility(View.GONE);
-
                                 Toast.makeText(LoginActivity.this, "Login failed. Please check your credentials.", Toast.LENGTH_SHORT).show();
                             }
                         }

@@ -189,6 +189,7 @@ public class CaNhanFragment extends Fragment {
                     editor.remove("token");
                     editor.remove("sdt");
                     editor.remove("name");
+                    editor.remove("address");
                     editor.remove("role");
                     editor.apply();
                 }
@@ -228,7 +229,9 @@ public class CaNhanFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_ca_nhan, container, false);
         init(view);
         event();
-
+        SharedPreferences preferences =  getActivity().getSharedPreferences("Owner", Context.MODE_PRIVATE);
+        String name1 = preferences.getString("name", "");
+        name.setText(name1);
         return view;
     }
 }

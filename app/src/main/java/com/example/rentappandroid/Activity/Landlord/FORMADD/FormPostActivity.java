@@ -26,17 +26,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rentappandroid.Dto.Reponse.Owner;
 import com.example.rentappandroid.Dto.Reponse.Room;
 import com.example.rentappandroid.Dto.Request.Add.PostRequest;
+import com.example.rentappandroid.FireBase.FirebaseHelper;
+import com.example.rentappandroid.Global.NotificationHelper;
 import com.example.rentappandroid.Model.BaiViet;
+import com.example.rentappandroid.Model.Notification;
+import com.example.rentappandroid.Model.searchcriterias;
 import com.example.rentappandroid.R;
 import com.example.rentappandroid.api.ApiBaiDang;
 import com.example.rentappandroid.api.ApiRoomHouse;
+import com.example.rentappandroid.api.ApiTenant;
+import com.example.rentappandroid.api.ApiTieuChiChonPhong;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -44,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,8 +71,11 @@ public class FormPostActivity extends AppCompatActivity {
     private RadioButton hetHieuLucRadioButton;
     private String id = "";
     private String type = "";
-     private void event(){
+    private List<searchcriterias> searchcriteriasList;
+    private FirebaseHelper firebaseHelper;
 
+     private void event(){
+         firebaseHelper = new FirebaseHelper();
 
          buttonAddPOST.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -134,16 +146,39 @@ public class FormPostActivity extends AppCompatActivity {
                          );
 
                  if(type.equals("")){
-                     ApiBaiDang.apiBaiDang.Add(postRequest,token).enqueue(new Callback<Void>() {
+                     ApiBaiDang.apiBaiDang.Add(postRequest,token).enqueue(new Callback<BaiViet>() {
                          @Override
-                         public void onResponse(Call<Void> call, Response<Void> response) {
+                         public void onResponse(Call<BaiViet> call, Response<BaiViet> response) {
                              if (response.isSuccessful()) {
                                  showToast("Thêm Bài Thành Công");
+                                 BaiViet  baiViet1 = response.body();
                                  Log.d("API Call Success", "API call was successful");
+                                 for (searchcriterias searchcriterias: searchcriteriasList){
+                                     if(searchcriterias.check(baiViet1)){
+                                         showToast("Tìm thấy khách hàng phù hợp với phòng của bạn! và đã gửi thông báo đến bạn đó");
+                                         ApiTenant.apiTenant.getOne(searchcriterias.getTenant(),token).enqueue(new Callback<Owner>() {
+                                             @Override
+                                             public void onResponse(Call<Owner> call, Response<Owner> response) {
+                                                 Notification notification = new Notification(UUID.randomUUID().toString()   , "Có phòng phù hợp với tiêu chi khách hàng: " + response.body().getName()
+                                                         , response.body(), baiViet1.getRoom().getOwner(), LocalDate.now().toString(), "TIÊU CHÍ PHÙ HỢP",baiViet1.get_id()
+                                                 );
+                                                 firebaseHelper.addNotification(notification);
+                                                 NotificationHelper.showNotification(FormPostActivity.this, "TIÊU CHÍ PHÙ HỢP","Tìm thấy khách hàng phù hợp với phòng trọ");
+
+                                             }
+
+                                             @Override
+                                             public void onFailure(Call<Owner> call, Throwable t) {
+
+                                             }
+                                         });
+
+
+                                     }
+                                 }
                                  progressBar.setVisibility(View.GONE);
                              } else {
                                  showToast("Thêm Bài Thất Bại");
-
                                  // Log information when the API call is not successful
                                  progressBar.setVisibility(View.GONE);
                                  Log.e("API Call Error", "Error during API call. Response code: " + response.code());
@@ -153,7 +188,7 @@ public class FormPostActivity extends AppCompatActivity {
                          }
 
                          @Override
-                         public void onFailure(Call<Void> call, Throwable t) {
+                         public void onFailure(Call<BaiViet> call, Throwable t) {
                              showToast("Thêm Bài Thất Bại");
                              progressBar.setVisibility(View.GONE);
                              // Log the error
@@ -298,6 +333,20 @@ public class FormPostActivity extends AppCompatActivity {
         phonghientai = findViewById(R.id.phonghientai);
         buttonAddPOST = findViewById(R.id.buttonAddPOST);
     }
+
+    private void getALL(){
+        ApiTieuChiChonPhong.apiApiTieuChiChonPhong.getall(token).enqueue(new Callback<List<searchcriterias>>() {
+            @Override
+            public void onResponse(Call<List<searchcriterias>> call, Response<List<searchcriterias>> response) {
+                searchcriteriasList.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<searchcriterias>> call, Throwable t) {
+
+            }
+        });
+    }
     private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,7 +367,8 @@ public class FormPostActivity extends AppCompatActivity {
         getData();
         setCurrentDate();
         event();
-
+        searchcriteriasList  = new ArrayList<>();
+        getALL();
         danhSachPhongSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {

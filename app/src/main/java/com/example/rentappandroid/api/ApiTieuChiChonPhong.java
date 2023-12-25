@@ -6,6 +6,8 @@ import com.example.rentappandroid.Model.searchcriterias;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -33,6 +35,9 @@ public interface ApiTieuChiChonPhong {
     @GET("searchcriteria/tenant/{userId}")
     Call<searchcriterias> getTieuChiPhong(@Path("userId") String userId, @Header("Authorization") String token);
 
+
+    @GET("searchcriteria/getall")
+    Call<List<searchcriterias>> getall(@Header("Authorization") String token);
 
     @PUT("searchcriteria/tenant/{userId}")
     Call<Void> updateTieuChi(@Path("userId") String userId, @Body TieuChiChonPhongRequest tieuChiChonPhongRequest, @Header("Authorization") String token);

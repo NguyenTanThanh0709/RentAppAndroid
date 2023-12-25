@@ -54,5 +54,5 @@ public interface ApiBaiDang {
 
 
     @POST("baiviet/create")
-    Call<Void> Add(@Body PostRequest postRequest, @Header("Authorization") String token);
+    Call<BaiViet> Add(@Body PostRequest postRequest, @Header("Authorization") String token);
 }

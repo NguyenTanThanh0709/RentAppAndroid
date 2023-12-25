@@ -3,6 +3,7 @@ package com.example.rentappandroid.Fragment.Landlord;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.rentappandroid.Activity.Landlord.FORMADD.FormAddRoomHouseActivity;
+import com.example.rentappandroid.Activity.ListInfoActivity;
 import com.example.rentappandroid.Adapter.BaiVietAdapter;
 import com.example.rentappandroid.Adapter.DistrictAdapter;
 import com.example.rentappandroid.Adapter.FindRoomHouseAdapter;
@@ -130,6 +132,39 @@ public class TrangChuFragment extends Fragment {
         listbaiviettimnguoioghep_recycle = view.findViewById(R.id.listbaiviettimnguoioghep_recycle);
         xemthemtimkiemoghep = view.findViewById(R.id.xemthemtimkiemoghep);
         handleXemThem();
+        event();
+    }
+
+    private void event(){
+        // Set onClickListener for timphong
+        timphong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ListInfoActivity.class);
+                intent.putExtra("type", "baiviet");
+                startActivity(intent);
+            }
+        });
+
+// Set onClickListener for tindangtim
+        tindangtim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ListInfoActivity.class);
+                intent.putExtra("type", "timtro");
+                startActivity(intent);
+            }
+        });
+
+// Set onClickListener for timoghep
+        timoghep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ListInfoActivity.class);
+                intent.putExtra("type", "oghep");
+                startActivity(intent);
+            }
+        });
     }
 
     private void handleXemThem(){

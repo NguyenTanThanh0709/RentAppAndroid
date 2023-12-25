@@ -84,7 +84,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 } else if (notification.getType().equals("LỊCH HẸN")) {
                     showPopupMenu(view, notification);
                 } else if (notification.getType().equals("TIÊU CHÍ PHÙ HỢP")) {
-
+                    Intent intent = new Intent(context, DetailInfoRoomActivity.class);
+                    intent.putExtra("ID_POST", notification.getId_type());
+                    intent.putExtra("token", token);
+                    intent.putExtra("role", role);
+                    context.startActivity(intent);
                 } else {
 
                 }
