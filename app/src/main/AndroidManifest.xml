@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -52,8 +53,20 @@
             android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
         <activity
             android:name=".Activity.Tenant.HoaDon.InfoBillTenantActivity"
-            android:exported="false"
-            android:theme="@style/Theme.RentAppAndroid.DarkActionBar" />
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.RentAppAndroid.DarkActionBar"
+            android:exported="true">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="demozpdk"
+                    android:host="app" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".Activity.Tenant.HopDong.InfoContractActivity"
             android:exported="false"
